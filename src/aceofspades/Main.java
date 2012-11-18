@@ -13,8 +13,6 @@ public class Main {
     /**
      * @param args the command line arguments
      */
-    
-    
     public static void main(String[] args) {
         Card tmp1 = new Card("as");
         Card tmp2 = new Card("ac");

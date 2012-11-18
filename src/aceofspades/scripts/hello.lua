@@ -7,7 +7,7 @@ print("Hello World from Lua!")
         return n * fact(n-1)
       end
     end
-    
+
     print("enter a number:")
-    a = io.read("*number")        -- read a number
+    a = io.read("*number")
     print(fact(a))
