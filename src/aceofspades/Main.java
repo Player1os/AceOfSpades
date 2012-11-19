@@ -10,6 +10,10 @@ package aceofspades;
  */
 public class Main {
 
+    public static aceofspades.frames.MenuFrame _menu = null;
+    public static aceofspades.frames.GameFrame _game = null;
+    public static aceofspades.frames.EditorFrame _editor = null;
+    
     /**
      * @param args the command line arguments
      */
@@ -25,5 +29,10 @@ public class Main {
         System.out.println(tmp3.getZnak() + " of " + tmp3.getFarba());
         System.out.println(tmp4.getZnak() + " of " + tmp4.getFarba());
         System.out.println(tmp5.getZnak() + " of " + tmp5.getFarba());
+        
+        _menu = new aceofspades.frames.MenuFrame();
+       // _menu.setExtendedState(_menu.getExtendedState() | aceofspades.frames.MenuFrame.MAXIMIZED_BOTH);
+        _menu.setVisible(true);
+        
     }
 }
