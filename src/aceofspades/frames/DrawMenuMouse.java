@@ -55,11 +55,10 @@ public class DrawMenuMouse extends MouseAdapter{
          */
         if ( mx > _draw.startButton.x && mx < (_draw.startButton.x+_draw.startButton.width) &&
                 my > _draw.startButton.y && my < (_draw.startButton.y+_draw.startButton.height)) {
-            System.out.println("Si cakal ze som uz nakodil hru co ? :P");
-            DrawStrategy draw = new DrawOptions(_frame);
+            DrawStrategy draw = new DrawGame(_frame);
             _frame.setDrawStrategy(draw);
-            _frame.setMouseListener(new DrawOptionsMouse(_frame, draw));
-            _frame.setMouseMotionListener(new DrawOptionsMouse(_frame, draw));
+            _frame.setMouseListener(new DrawGameMouse(_frame, draw));
+            _frame.setMouseMotionListener(new DrawGameMouse(_frame, draw));
         }
         
         /*

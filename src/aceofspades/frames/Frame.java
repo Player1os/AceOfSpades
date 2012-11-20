@@ -20,8 +20,8 @@ interface DrawStrategy {
 
 
 public class Frame extends JFrame{
-    int _width = 640;
-    int _height = 480;
+    int _width = 1280;
+    int _height = 720;
     Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     Image _image;
     Graphics _graphics;
