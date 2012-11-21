@@ -6,13 +6,8 @@ package aceofspades.frames;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import javax.imageio.ImageIO;
 
 /**
  *
@@ -69,7 +64,7 @@ public class DrawGame implements DrawStrategy{
         _frame.repaint();
     }
     
-    void fillA(int x, int y) {
+    private void fillA(int x, int y) {
         a.add(new Rectangle(x, y, 50, 80));
         for (int i=2; i<11; i++) {
             a.add(new Rectangle(x+(i-2)*20, y, 50, 80));

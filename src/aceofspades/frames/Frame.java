@@ -19,7 +19,7 @@ interface DrawStrategy {
  }
 
 
-public class Frame extends JFrame{
+public class Frame extends JFrame {
     int _width = 1280;
     int _height = 720;
     Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -29,7 +29,7 @@ public class Frame extends JFrame{
     MouseListener _mouseClick = new DrawMenuMouse(this, _draw);
     MouseMotionListener _mouseMove = new DrawMenuMouse(this, _draw);
         
-    public Frame(){
+    public Frame() {
         this.setTitle("Ace of Spades");
         this.setBounds((screenSize.width/2)-(_width/2), (screenSize.height/2)-(_height/2), _width, _height);
         this.setResizable(false);

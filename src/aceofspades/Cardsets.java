@@ -9,14 +9,6 @@ package aceofspades;
  * 
  * @author Player1os
  */
+public class Cardsets {
 
-
-public class Card {
-    protected String value;
-    protected String suit;
-    
-    public Card(String card){
-        
-    }
-    
 }

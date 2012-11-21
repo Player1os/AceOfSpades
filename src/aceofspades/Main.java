@@ -25,5 +25,7 @@ public class Main {
 //        System.out.println(tmp3.getZnak() + " of " + tmp3.getFarba());
 //        System.out.println(tmp4.getZnak() + " of " + tmp4.getFarba());
 //        System.out.println(tmp5.getZnak() + " of " + tmp5.getFarba());
+          aceofspades.frames.Frame frame = new aceofspades.frames.Frame();
+
     }
 }
