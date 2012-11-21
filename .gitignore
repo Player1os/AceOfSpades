@@ -1,2 +1,8 @@
+<<<<<<< HEAD
 /build/
 /docs/
+=======
+/build/
+/dist/
+>>>>>>> c5644acce73a0b94e7c5be1adcbee7f17b7e2c45
+*.pdf
