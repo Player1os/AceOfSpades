@@ -12,16 +12,13 @@ import java.awt.Rectangle;
  */
 public class DrawGame implements DrawStrategy{
     Frame _frame;
-    
-    Rectangle dragCard;
-    int x = 100;
-    int y = 100;
-    boolean hoverDragCard;
-    boolean selectDragCard;
+    Graphics _g;
     
     int selectCardSet = -1;
-    int selectCard = -1;
-    int hoverCard = -1;
+    int selectlzCard = -1;
+    int hoverlzCard = -1;
+    int selectrzCard = -1;
+    int hoverrzCard = -1;
     
     
     public int rightZoom = -1;
@@ -41,20 +38,12 @@ public class DrawGame implements DrawStrategy{
     
     @Override
     public void draw(Graphics g, int width, int height) {
+        _g = g;
         g.setColor(Color.BLUE);
         g.fillRect(0, _frame._height-100, _frame._width/2, 100);
         g.setColor(Color.ORANGE);
         g.fillRect(_frame._width/2, _frame._height-100, _frame._width/2, 100);
         
-        dragCard = new Rectangle (x, y, 50, 80);        
-        if (hoverDragCard) {
-            g.setColor(Color.YELLOW);
-        } else if (selectDragCard) {
-            g.setColor(Color.BLUE);
-        } else {
-            g.setColor(Color.WHITE);
-        }
-        g.fillRect(dragCard.x, dragCard.y, dragCard.width, dragCard.height);
         g.setColor(Color.WHITE);
         for (int i=0; i < Application.cardSety.size(); i++) {
             Application.cardSety.get(i).getVisCardSet().draw(g);
@@ -66,14 +55,14 @@ public class DrawGame implements DrawStrategy{
                 String tmp1 = rzCS.getCard(i).getSuit();
                 String tmp2 = rzCS.getCard(i).getValue();
                 boolean tmp3 = rzCS.getCard(i).getVisible();
-               if (i == hoverCard){
+               if (i == hoverrzCard){
                    g.setColor(Color.YELLOW);
-               } else if (i == selectCard){
+               } else if (i == selectrzCard){
                     g.setColor(Color.PINK);
                 } else {
                     g.setColor(Color.WHITE);
                 }
-                drawCard(g, _frame._width/2+10+(i*20), _frame._height-90, tmp1, tmp2, tmp3);
+                drawCard(_frame._width/2+10+(i*20), _frame._height-90, tmp1, tmp2, tmp3);
                 
             }
         }   
@@ -83,41 +72,41 @@ public class DrawGame implements DrawStrategy{
                 String tmp1 = lzCS.getCard(i).getSuit();
                 String tmp2 = lzCS.getCard(i).getValue();
                 boolean tmp3 = lzCS.getCard(i).getVisible();
-                 if (i == hoverCard){
+                 if (i == hoverlzCard){
                    g.setColor(Color.YELLOW);
-               } else if (i == selectCard){
+               } else if (i == selectlzCard){
                     g.setColor(Color.PINK);
                 } else {
                     g.setColor(Color.WHITE);
                 }
-                drawCard(g, 10+(i*20), _frame._height-90, tmp1, tmp2, tmp3);
+                drawCard(10+(i*20), _frame._height-90, tmp1, tmp2, tmp3);
             }
         }
         
         _frame.repaint();
     }
     
-    void drawCard (Graphics g, int x, int y, String s, String v, boolean w) {
-        g.fillRect(x,y,50,80);
-        g.setColor(Color.BLACK);
-        g.drawRect(x-1,y-1,51,81);
+    void drawCard (int x, int y, String s, String v, boolean w) {
+        _g.fillRect(x,y,50,80);
+        _g.setColor(Color.BLACK);
+        _g.drawRect(x-1,y-1,51,81);
         if (w) {
             switch (s) {
-                case "hearts" : g.setColor(Color.RED);
-                                g.drawString("♥", x+4, y+20);
-                                g.drawString(v, x+4, y+40);
+                case "hearts" : _g.setColor(Color.RED);
+                                _g.drawString("♥", x+4, y+20);
+                                _g.drawString(v, x+4, y+40);
                                 break;
-                case "diamonds" : g.setColor(Color.RED);
-                                g.drawString("♦", x+4, y+20);
-                                g.drawString(v, x+4, y+40);
+                case "diamonds" : _g.setColor(Color.RED);
+                                _g.drawString("♦", x+4, y+20);
+                                _g.drawString(v, x+4, y+40);
                                 break;
-                case "spades" : g.setColor(Color.BLACK);
-                                g.drawString("♠", x+4, y+20);
-                                g.drawString(v, x+4, y+40);
+                case "spades" : _g.setColor(Color.BLACK);
+                                _g.drawString("♠", x+4, y+20);
+                                _g.drawString(v, x+4, y+40);
                                 break;
-                case "clubs" : g.setColor(Color.BLACK);
-                                g.drawString("♣", x+4, y+20);
-                                g.drawString(v, x+4, y+40);
+                case "clubs" : _g.setColor(Color.BLACK);
+                                _g.drawString("♣", x+4, y+20);
+                                _g.drawString(v, x+4, y+40);
                                 break;
             }
         }
