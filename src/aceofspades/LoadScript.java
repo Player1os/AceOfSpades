@@ -36,7 +36,7 @@ public class LoadScript {
     */
     void runScriptFunction(String functionName, Object obj) {
         this.luaState.getGlobal(functionName);
-        this.luaState.pushJavaObject(obj);
+        if (obj != null) this.luaState.pushJavaObject(obj);
         this.luaState.call(1, 0);
     }
 }

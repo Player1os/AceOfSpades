@@ -12,11 +12,33 @@ package aceofspades;
 
 
 public class Card {
-    protected String value;
-    protected String suit;
+    String value;
+    String suit;
+    
+    private LoadScript script;
     
     public Card(String card){
-        
+        /* Loads Lua script for this race.*/
+        script = new LoadScript("src/aceofspades/scripts/" + card + ".lua");
+        /*Call Lua create function.*/
+        script.runScriptFunction("create", this);
+        script.closeScript();
+    }
+    
+    public void setZnak(String znak) {
+        value = znak;
+    }
+    
+    public void setFarba(String znak) {
+        suit = znak;
+    }
+    
+    public String getZnak() {
+        return value;
+    }
+    
+    public String getFarba() {
+        return suit;
     }
     
 }
