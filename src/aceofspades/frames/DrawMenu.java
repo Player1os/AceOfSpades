@@ -18,8 +18,10 @@ public class DrawMenu implements DrawStrategy{
     
     public Rectangle startButton;
     public Rectangle optionsButton;
+    public Rectangle editorButton;
     public boolean hoverOptionsButton;
     public boolean hoverStartButton;
+    public boolean hoverEditorButton;
     
     DrawMenu (Frame f) {
         _frame = f;
@@ -41,7 +43,7 @@ public class DrawMenu implements DrawStrategy{
         g.setFont(new Font("Arial", Font.PLAIN, 12));
         startButton = new Rectangle(width/2-50, 100, 100, 25);
         if (!hoverStartButton) {
-            g.setColor(Color.CYAN);
+            g.setColor(Color.GREEN);
         } else {
             g.setColor(Color.ORANGE);
         }
@@ -54,13 +56,26 @@ public class DrawMenu implements DrawStrategy{
          */
         optionsButton = new Rectangle(width/2-50, 150, 100, 25);
         if (!hoverOptionsButton) {
-            g.setColor(Color.CYAN);
+            g.setColor(Color.GREEN);
         } else {
             g.setColor(Color.ORANGE);
         }
         g.fillRect(optionsButton.x, optionsButton.y, optionsButton.width, optionsButton.height);
         g.setColor(Color.BLACK);
         g.drawString("Options", optionsButton.x+30, optionsButton.y+17);
+                
+        /*
+         * Editor Button
+         */
+        editorButton = new Rectangle(width/2-50, 200, 100, 25);
+        if (!hoverEditorButton) {
+            g.setColor(Color.GREEN);
+        } else {
+            g.setColor(Color.ORANGE);
+        }
+        g.fillRect(editorButton.x, editorButton.y, editorButton.width, editorButton.height);
+        g.setColor(Color.BLACK);
+        g.drawString("Game Editor", editorButton.x+18, editorButton.y+17);
         
         _frame.repaint();
     }

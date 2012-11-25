@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package aceofspades.frames;
 
 import java.awt.event.MouseAdapter;
@@ -44,6 +40,16 @@ public class DrawMenuMouse extends MouseAdapter{
         } else {
             _draw.hoverOptionsButton = false;
         }
+        
+        /*
+         * OnHover Editor Button
+         */
+        if ( (mx > _draw.editorButton.x) && (mx < (_draw.editorButton.x+_draw.editorButton.width)) &&
+                (my > _draw.editorButton.y) && (my < (_draw.editorButton.y+_draw.editorButton.height)) ) {
+            _draw.hoverEditorButton = true;
+        } else {
+            _draw.hoverEditorButton = false;
+        }
     }
     
     @Override
@@ -71,6 +77,14 @@ public class DrawMenuMouse extends MouseAdapter{
             _frame.setDrawStrategy(draw);
             _frame.setMouseListener(new DrawOptionsMouse(_frame, draw));
             _frame.setMouseMotionListener(new DrawOptionsMouse(_frame, draw));
+        }
+        
+        /*
+         * OnHover Editor Button
+         */
+        if ( (mx > _draw.editorButton.x) && (mx < (_draw.editorButton.x+_draw.editorButton.width)) &&
+                (my > _draw.editorButton.y) && (my < (_draw.editorButton.y+_draw.editorButton.height)) ) {
+            aceofspades.frames.DrawEditor frame = new aceofspades.frames.DrawEditor();
         }
     }
 }
