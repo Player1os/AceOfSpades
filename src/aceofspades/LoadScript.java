@@ -10,6 +10,7 @@ import org.keplerproject.luajava.LuaStateFactory;
 
 public class LoadScript {
     LuaState luaState;
+    
     /**
     * Constructor
     * @param fileName File name with Lua script.
@@ -19,12 +20,14 @@ public class LoadScript {
         this.luaState.openLibs();
         this.luaState.LdoFile("scritps/" + fileName);
     }
+    
     /**
     * Ends the use of Lua environment.
     */
     void closeScript() {
         this.luaState.close();
     }
+    
     /**
     * Call a Lua function inside the Lua script to insert
     * data into a Java object passed as parameter

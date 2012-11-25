@@ -1,41 +1,36 @@
 package aceofspades;
 
+import java.util.ArrayList;
+
 /**
  * 
- * @author Player1os
+ * @author Player1os <player1os at gmail.com>
  */
 public class CardSet {
     
-    protected String race;
-    protected int defense;
-    protected int attack;
-    protected int life;
+    ArrayList<Card> Cards;
     
-    private LoadScript script;
+    public void addCard(int _pos, Card _card) {
+        this.Cards.add(_pos, _card);
+    }
     
-    public CardSet(String race) {
-        this.script = new LoadScript(race+".lua");
-        script.runScriptFunction("create", this);
+    public void removeCard(int _pos) {
+        this.Cards.remove(_pos);
     }
-    public String getRace() {
-        return race;
+    
+    public Card getCard(int _pos) {
+        return this.Cards.get(_pos);
     }
-    public int getDefense() {
-        return this.defense;
+    
+    public int getCardCount() {
+        return Cards.size();
     }
-    public void setDefense(int defense) {
-        this.defense = defense;
+    
+    public void shuffle() {
+        
     }
-    public int getLife() {
-        return this.life;
-    }
-    public void setLife(int life) {
-        this.life = life;
-    }
-    public void setAttack(int attack) {
-        this.attack = attack;
-    }
-    public int getAttack() {
-        return this.attack;
-    }
+    
+    /*public VisCard getVisCardSet() {
+        
+    }*/
 } 

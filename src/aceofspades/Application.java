@@ -1,18 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package aceofspades;
-
-import java.util.ArrayList;
 
 /**
  *
- * @author Player1os
+ * @author Player1os <player1os at gmail.com>
  */
-public class Main {
-
-    public static ArrayList<Card> CardArray;
+public class Application {
 
     /**
      * @param args the command line arguments
@@ -30,8 +22,6 @@ public class Main {
          * System.out.println(tmp4.getZnak() + " of " + tmp4.getFarba());
          * System.out.println(tmp5.getZnak() + " of " + tmp5.getFarba());
          */
-
-        CardArray = new ArrayList<Card>();
 
         aceofspades.frames.Frame frame = new aceofspades.frames.Frame();
 
