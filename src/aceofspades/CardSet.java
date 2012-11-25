@@ -9,6 +9,11 @@ import java.util.ArrayList;
 public class CardSet {
     
     ArrayList<Card> Cards;
+    VisCardSet visual;
+    
+    public CardSet (int x, int y) {
+        visual = new VisCardSet(x, y);
+    }
     
     public void addCard(int _pos, Card _card) {
         this.Cards.add(_pos, _card);
@@ -30,7 +35,7 @@ public class CardSet {
         
     }
     
-    /*public VisCard getVisCardSet() {
-        
-    }*/
-} 
+    public VisCardSet getVisCardSet() {
+        return visual;
+    }
+}

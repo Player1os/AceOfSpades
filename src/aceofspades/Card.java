@@ -8,7 +8,7 @@ public class Card {
     protected String value;
     protected String suit;
         
-    protected Boolean visible;    
+    protected boolean visible = true;    
     
     protected CardSet cardSet;
     protected int position;

@@ -4,6 +4,7 @@
  */
 package aceofspades.frames;
 
+import aceofspades.Application;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -35,15 +36,26 @@ public class DrawGameMouse extends MouseAdapter {
         } else {
             _draw.hoverDragCard = false;
         }
+        
         _draw.hoverCard = -1;
-
-
-        for (int i = 0; i < _draw.a.size(); i++) {
-            if (mx > _draw.a.get(i).x && mx < (_draw.a.get(i).x + _draw.a.get(i).width)
-                    && my > _draw.a.get(i).y && my < (_draw.a.get(i).y + _draw.a.get(i).height)) {
-                _draw.hoverCard = i;
+        if (_draw.leftZoom != -1) {
+            for (int i=0; i < Application.cardSety.get(_draw.leftZoom).getCardCount(); i++) {
+                if ((mx > 10+20*i) && (mx < (60+20*i))
+                    && (my > _frame._height-100) && (my < (_frame._height))) {
+                    _draw.hoverCard = i;
+                }
             }
         }
+        
+        if (_draw.rightZoom != -1) {
+            for (int i=0; i < Application.cardSety.get(_draw.rightZoom).getCardCount(); i++) {
+                if ((mx > _frame._width/2+10+20*i) && (mx < _frame._width/2+(10+50*(i+1)))
+                    && (my > _frame._height-100) && (my < (_frame._height))) {
+                    _draw.hoverCard = i;
+                }
+            }
+        }
+        
         _mx = mx;
         _my = my;
     }
@@ -60,16 +72,6 @@ public class DrawGameMouse extends MouseAdapter {
          * (_draw.drawCascade) _draw.drawCascade = false; else _draw.drawCascade
          * = true; }
          */
-        _draw.selectCard = -1;
-
-
-        for (int i = 0; i < _draw.a.size(); i++) {
-            if (mx > _draw.a.get(i).x && mx < (_draw.a.get(i).x + _draw.a.get(i).width)
-                    && my > _draw.a.get(i).y && my < (_draw.a.get(i).y + _draw.a.get(i).height)) {
-                _draw.selectCard = i;
-            }
-        }
-
 
         if ((mx > _draw.dragCard.x) && (mx < (_draw.dragCard.x + _draw.dragCard.width))
                 && (my > _draw.dragCard.y) && (my < (_draw.dragCard.y + _draw.dragCard.height))) {
@@ -77,8 +79,35 @@ public class DrawGameMouse extends MouseAdapter {
         } else {
             _draw.selectDragCard = false;
         }
-
-
+        
+        _draw.selectCardSet = -1;
+        for (int i=0; i < Application.cardSety.size(); i++) {
+            if ((mx > Application.cardSety.get(i).getVisCardSet().position.x) && (mx < (Application.cardSety.get(i).getVisCardSet().position.x + Application.cardSety.get(i).getVisCardSet().position.width))
+                    && (my > Application.cardSety.get(i).getVisCardSet().position.y) && (my < (Application.cardSety.get(i).getVisCardSet().position.y + Application.cardSety.get(i).getVisCardSet().position.height))) {
+                if (e.getButton() == MouseEvent.BUTTON1) _draw.leftZoom = i;
+                if (e.getButton() == MouseEvent.BUTTON3) _draw.rightZoom = i;
+                _draw.selectCardSet = i;
+            }
+        }
+        _draw.selectCard = -1;
+        if (_draw.leftZoom != -1) {
+            for (int i=0; i < Application.cardSety.get(_draw.leftZoom).getCardCount(); i++) {
+                if ((mx > 10+20*i) && (mx < (60+20*i))
+                    && (my > _frame._height-100) && (my < (_frame._height))) {
+                    _draw.selectCard = i;
+                }
+            }
+        }
+        
+        if (_draw.rightZoom != -1) {
+            for (int i=0; i < Application.cardSety.get(_draw.rightZoom).getCardCount(); i++) {
+                if ((mx > _frame._width/2+10+20*i) && (mx < _frame._width/2+(10+50*(i+1)))
+                    && (my > _frame._height-100) && (my < (_frame._height))) {
+                    _draw.selectCard = i;
+                }
+            }
+        }
+        
         _mx = mx;
         _my = my;
     }
@@ -88,17 +117,12 @@ public class DrawGameMouse extends MouseAdapter {
         int mx = e.getX();
         int my = e.getY();
         
-        for (int i = 0; i < _draw.a.size(); i++) {
-            if (_draw.selectCard == i) {
-                _draw.a.get(i).x += mx - _mx;
-                _draw.a.get(i).y += my - _my;
-            }
+        if (_draw.selectCardSet != -1) {
+            Application.cardSety.get(_draw.selectCardSet).getVisCardSet().position.x = mx - _mx;
+            Application.cardSety.get(_draw.selectCardSet).getVisCardSet().position.y = my - _my;
         }
         
-        if (_draw.selectDragCard) {
-            _draw.x += mx - _mx;
-            _draw.y += my - _my;
-        }
+        
         
         _mx = mx;
         _my = my;
