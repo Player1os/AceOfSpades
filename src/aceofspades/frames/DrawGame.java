@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package aceofspades.frames;
 
 import java.awt.Color;
@@ -39,7 +35,7 @@ public class DrawGame implements DrawStrategy{
     
     @Override
     public void draw(Graphics g, int width, int height) {
-        dragCard = new Rectangle (x, y, 50, 80);
+        dragCard = new Rectangle (x, y, 50, 80);        
         if (hoverDragCard) {
             g.setColor(Color.YELLOW);
         } else if (selectDragCard) {
@@ -47,6 +43,7 @@ public class DrawGame implements DrawStrategy{
         } else {
             g.setColor(Color.WHITE);
         }
+        
         g.fillRect(dragCard.x, dragCard.y, dragCard.width, dragCard.height);
         for (int i=0; i < a.size(); i++) {
             g.setColor(Color.BLACK);

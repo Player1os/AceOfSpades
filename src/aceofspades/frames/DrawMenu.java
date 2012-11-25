@@ -27,12 +27,14 @@ public class DrawMenu implements DrawStrategy{
     
     @Override
     public void draw(Graphics g, int width, int height) {
+        
         /*
          * Main Menu Title
          */
         g.setColor(Color.WHITE);
         g.setFont(new Font("Arial", Font.BOLD, 26));
         g.drawString("Main Menu",width/2-73, 50);
+        
         /*
          * Single Player Button
          */
@@ -46,6 +48,7 @@ public class DrawMenu implements DrawStrategy{
         g.fillRect(startButton.x, startButton.y, startButton.width, startButton.height);
         g.setColor(Color.BLACK);
         g.drawString("Single Player", startButton.x+20, startButton.y+17);
+        
         /*
          * Options Button
          */

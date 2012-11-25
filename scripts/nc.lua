@@ -4,5 +4,5 @@ function create(card)
 end
 
 function asdf(gg)
-        
+	gg:add(5)
 end

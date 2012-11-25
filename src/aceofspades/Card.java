@@ -1,44 +1,48 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package aceofspades;
 
 /**
  * 
- * @author Player1os
+ * @author Player1os <player1os at gmail.com>
  */
-
-
 public class Card {
-    String value;
-    String suit;
+    protected String value;
+    protected String suit;
+        
+    protected Boolean visible;    
     
-    private LoadScript script;
+    protected CardSet cardSet;
+    protected int position;
     
-    public Card(String card){
-        /* Loads Lua script for this race.*/
-        script = new LoadScript("src/aceofspades/scripts/" + card + ".lua");
-        /*Call Lua create function.*/
-        script.runScriptFunction("create", this);
-        script.closeScript();
+    public Card(String _value, String _suit) {
+        this.value = _value;
+        this.suit = _suit;   
+    }
+        
+    public String getValue() {
+        return this.value; 
     }
     
-    public void setZnak(String znak) {
-        value = znak;
+    public String getSuit() {
+        return this.suit;
     }
     
-    public void setFarba(String znak) {
-        suit = znak;
+    public Boolean getVisible() {
+        return this.visible; 
     }
     
-    public String getZnak() {
-        return value;
+    public void setVisible(Boolean _visible) {
+        this.visible = _visible; 
     }
     
-    public String getFarba() {
-        return suit;
+    public void moveTo(CardSet _cardSet, int _position) {
+        /*call canRemove of Cardset (cardSet, position)
+        call canAdd of Cardset (newCardSet, newPosition)
+        
+        if both are true then
+        */ 
+        this.cardSet.removeCard(position);
+        cardSet = _cardSet;        
+        this.cardSet.addCard(_position, this);
+        
     }
-    
 }
