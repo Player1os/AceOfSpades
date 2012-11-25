@@ -1,11 +1,8 @@
 function gameInit()
-	
-end
 
-function gameRules()
-	
 end
-
+-- GameRules BEGIN
+-- GameRules END
 function gameWinConds()
-	
+
 end

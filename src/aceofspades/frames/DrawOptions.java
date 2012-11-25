@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package aceofspades.frames;
 
 import java.awt.Color;
@@ -32,12 +28,14 @@ public class DrawOptions implements DrawStrategy{
     
     @Override
     public void draw(Graphics g, int width, int height) {
+        
         /*
          * Options Title
          */
         g.setColor(Color.WHITE);
         g.setFont(new Font("Arial", Font.BOLD, 26));
         g.drawString("Options",width/2-73, 50);
+        
         /*
          * Main Menu Button
          */
@@ -51,6 +49,7 @@ public class DrawOptions implements DrawStrategy{
         g.fillRect(menuButton.x, menuButton.y, menuButton.width, menuButton.height);
         g.setColor(Color.BLACK);
         g.drawString("Main Menu", menuButton.x+20, menuButton.y+17);
+        
         /*
          * Change Resolution Button
          */

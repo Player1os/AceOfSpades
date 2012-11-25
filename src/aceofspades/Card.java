@@ -40,6 +40,7 @@ public class Card {
         
         if both are true then
         */ 
+        
         this.cardSet.removeCard(position);
         cardSet = _cardSet;        
         this.cardSet.addCard(_position, this);

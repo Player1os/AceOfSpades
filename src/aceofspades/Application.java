@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * @author Player1os <player1os at gmail.com>
  */
 public class Application {
-
+ 
     /**
      * @param args the command line arguments
      */
@@ -15,7 +15,7 @@ public class Application {
     public static ArrayList<CardSet> cardSety = new ArrayList();
     
     public static void main(String[] args) {
-
+ 
         /*
          * Card tmp1 = new Card("as"); Card tmp2 = new Card("ac"); Card tmp3 =
          * new Card("ad"); Card tmp4 = new Card("ah"); Card tmp5 = new
@@ -66,6 +66,6 @@ public class Application {
         cardSety.add(tmp);
         
         aceofspades.frames.Frame frame = new aceofspades.frames.Frame();
-
+ 
     }
 }
