@@ -8,14 +8,18 @@ public class Card {
     protected String value;
     protected String suit;
         
-    protected boolean visible = true;    
+    protected boolean visible = true;
+    protected VisCard visual;
     
     protected CardSet cardSet;
     protected int position;
     
-    public Card(String _value, String _suit) {
+    public Card(String _value, String _suit, int x, int y, CardSet cardset, int position) {
         this.value = _value;
         this.suit = _suit;   
+        this.visual = new VisCard(x, y, _suit, _value, true);
+        this.cardSet = cardset;
+        this.position = position;
     }
         
     public String getValue() {
@@ -30,6 +34,10 @@ public class Card {
         return this.visible; 
     }
     
+    public VisCard getVisCard() {
+        return visual;
+    }
+    
     public void setVisible(Boolean _visible) {
         this.visible = _visible; 
     }
@@ -42,8 +50,10 @@ public class Card {
         */ 
         
         this.cardSet.removeCard(position);
-        cardSet = _cardSet;        
-        this.cardSet.addCard(_position, this);
-        
+        System.out.println("remove " + position);
+        cardSet = _cardSet;
+        position = _position;
+        this.cardSet.addCard(position, this);
+        System.out.println("add " + position);
     }
 }

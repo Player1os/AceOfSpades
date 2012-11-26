@@ -42,7 +42,7 @@ public class DrawOptions implements DrawStrategy{
         g.setFont(new Font("Arial", Font.PLAIN, 12));
         menuButton = new Rectangle(width/2-50, 300, 100, 25);
         if (!hoverMenuButton) {
-            g.setColor(Color.CYAN);
+            g.setColor(Color.GREEN);
         } else {
             g.setColor(Color.ORANGE);
         }
@@ -55,7 +55,7 @@ public class DrawOptions implements DrawStrategy{
          */
         resolutionButton = new Rectangle(width/2-50, 100, 100, 25);
         if (!hoverResolutionButton) {
-            g.setColor(Color.CYAN);
+            g.setColor(Color.GREEN);
         } else {
             g.setColor(Color.ORANGE);
         }
@@ -67,18 +67,26 @@ public class DrawOptions implements DrawStrategy{
     }
     
     void changeResolution () {
-        if (res_width == 640) {
-            res_width = 1280;
-            res_height = 720;
-        } else if (res_width == 1280) {
-            res_width = 1600;
-            res_height = 1200;
-        } else if (res_width == 1600) {
-            res_width = 1920;
-            res_height = 1080;
-        } else if (res_width == 1920) {
-            res_width = 640;
-            res_height = 480;
+
+        switch (res_width) {
+            case 640 :  res_width = 800;
+                        res_height = 600;
+                        break;
+            case 800 :  res_width = 1024;
+                        res_height = 768;
+                        break;
+            case 1024 :  res_width = 1280;
+                        res_height = 720;
+                        break;
+            case 1280 :  res_width = 1600;
+                        res_height = 1200;
+                        break;
+            case 1600 :  res_width = 1920;
+                        res_height = 1080;
+                        break;
+            case 1920 :  res_width = 640;
+                        res_height = 480;
+                        break;
         }
         changedResolution = true;
     }
