@@ -50,10 +50,8 @@ public class Card {
         */ 
         
         this.cardSet.removeCard(position);
-        System.out.println("remove " + position);
         cardSet = _cardSet;
         position = _position;
         this.cardSet.addCard(position, this);
-        System.out.println("add " + position);
     }
 }

@@ -27,7 +27,7 @@ public class Application {
          * System.out.println(tmp4.getZnak() + " of " + tmp4.getFarba());
          * System.out.println(tmp5.getZnak() + " of " + tmp5.getFarba());
          */
-        CardSet tmp = new CardSet(200, 200);
+        CardSet tmp = new CardSet(200, 200, "hand");
         tmp.Cards = new ArrayList<>();
         Card tmp1 = new Card("10", "hearts", 0, 0, tmp, 0);
         tmp.Cards.add(tmp1);
@@ -45,7 +45,7 @@ public class Application {
         tmp.Cards.add(tmp1);
         cardSety.add(tmp);
         
-        tmp = new CardSet(300, 300);
+        tmp = new CardSet(300, 300, "deck");
         tmp.Cards = new ArrayList<>();
         tmp1 = new Card("9", "hearts", 0, 0, tmp, 0);
         tmp1.cardSet = tmp;

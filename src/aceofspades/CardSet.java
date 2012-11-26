@@ -10,9 +10,11 @@ public class CardSet {
     
     ArrayList<Card> Cards;
     VisCardSet visual;
+    String setClass;
     
-    public CardSet (int x, int y) {
-        visual = new VisCardSet(x, y);
+    public CardSet (int x, int y, String s) {
+        visual = new VisCardSet(x, y, s);
+        setClass = s;
     }
     
     public void addCard(int _pos, Card _card) {

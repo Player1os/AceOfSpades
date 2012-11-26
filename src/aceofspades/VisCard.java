@@ -7,6 +7,12 @@ package aceofspades;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 
 /**
  *
@@ -47,6 +53,13 @@ public class VisCard {
                                 g.drawString("♣", position.x+4, position.y+20);
                                 g.drawString(v, position.x+4, position.y+40);
                                 break;
+            }
+        } else {
+            try {
+                BufferedImage back = ImageIO.read(new File("res/card_back.jpg"));
+                g.drawImage(back, position.x, position.y, null);
+            } catch (IOException ex) {
+                
             }
         }
     }
