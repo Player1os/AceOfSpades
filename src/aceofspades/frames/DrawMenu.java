@@ -19,9 +19,11 @@ public class DrawMenu implements DrawStrategy{
     public Rectangle startButton;
     public Rectangle optionsButton;
     public Rectangle editorButton;
+    public Rectangle quitButton;
     public boolean hoverOptionsButton;
     public boolean hoverStartButton;
     public boolean hoverEditorButton;
+    public boolean hoverQuitButton;
     
     DrawMenu (Frame f) {
         _frame = f;
@@ -76,6 +78,19 @@ public class DrawMenu implements DrawStrategy{
         g.fillRect(editorButton.x, editorButton.y, editorButton.width, editorButton.height);
         g.setColor(Color.BLACK);
         g.drawString("Game Editor", editorButton.x+18, editorButton.y+17);
+        
+         /*
+         * Quit Button
+         */
+        quitButton = new Rectangle(width/2-50, 250, 100, 25);
+        if (!hoverQuitButton) {
+            g.setColor(Color.GREEN);
+        } else {
+            g.setColor(Color.ORANGE);
+        }
+        g.fillRect(quitButton.x, quitButton.y, quitButton.width, quitButton.height);
+        g.setColor(Color.BLACK);
+        g.drawString("Quit Game", quitButton.x+18, quitButton.y+17);
         
         _frame.repaint();
     }

@@ -1,7 +1,9 @@
 package aceofspades.frames;
 
+import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowEvent;
 
 /**
  *
@@ -50,6 +52,16 @@ public class DrawMenuMouse extends MouseAdapter{
         } else {
             _draw.hoverEditorButton = false;
         }
+        
+        /*
+         * OnHover Quit Button
+         */
+        if ( (mx > _draw.quitButton.x) && (mx < (_draw.quitButton.x+_draw.quitButton.width)) &&
+                (my > _draw.quitButton.y) && (my < (_draw.quitButton.y+_draw.quitButton.height)) ) {
+            _draw.hoverQuitButton = true;
+        } else {
+            _draw.hoverQuitButton = false;
+        }
     }
     
     @Override
@@ -80,11 +92,20 @@ public class DrawMenuMouse extends MouseAdapter{
         }
         
         /*
-         * OnHover Editor Button
+         * OnClick Editor Button
          */
         if ( (mx > _draw.editorButton.x) && (mx < (_draw.editorButton.x+_draw.editorButton.width)) &&
                 (my > _draw.editorButton.y) && (my < (_draw.editorButton.y+_draw.editorButton.height)) ) {
             aceofspades.frames.DrawEditor frame = new aceofspades.frames.DrawEditor();
+        }
+        
+        /*
+         * OnClick Quit Button
+         */
+        if ( (mx > _draw.quitButton.x) && (mx < (_draw.quitButton.x+_draw.quitButton.width)) &&
+                (my > _draw.quitButton.y) && (my < (_draw.quitButton.y+_draw.quitButton.height)) ) {
+            WindowEvent wev = new WindowEvent(_frame, WindowEvent.WINDOW_CLOSING);
+                Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(wev);
         }
     }
 }
