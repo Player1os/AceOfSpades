@@ -85,6 +85,7 @@ public class DrawMenuMouse extends MouseAdapter{
             if (fc.showOpenDialog(_frame) == JFileChooser.APPROVE_OPTION) {
                 Application.lsGame = new LoadScript(fc.getSelectedFile().getName());
                 Application.lsGame.runScriptFunction("gameInit", new Application());
+                Application.setWin(false);
             }
             
             DrawStrategy draw = new DrawGame(_frame);

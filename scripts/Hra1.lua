@@ -69,7 +69,36 @@ end
 
 -- GameRules END
 -- GameWinConds BEGIN
-function gameWinConds()
+function gameWinConds(Application)
+	size = Application:getCardSet(0):getCardCount()
+	for i=0,size -1 do
+		if Application:getCardSet(0):getCard(i):getSuit() ~= "clubs" then
+			return
+		end
+    end
+
+	size = Application:getCardSet(1):getCardCount()
+	for i=0,size -1 do
+		if Application:getCardSet(1):getCard(i):getSuit() ~= "hearts" then
+			return
+		end
+    end
+
+	size = Application:getCardSet(2):getCardCount()
+	for i=0,size -1 do
+		if Application:getCardSet(2):getCard(i):getSuit() ~= "diamonds" then
+			return
+		end
+    end
+
+	size = Application:getCardSet(3):getCardCount()
+	for i=0,size -1 do
+		if Application:getCardSet(3):getCard(i):getSuit() ~= "spades" then
+			return
+		end
+    end
+
+	Application:setWin(true)
 
 end
 -- GameWinConds END

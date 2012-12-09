@@ -3,6 +3,7 @@ package aceofspades.frames;
 import aceofspades.Application;
 import aceofspades.CardSet;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
@@ -92,6 +93,16 @@ public class DrawGame implements DrawStrategy{
         g.fillRect(quitButton.x, quitButton.y, quitButton.width, quitButton.height);
         g.setColor(Color.BLACK);
         g.drawString("Quit Game", quitButton.x+18, quitButton.y+17);
+        
+        
+        Application.lsGame.runScriptFunction("gameWinConds", new Application());
+        if (Application.getWin()) {
+            Font ff = g.getFont();
+            g.setColor(Color.magenta);
+            g.setFont(new Font(null, Font.BOLD, 40));
+            g.drawString("YOU ARE VICTORIOUS", height/2 + 50, width/2 + 40);
+            g.setFont(ff);
+        }
         
         _frame.repaint();
     }

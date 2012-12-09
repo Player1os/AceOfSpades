@@ -15,10 +15,12 @@ public class Application {
     private static ArrayList<Card> Cards;
     
     public static LoadScript lsGame;
+    private static boolean bWin;
 
     public static void main(String[] args) {       
         Cards = new ArrayList<Card>();
         CardSets = new ArrayList<CardSet>();
+        bWin = false;
         
         aceofspades.frames.Frame frame = new aceofspades.frames.Frame();
     }    
@@ -43,6 +45,13 @@ public class Application {
 
     public static int getCardSetSize() {
         return CardSets.size();
-    }    
+    }
     
+    public static void setWin(boolean b) {
+        bWin = b;
+    }
+    
+    public static boolean getWin() {
+        return bWin;
+    }
 }

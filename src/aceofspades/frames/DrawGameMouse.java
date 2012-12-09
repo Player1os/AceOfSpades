@@ -171,10 +171,10 @@ public class DrawGameMouse extends MouseAdapter {
                     && (my > _frame._height-100) && (my < (_frame._height))) {
                     rzCS.getCard(_draw.selectrzCard).moveTo(lzCS, lzCS.getCardCount());
             }
-        }
+        }        
         
         _draw.selectCardSet = -1;
         _draw.selectlzCard = -1;
-        _draw.selectrzCard = -1;
+        _draw.selectrzCard = -1;        
     }
 }

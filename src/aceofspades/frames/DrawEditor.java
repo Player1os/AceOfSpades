@@ -190,16 +190,31 @@ public class DrawEditor extends JFrame {
         try {
             sc = new Scanner(file);
             StringBuilder textSB = new StringBuilder();
+            
+            while (sc.hasNext()) {
+                String text = sc.nextLine();
+                if (text.equals("-- GameInit BEGIN")) {
+                    break;
+                }
+            }
 
+            while (sc.hasNext()) {
+                String text = sc.nextLine();
+                if (text.equals("-- GameInit END")) {                
+                    break;
+                }
+                textSB.append(text).append("\n");
+            }
+            
+            taGameInit.setText(textSB.toString());
+            
             while (sc.hasNext()) {
                 String text = sc.nextLine();
                 if (text.equals("-- GameRules BEGIN")) {
                     break;
                 }
-                textSB.append(text).append("\n");
             }
-
-            taGameInit.setText(textSB.toString());
+            
             textSB = new StringBuilder();
 
             while (sc.hasNext()) {
@@ -209,12 +224,23 @@ public class DrawEditor extends JFrame {
                 }
                 textSB.append(text).append("\n");
             }
+            
+            while (sc.hasNext()) {
+                String text = sc.nextLine();
+                if (text.equals("-- GameWinConds BEGIN")) {
+                    break;
+                }
+            }
 
             taGameRules.setText(textSB.toString());
             textSB = new StringBuilder();
 
             while (sc.hasNext()) {
-                textSB.append(sc.nextLine()).append("\n");
+                String text = sc.nextLine();                
+                if (text.equals("-- GameWinConds END")) {
+                    break;
+                }
+                textSB.append(text).append("\n");
             }
 
             taGameWinCond.setText(textSB.toString());
