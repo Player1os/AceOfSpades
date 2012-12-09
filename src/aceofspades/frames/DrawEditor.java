@@ -229,11 +229,15 @@ public class DrawEditor extends JFrame {
         PrintStream ps = null;
         try {
             ps = new PrintStream(file);
+            ps.println("-- GameInit BEGIN");
             ps.println(taGameInit.getText());
+            ps.println("-- GameInit END");
             ps.println("-- GameRules BEGIN");
             ps.println(taGameRules.getText());
             ps.println("-- GameRules END");
+            ps.println("-- GameWinConds BEGIN");
             ps.print(taGameWinCond.getText());                    
+            ps.println("-- GameWinConds END");
         } catch (FileNotFoundException ex) {
             Logger.getLogger(DrawEditor.class.getName()).log(Level.SEVERE, null, ex);
         } finally {

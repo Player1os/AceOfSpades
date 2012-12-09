@@ -20,12 +20,7 @@ public class Application {
         Cards = new ArrayList<Card>();
         CardSets = new ArrayList<CardSet>();
         
-        /*int idCardset1 = Application.createCardSet(100, 100, "deck1");
-
-	Application.createCard("2", "hearts", 0, 0, Application.getCardSet(idCardset1), 0);*/
-        
         aceofspades.frames.Frame frame = new aceofspades.frames.Frame();
-
     }    
     
     public static void createCard(String _value, String _suit, int x, int y, int cardset, int position) {

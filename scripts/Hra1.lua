@@ -3,18 +3,18 @@ function gameInit(Application)
 	idCardset1 = Application:createCardSet(100, 100, "deck1")
 
 	Application:createCard("2", "hearts", 0, 0, idCardset1, 0)
-	Application:createCard("3", "hearts", 0, 0, idCardset1 1)
-	Application:createCard("4", "hearts", 0, 0, idCardset1 2)
-	Application:createCard("5", "hearts", 0, 0, idCardset1 3)
-	Application:createCard("6", "hearts", 0, 0, idCardset1 4)
-	Application:createCard("7", "hearts", 0, 0, idCardset1 5)
-	Application:createCard("8", "hearts", 0, 0, idCardset1 6)
-	Application:createCard("9", "hearts", 0, 0, idCardset1 7)
-	Application:createCard("10", "hearts", 0, 0, idCardset1 8)
-	Application:createCard("J", "hearts", 0, 0, idCardset1 9)
-	Application:createCard("Q", "hearts", 0, 0, idCardset1 10)
-	Application:createCard("K", "hearts", 0, 0, idCardset1 11)
-	Application:createCard("A", "hearts", 0, 0, idCardset1 12)
+	Application:createCard("3", "hearts", 0, 0, idCardset1, 1)
+	Application:createCard("4", "hearts", 0, 0, idCardset1, 2)
+	Application:createCard("5", "hearts", 0, 0, idCardset1, 3)
+	Application:createCard("6", "hearts", 0, 0, idCardset1, 4)
+	Application:createCard("7", "hearts", 0, 0, idCardset1, 5)
+	Application:createCard("8", "hearts", 0, 0, idCardset1, 6)
+	Application:createCard("9", "hearts", 0, 0, idCardset1, 7)
+	Application:createCard("10", "hearts", 0, 0, idCardset1, 8)
+	Application:createCard("J", "hearts", 0, 0, idCardset1, 9)
+	Application:createCard("Q", "hearts", 0, 0, idCardset1, 10)
+	Application:createCard("K", "hearts", 0, 0, idCardset1, 11)
+	Application:createCard("A", "hearts", 0, 0, idCardset1, 12)
 
 	idCardset2 = Application:createCardSet(200, 200, "deck2")
 
@@ -66,6 +66,7 @@ function gameInit(Application)
 end
 -- GameInit END
 -- GameRules BEGIN
+
 -- GameRules END
 -- GameWinConds BEGIN
 function gameWinConds()
