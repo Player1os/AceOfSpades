@@ -44,14 +44,68 @@ public class Card {
     
     public void moveTo(CardSet _cardSet, int _position) {
         /*call canRemove of Cardset (cardSet, position)
-        call canAdd of Cardset (newCardSet, newPosition)
+        call canAdd of Cardset (_CardSet, _Position)
         
-        if both are true then
-        */ 
+        if both are true then*/
         
-        this.cardSet.removeCard(position);
-        cardSet = _cardSet;
-        position = _position;
-        this.cardSet.addCard(position, this);
+        Tester tester = new Tester(cardSet, position, _cardSet, _position, new Application());
+        Application.lsGame.runScriptFunction(cardSet.getCardSetClass() + "Remove", tester);
+        Application.lsGame.runScriptFunction(_cardSet.getCardSetClass() + "Add", tester);
+        
+        if (tester.getB()) {                
+            this.cardSet.removeCard(position);
+            cardSet = _cardSet;
+            position = _position;
+            this.cardSet.addCard(position, this);
+        }
+    }
+    
+    class Tester {
+        boolean b;
+        
+        CardSet oldCardset;
+        int oldPosition;
+        CardSet newCardset;
+        int newPosition;
+        
+        Application app;
+        
+        public Tester(CardSet _oldCardset, int _oldPosition, CardSet _newCardset, int _newPosition, Application _app) {
+            oldCardset = _oldCardset;
+            oldPosition = _oldPosition;
+            newCardset = _newCardset;
+            newPosition = _newPosition;
+            app = _app;
+            b = true;
+        }
+        
+        public Application getApp() {
+            return app;
+        }
+        
+        public CardSet getOldCardSet() {
+            return oldCardset;
+        }
+        
+        public CardSet getNewCardSet() {
+            return newCardset;
+        }
+        
+        public int getOldPosition() {
+            return oldPosition;
+        }
+        
+        public int getNewPosition() {
+            return newPosition;
+        }
+                
+        
+        public void setB(boolean _b) {
+            b = _b;
+        }
+        
+        public boolean getB() {
+            return b;
+        }
     }
 }

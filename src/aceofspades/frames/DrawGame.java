@@ -46,13 +46,14 @@ public class DrawGame implements DrawStrategy{
         g.setColor(Color.ORANGE);
         g.fillRect(_frame._width/2, _frame._height-100, _frame._width/2, 100);
         
-        g.setColor(Color.WHITE);
-        for (int i=0; i < Application.getCardSetSize(); i++) {
-            Application.getCardSet(i).getVisCardSet().draw(g);
-        }
+        g.setColor(Color.WHITE);        
         
         if (rightZoom != -1) {
             rzCS = Application.getCardSet(rightZoom);
+            
+            g.setColor(Color.ORANGE);
+            g.fillRect(rzCS.getVisCardSet().getXPos() - 5, rzCS.getVisCardSet().getYPos() - 5, 60, 90);    
+             
             for (int i=0; i < rzCS.getCardCount(); i++) {
                 /*String tmp1 = rzCS.getCard(i).getSuit();
                 String tmp2 = rzCS.getCard(i).getValue();
@@ -67,9 +68,15 @@ public class DrawGame implements DrawStrategy{
                 if (selectrzCard != i) rzCS.getCard(i).getVisCard().setPosition(_frame._width/2+10+(i*20), _frame._height-90);
                 rzCS.getCard(i).getVisCard().draw(g);                
             }
+            
+            
         }   
         if (leftZoom != -1) {
             lzCS = Application.getCardSet(leftZoom);
+            
+            g.setColor(Color.BLUE);
+            g.fillRect(lzCS.getVisCardSet().getXPos() - 5, lzCS.getVisCardSet().getYPos() - 5, 60, 90);    
+            
             for (int i=0; i < lzCS.getCardCount(); i++) {
                  if (i == hoverlzCard){
                    g.setColor(Color.YELLOW);
@@ -81,6 +88,10 @@ public class DrawGame implements DrawStrategy{
                 if (selectlzCard != i) lzCS.getCard(i).getVisCard().setPosition(10+(i*20), _frame._height-90);
                 lzCS.getCard(i).getVisCard().draw(g);
             }
+        }
+        
+        for (int i=0; i < Application.getCardSetSize(); i++) {
+            Application.getCardSet(i).getVisCardSet().draw(g);
         }
         
         //Quit button
@@ -98,7 +109,7 @@ public class DrawGame implements DrawStrategy{
         Application.lsGame.runScriptFunction("gameWinConds", new Application());
         if (Application.getWin()) {
             Font ff = g.getFont();
-            g.setColor(Color.magenta);
+            g.setColor(Color.RED);
             g.setFont(new Font(null, Font.BOLD, 40));
             g.drawString("YOU ARE VICTORIOUS", height/2 + 50, width/2 + 40);
             g.setFont(ff);

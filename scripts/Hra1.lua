@@ -65,9 +65,52 @@ function gameInit(Application)
 	Application:createCard("A", "spades", 0, 0, idCardset4, 12)
 end
 -- GameInit END
+
 -- GameRules BEGIN
 
+function deck1Add(tester)
+	if tester:getOldCardSet():getCard(tester:getOldPosition()):getSuit() ~= "clubs" then
+		tester:setB(false)
+	end
+end
+
+function deck1Remove(tester)
+
+end
+
+function deck2Add(tester)
+	if tester:getOldCardSet():getCard(tester:getOldPosition()):getSuit() ~= "hearts" then
+		tester:setB(false)
+	end
+end
+
+function deck2Remove(tester)
+
+end
+
+function deck3Add(tester)
+	if tester:getOldCardSet():getCard(tester:getOldPosition()):getSuit() ~= "diamonds" then
+		tester:setB(false)
+	end
+end
+
+function deck3Remove(tester)
+
+end
+
+function deck4Add(tester)
+	if tester:getOldCardSet():getCard(tester:getOldPosition()):getSuit() ~= "spades" then
+		tester:setB(false)
+	end
+end
+
+function deck4Remove(tester)
+
+end
+
+
 -- GameRules END
+
 -- GameWinConds BEGIN
 function gameWinConds(Application)
 	size = Application:getCardSet(0):getCardCount()

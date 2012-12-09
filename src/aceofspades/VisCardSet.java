@@ -40,4 +40,12 @@ public class VisCardSet {
         position.x = _x;
         position.y = _y;
     }
+    
+    public int getXPos() {
+        return position.x;
+    }
+    
+    public int getYPos() {
+        return position.y;
+    }
 }

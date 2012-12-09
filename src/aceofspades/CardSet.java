@@ -50,6 +50,10 @@ public class CardSet {
         
     }
     
+    public String getCardSetClass() {
+        return setClass;
+    }
+    
     public VisCardSet getVisCardSet() {
         return visual;
     }
