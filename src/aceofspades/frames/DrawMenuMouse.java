@@ -1,9 +1,13 @@
 package aceofspades.frames;
 
+import aceofspades.Application;
+import aceofspades.LoadScript;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
+import java.io.File;
+import javax.swing.JFileChooser;
 
 /**
  *
@@ -74,6 +78,15 @@ public class DrawMenuMouse extends MouseAdapter{
          */
         if ( (mx > _draw.startButton.x) && (mx < (_draw.startButton.x+_draw.startButton.width)) &&
                 (my > _draw.startButton.y) && (my < (_draw.startButton.y+_draw.startButton.height)) ) {
+            
+            JFileChooser fc = new JFileChooser(".lua");
+            fc.setCurrentDirectory(new File("./scripts"));            
+
+            if (fc.showOpenDialog(_frame) == JFileChooser.APPROVE_OPTION) {
+                Application.lsGame = new LoadScript(fc.getSelectedFile().getName());
+                Application.lsGame.runScriptFunction("gameInit", new Application());
+            }
+            
             DrawStrategy draw = new DrawGame(_frame);
             _frame.setDrawStrategy(draw);
             _frame.setMouseListener(new DrawGameMouse(_frame, draw));

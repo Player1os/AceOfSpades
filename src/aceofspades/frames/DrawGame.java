@@ -4,6 +4,7 @@ import aceofspades.Application;
 import aceofspades.CardSet;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 
 /**
  *
@@ -24,6 +25,9 @@ public class DrawGame implements DrawStrategy{
     CardSet rzCS;
     CardSet lzCS;
     
+    public Rectangle quitButton;
+    public boolean hoverQuitButton;
+    
     DrawGame (Frame f) {
         _frame = f;
         f.setBackground(Color.getHSBColor(0.333f, 0.755f, 0.545f));
@@ -42,12 +46,12 @@ public class DrawGame implements DrawStrategy{
         g.fillRect(_frame._width/2, _frame._height-100, _frame._width/2, 100);
         
         g.setColor(Color.WHITE);
-        for (int i=0; i < Application.cardSety.size(); i++) {
-            Application.cardSety.get(i).getVisCardSet().draw(g);
+        for (int i=0; i < Application.getCardSetSize(); i++) {
+            Application.getCardSet(i).getVisCardSet().draw(g);
         }
         
         if (rightZoom != -1) {
-            rzCS = Application.cardSety.get(rightZoom);
+            rzCS = Application.getCardSet(rightZoom);
             for (int i=0; i < rzCS.getCardCount(); i++) {
                 /*String tmp1 = rzCS.getCard(i).getSuit();
                 String tmp2 = rzCS.getCard(i).getValue();
@@ -64,7 +68,7 @@ public class DrawGame implements DrawStrategy{
             }
         }   
         if (leftZoom != -1) {
-            lzCS = Application.cardSety.get(leftZoom);
+            lzCS = Application.getCardSet(leftZoom);
             for (int i=0; i < lzCS.getCardCount(); i++) {
                  if (i == hoverlzCard){
                    g.setColor(Color.YELLOW);
@@ -77,6 +81,17 @@ public class DrawGame implements DrawStrategy{
                 lzCS.getCard(i).getVisCard().draw(g);
             }
         }
+        
+        //Quit button
+        quitButton = new Rectangle(width-150, 25, 100, 25);
+        if (!hoverQuitButton) {
+            g.setColor(Color.RED);
+        } else {
+            g.setColor(Color.ORANGE);
+        }
+        g.fillRect(quitButton.x, quitButton.y, quitButton.width, quitButton.height);
+        g.setColor(Color.BLACK);
+        g.drawString("Quit Game", quitButton.x+18, quitButton.y+17);
         
         _frame.repaint();
     }

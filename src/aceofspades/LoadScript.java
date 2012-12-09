@@ -15,16 +15,16 @@ public class LoadScript {
     * Constructor
     * @param fileName File name with Lua script.
     */
-    LoadScript(final String fileName) {
+    public LoadScript(final String fileName) {
         this.luaState = LuaStateFactory.newLuaState();
         this.luaState.openLibs();
-        this.luaState.LdoFile("scritps/" + fileName);
+        this.luaState.LdoFile("scripts/" + fileName);
     }
     
     /**
     * Ends the use of Lua environment.
     */
-    void closeScript() {
+    public void closeScript() {
         this.luaState.close();
     }
     
@@ -34,7 +34,7 @@ public class LoadScript {
     * @param functionName Name of Lua function.
     * @param obj A Java object.
     */
-    void runScriptFunction(String functionName, Object obj) {
+    public void runScriptFunction(String functionName, Object obj) {
         this.luaState.getGlobal(functionName);
         if (obj != null) this.luaState.pushJavaObject(obj);
         this.luaState.call(1, 0);

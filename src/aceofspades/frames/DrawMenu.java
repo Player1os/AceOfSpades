@@ -27,6 +27,7 @@ public class DrawMenu implements DrawStrategy{
     
     DrawMenu (Frame f) {
         _frame = f;
+        f.setBackground(Color.DARK_GRAY);
     }
     
     @Override
