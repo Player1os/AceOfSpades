@@ -14,6 +14,15 @@ public class Card {
     protected CardSet cardSet;
     protected int position;
     
+    /**
+     * 
+     * @param _value
+     * @param _suit
+     * @param x
+     * @param y
+     * @param cardset
+     * @param position 
+     */
     public Card(String _value, String _suit, int x, int y, CardSet cardset, int position) {
         this.value = _value;
         this.suit = _suit;   
@@ -21,33 +30,53 @@ public class Card {
         this.cardSet = cardset;
         this.position = position;
     }
-        
+    
+    /**
+     * 
+     * @return 
+     */
     public String getValue() {
         return this.value; 
     }
     
+    /**
+     * 
+     * @return 
+     */
     public String getSuit() {
         return this.suit;
     }
     
+    /**
+     * 
+     * @return 
+     */
     public Boolean getVisible() {
         return this.visible; 
     }
     
+    /**
+     * 
+     * @return 
+     */
     public VisCard getVisCard() {
         return visual;
     }
     
+    /**
+     * 
+     * @param _visible 
+     */
     public void setVisible(Boolean _visible) {
         this.visible = _visible; 
     }
     
+    /**
+     * 
+     * @param _cardSet
+     * @param _position 
+     */
     public void moveTo(CardSet _cardSet, int _position) {
-        /*call canRemove of Cardset (cardSet, position)
-        call canAdd of Cardset (_CardSet, _Position)
-        
-        if both are true then*/
-        
         Tester tester = new Tester(cardSet, position, _cardSet, _position, new Application());
         Application.lsGame.runScriptFunction(cardSet.getCardSetClass() + "Remove", tester);
         Application.lsGame.runScriptFunction(_cardSet.getCardSetClass() + "Add", tester);
@@ -60,6 +89,9 @@ public class Card {
         }
     }
     
+    /**
+     * 
+     */
     class Tester {
         boolean b;
         
@@ -70,6 +102,14 @@ public class Card {
         
         Application app;
         
+        /**
+         * 
+         * @param _oldCardset
+         * @param _oldPosition
+         * @param _newCardset
+         * @param _newPosition
+         * @param _app 
+         */
         public Tester(CardSet _oldCardset, int _oldPosition, CardSet _newCardset, int _newPosition, Application _app) {
             oldCardset = _oldCardset;
             oldPosition = _oldPosition;
@@ -79,31 +119,58 @@ public class Card {
             b = true;
         }
         
+        /**
+         * 
+         * @return 
+         */
         public Application getApp() {
             return app;
         }
         
+        /**
+         * 
+         * @return 
+         */
         public CardSet getOldCardSet() {
             return oldCardset;
         }
         
+        /**
+         * 
+         * @return 
+         */
         public CardSet getNewCardSet() {
             return newCardset;
         }
         
+        /**
+         * 
+         * @return 
+         */
         public int getOldPosition() {
             return oldPosition;
         }
         
+        /**
+         * 
+         * @return 
+         */
         public int getNewPosition() {
             return newPosition;
         }
                 
-        
+        /**
+         * 
+         * @param _b 
+         */
         public void setB(boolean _b) {
             b = _b;
         }
         
+        /**
+         * 
+         * @return 
+         */
         public boolean getB() {
             return b;
         }

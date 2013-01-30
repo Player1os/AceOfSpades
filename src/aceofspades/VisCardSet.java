@@ -20,11 +20,21 @@ public class VisCardSet {
     public Rectangle position;
     String setClass;
     
-    VisCardSet(int _x, int _y, String s) {
+    /**
+     * 
+     * @param _x
+     * @param _y
+     * @param s 
+     */
+    public VisCardSet(int _x, int _y, String s) {
         position = new Rectangle(_x, _y, 50, 80);
         setClass = s;
     }
     
+    /**
+     * 
+     * @param g 
+     */
     public void draw(Graphics g){
         g.setColor(Color.BLACK);
         g.drawRect(position.x-1,position.y-1,51,81);
@@ -36,15 +46,28 @@ public class VisCardSet {
             }
     }
     
+    /**
+     * 
+     * @param _x
+     * @param _y 
+     */
     public void setPosition(int _x, int _y) {
         position.x = _x;
         position.y = _y;
     }
     
+    /**
+     * 
+     * @return 
+     */
     public int getXPos() {
         return position.x;
     }
     
+    /**
+     * 
+     * @return 
+     */
     public int getYPos() {
         return position.y;
     }

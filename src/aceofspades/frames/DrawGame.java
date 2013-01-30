@@ -29,16 +29,21 @@ public class DrawGame implements DrawStrategy{
     public Rectangle quitButton;
     public boolean hoverQuitButton;
     
-    DrawGame (Frame f) {
+    /**
+     * 
+     * @param f 
+     */
+    public DrawGame (Frame f) {
         _frame = f;
         f.setBackground(Color.getHSBColor(0.333f, 0.755f, 0.545f));
     }
     
-    // ♣
-    // ♠
-    // ♥
-    // ♦
-    
+    /**
+     * 
+     * @param g
+     * @param width
+     * @param height 
+     */    
     @Override
     public void draw(Graphics g, int width, int height) {
         g.setColor(Color.BLUE);

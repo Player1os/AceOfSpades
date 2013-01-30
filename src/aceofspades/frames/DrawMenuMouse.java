@@ -17,11 +17,20 @@ public class DrawMenuMouse extends MouseAdapter{
     DrawMenu _draw;
     Frame _frame;
     
-    DrawMenuMouse(Frame f, DrawStrategy draw){
+    /**
+     * 
+     * @param f
+     * @param draw 
+     */
+    public DrawMenuMouse(Frame f, DrawStrategy draw){
         _draw = (DrawMenu) draw;
         _frame = f;
     }
     
+    /**
+     * 
+     * @param e 
+     */
     @Override
     public void mouseMoved(MouseEvent e) {
         int mx = e.getX();
@@ -68,6 +77,10 @@ public class DrawMenuMouse extends MouseAdapter{
         }
     }
     
+    /**
+     * 
+     * @param e 
+     */
     @Override
     public void mousePressed(MouseEvent e) {
         int mx = e.getX();
@@ -82,6 +95,7 @@ public class DrawMenuMouse extends MouseAdapter{
             JFileChooser fc = new JFileChooser(".lua");
             fc.setCurrentDirectory(new File("./scripts"));            
 
+            //TODO ON CANCEL
             if (fc.showOpenDialog(_frame) == JFileChooser.APPROVE_OPTION) {
                 Application.lsGame = new LoadScript(fc.getSelectedFile().getName());
                 Application.lsGame.runScriptFunction("gameInit", new Application());

@@ -41,6 +41,9 @@ public class DrawEditor extends JFrame {
     JTextArea taGameWinCond;
     JScrollPane spGameWinCond;
 
+    /**
+     * 
+     */
     public DrawEditor() {
         final JFrame _frame = this;
 
@@ -92,26 +95,6 @@ public class DrawEditor extends JFrame {
             }
         });
         mFile.add(miOpen);
-
-        /*
-         * miSave = new JMenuItem("Save");
-         * miSave.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S,
-         * java.awt.Event.CTRL_MASK)); miSave.addActionListener(new
-         * ActionListener() {
-         *
-         * @Override public void actionPerformed(ActionEvent event) { try {
-         * JFileChooser fc = new JFileChooser(".lua");
-         * fc.setCurrentDirectory(new File("./scripts"));
-         *
-         * if (fc.showSaveDialog(_frame) == JFileChooser.APPROVE_OPTION) { File
-         * file = fc.getSelectedFile(); //Open file and write TEXT EDITOR
-         * contents to current FILE } } catch (Exception e) {
-         *
-         * }
-         *
-         * }
-         * }); mFile.add(miSave);
-         */
 
         miSaveAs = new JMenuItem("Save As ...");
         miSaveAs.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D,
@@ -185,6 +168,10 @@ public class DrawEditor extends JFrame {
         this.setVisible(true);
     }
 
+    /**
+     * 
+     * @param file 
+     */
     private void openFile(File file) {
         Scanner sc = null;
         try {
@@ -251,6 +238,10 @@ public class DrawEditor extends JFrame {
         }
     }
 
+    /**
+     * 
+     * @param file 
+     */
     private void saveFile(File file) {
         PrintStream ps = null;
         try {

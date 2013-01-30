@@ -9,12 +9,14 @@ import javax.swing.JFrame;
  *
  * @author Wryxo
  */
-
 interface DrawStrategy {
     public void draw(Graphics g, int width, int height);
  }
 
-
+/**
+ *
+ * @author Wryxo
+ */
 public class Frame extends JFrame {
     
     int _width = 1280;
@@ -27,6 +29,9 @@ public class Frame extends JFrame {
     MouseListener _mouseClick = new DrawMenuMouse(this, _draw);
     MouseMotionListener _mouseMove = new DrawMenuMouse(this, _draw);
         
+    /**
+     * 
+     */
     public Frame() {
         this.setTitle("Ace of Spades");
         this.setBounds((screenSize.width/2)-(_width/2), (screenSize.height/2)-(_height/2), _width, _height);
@@ -38,6 +43,10 @@ public class Frame extends JFrame {
         this.addMouseMotionListener(_mouseMove);
     }
     
+    /**
+     * 
+     * @param g 
+     */
     @Override
     public void paint(Graphics g) {
         _image = createImage(getWidth(), getHeight());
@@ -46,16 +55,28 @@ public class Frame extends JFrame {
         g.drawImage(_image, 0, 0, this);
     }
     
+    /**
+     * 
+     * @param draw 
+     */
     void setDrawStrategy (DrawStrategy draw) {
         _draw = draw;
     }
     
+    /**
+     * 
+     * @param mouse 
+     */
     void setMouseListener (MouseListener mouse) {
         this.removeMouseListener(_mouseClick);
         _mouseClick = mouse;
         this.addMouseListener(mouse);
     }
     
+    /**
+     * 
+     * @param mouse 
+     */
     void setMouseMotionListener (MouseMotionListener mouse) {
         this.removeMouseMotionListener(_mouseMove);
         _mouseMove = mouse;

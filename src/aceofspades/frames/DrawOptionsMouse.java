@@ -15,11 +15,20 @@ public class DrawOptionsMouse extends MouseAdapter{
     DrawOptions _draw;
     Frame _frame;
     
-    DrawOptionsMouse(Frame f, DrawStrategy draw){
+    /**
+     * 
+     * @param f
+     * @param draw 
+     */
+    DrawOptionsMouse(Frame f, DrawStrategy draw) {
         _draw = (DrawOptions) draw;
         _frame = f;
     }
     
+    /**
+     * 
+     * @param e 
+     */
     @Override
     public void mouseMoved(MouseEvent e) {
         int mx = e.getX();
@@ -44,6 +53,10 @@ public class DrawOptionsMouse extends MouseAdapter{
         }
     }
     
+    /**
+     * 
+     * @param e 
+     */
     @Override
     public void mousePressed(MouseEvent e) {
         int mx = e.getX();

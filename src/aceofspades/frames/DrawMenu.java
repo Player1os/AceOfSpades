@@ -25,11 +25,21 @@ public class DrawMenu implements DrawStrategy{
     public boolean hoverEditorButton;
     public boolean hoverQuitButton;
     
-    DrawMenu (Frame f) {
+    /**
+     * 
+     * @param f 
+     */
+    public DrawMenu (Frame f) {
         _frame = f;
         f.setBackground(Color.DARK_GRAY);
     }
     
+    /**
+     * 
+     * @param g
+     * @param width
+     * @param height 
+     */
     @Override
     public void draw(Graphics g, int width, int height) {
         

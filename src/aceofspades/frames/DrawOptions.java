@@ -20,12 +20,22 @@ public class DrawOptions implements DrawStrategy{
     public boolean hoverMenuButton;
     public boolean hoverResolutionButton;
     
-    DrawOptions (Frame f) {
+    /**
+     * 
+     * @param f 
+     */
+    public DrawOptions (Frame f) {
         _frame = f;
         res_width = f._width;
         res_height = f._height;
     }
     
+    /**
+     * 
+     * @param g
+     * @param width
+     * @param height 
+     */
     @Override
     public void draw(Graphics g, int width, int height) {
         
@@ -66,7 +76,10 @@ public class DrawOptions implements DrawStrategy{
         _frame.repaint();
     }
     
-    void changeResolution () {
+    /**
+     * 
+     */
+    public void changeResolution () {
 
         switch (res_width) {
             case 640 :  res_width = 800;

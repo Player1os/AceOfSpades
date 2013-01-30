@@ -16,11 +16,20 @@ public class DrawGameMouse extends MouseAdapter {
     int _mx;
     int _my;
 
-    DrawGameMouse(Frame f, DrawStrategy draw) {
+    /**
+     * 
+     * @param f
+     * @param draw 
+     */
+    public DrawGameMouse(Frame f, DrawStrategy draw) {
         _draw = (DrawGame) draw;
         _frame = f;
     }
 
+    /**
+     * 
+     * @param e 
+     */
     @Override
     public void mouseMoved(MouseEvent e) {
         int mx = e.getX();
@@ -62,6 +71,10 @@ public class DrawGameMouse extends MouseAdapter {
         _my = my;
     }
 
+    /**
+     * 
+     * @param e 
+     */
     @Override
     public void mousePressed(MouseEvent e) {
         int mx = e.getX();
@@ -112,6 +125,10 @@ public class DrawGameMouse extends MouseAdapter {
         _my = my;
     }
 
+    /**
+     * 
+     * @param e 
+     */
     @Override
     public void mouseDragged(MouseEvent e) {
         int mx = e.getX();
@@ -136,6 +153,10 @@ public class DrawGameMouse extends MouseAdapter {
         _my = my;
     }
     
+    /**
+     * 
+     * @param e 
+     */
     @Override
     public void mouseReleased(MouseEvent e) {
         int mx = e.getX();

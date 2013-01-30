@@ -22,13 +22,25 @@ public class VisCard {
     public String v;
     public boolean w;
     
-    VisCard(int x, int y, String suit, String value, boolean visible) {
+    /**
+     * 
+     * @param x
+     * @param y
+     * @param suit
+     * @param value
+     * @param visible 
+     */
+    public VisCard(int x, int y, String suit, String value, boolean visible) {
         position = new Rectangle(x, y, 50, 80);
         s = suit;
         v = value;
         w = visible;
     }
     
+    /**
+     * 
+     * @param g 
+     */
     public void draw(Graphics g){
         g.fillRect(position.x,position.y,50,80);
         g.setColor(Color.BLACK);
@@ -62,6 +74,11 @@ public class VisCard {
         }
     }
     
+    /**
+     * 
+     * @param _x
+     * @param _y 
+     */
     public void setPosition(int _x, int _y) {
         position.x = _x;
         position.y = _y;
