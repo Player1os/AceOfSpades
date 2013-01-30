@@ -21,6 +21,8 @@ public class VisCard {
     public String s;
     public String v;
     public boolean w;
+
+    BufferedImage back;
     
     /**
      * 
@@ -35,6 +37,11 @@ public class VisCard {
         s = suit;
         v = value;
         w = visible;
+        try {
+            back = ImageIO.read(new File("res/card_back.jpg"));
+        } catch (IOException ex) {
+
+        }
     }
     
     /**
@@ -65,12 +72,7 @@ public class VisCard {
                                 break;
             }
         } else {
-            try {
-                BufferedImage back = ImageIO.read(new File("res/card_back.jpg"));
-                g.drawImage(back, position.x, position.y, null);
-            } catch (IOException ex) {
-                
-            }
+            g.drawImage(back, position.x, position.y, null);
         }
     }
     

@@ -1,5 +1,6 @@
 package aceofspades;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 /**
@@ -18,10 +19,10 @@ public class CardSet {
      * @param y
      * @param s 
      */
-    public CardSet (int x, int y, String s) {
-        visual = new VisCardSet(x, y, s);
+    public CardSet (int x, int y, String s, Color c) {
+        visual = new VisCardSet(x, y, s, c);
         setClass = s;
-        Cards = new ArrayList<Card>();
+        Cards = new ArrayList<>();
     }
     
     /**

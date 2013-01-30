@@ -1,5 +1,6 @@
 package aceofspades;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 /**
@@ -7,9 +8,8 @@ import java.util.ArrayList;
  * @author Player1os <player1os at gmail.com>
  */
 public class Application {
-
     private static ArrayList<CardSet> CardSets;
-    private static ArrayList<Card> Cards;
+//    private static ArrayList<Card> Cards;
     
     public static LoadScript lsGame;
     private static boolean bWin;
@@ -18,8 +18,8 @@ public class Application {
      * @param args the command line arguments
      */
     public static void main(String[] args) {       
-        Cards = new ArrayList<Card>();
-        CardSets = new ArrayList<CardSet>();
+        //Cards = new ArrayList<Card>();
+        CardSets = new ArrayList<>();
         bWin = false;
         
         aceofspades.frames.Frame frame = new aceofspades.frames.Frame();
@@ -34,8 +34,8 @@ public class Application {
      * @param cardset
      * @param position 
      */
-    public static void createCard(String _value, String _suit, int x, int y, int cardset, int position) {
-        Card c = new Card(_value, _suit, x, y, CardSets.get(cardset), position);        
+    public static void createCard(String _value, String _suit, int x, int y, int cardset, int position,boolean visible) {
+        Card c = new Card(_value, _suit, x, y, CardSets.get(cardset), position, visible);
         CardSets.get(cardset).addCard(position, c);
     }
     
@@ -47,8 +47,10 @@ public class Application {
      * @param name
      * @return 
      */
-    public static int createCardSet(int x, int y, String name) {
-        CardSets.add(new CardSet(x, y, name));
+    public static int createCardSet(int x, int y, String name, int r, int g, int b) {
+        float[] hsv = new float[3];
+        Color.RGBtoHSB(r,g,b,hsv);
+        CardSets.add(new CardSet(x, y, name, Color.getHSBColor(hsv[0], hsv[1], hsv[2])));
         return CardSets.size() - 1;
     }
     

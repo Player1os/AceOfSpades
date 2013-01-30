@@ -19,16 +19,29 @@ import javax.imageio.ImageIO;
 public class VisCardSet {
     public Rectangle position;
     String setClass;
-    
+    public int focus = 0;
+    Color color;
+    BufferedImage back;
+    BufferedImage backo;
+    BufferedImage backb;
+
     /**
      * 
      * @param _x
      * @param _y
      * @param s 
      */
-    public VisCardSet(int _x, int _y, String s) {
+    public VisCardSet(int _x, int _y, String s, Color c) {
         position = new Rectangle(_x, _y, 50, 80);
         setClass = s;
+        color = c;
+        try {
+            back = ImageIO.read(new File("res/card_back.jpg"));
+            backo = ImageIO.read(new File("res/card_backo.jpg"));
+            backb = ImageIO.read(new File("res/card_backb.jpg"));
+        } catch (IOException ex) {
+
+        }
     }
     
     /**
@@ -36,14 +49,13 @@ public class VisCardSet {
      * @param g 
      */
     public void draw(Graphics g){
+        g.setColor(color);
+        g.fillRect(position.x-3, position.y-3, 56, 86);
         g.setColor(Color.BLACK);
         g.drawRect(position.x-1,position.y-1,51,81);
-        try {
-                BufferedImage back = ImageIO.read(new File("res/"+setClass+".jpg"));
-                g.drawImage(back, position.x, position.y, null);
-            } catch (IOException ex) {
-                
-            }
+        if (focus == 0) g.drawImage(back, position.x, position.y, null);
+        if (focus > 0) g.drawImage(backo, position.x, position.y, null);
+        if (focus < 0) g.drawImage(backb, position.x, position.y, null);
     }
     
     /**

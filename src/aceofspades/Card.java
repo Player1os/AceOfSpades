@@ -8,7 +8,7 @@ public class Card {
     protected String value;
     protected String suit;
         
-    protected boolean visible = true;
+    protected boolean visible;
     protected VisCard visual;
     
     protected CardSet cardSet;
@@ -23,12 +23,13 @@ public class Card {
      * @param cardset
      * @param position 
      */
-    public Card(String _value, String _suit, int x, int y, CardSet cardset, int position) {
+    public Card(String _value, String _suit, int x, int y, CardSet cardset, int position,boolean visible) {
         this.value = _value;
         this.suit = _suit;   
-        this.visual = new VisCard(x, y, _suit, _value, true);
+        this.visual = new VisCard(x, y, _suit, _value, visible);
         this.cardSet = cardset;
         this.position = position;
+        this.visible = visible;
     }
     
     /**
@@ -67,8 +68,9 @@ public class Card {
      * 
      * @param _visible 
      */
-    public void setVisible(Boolean _visible) {
-        this.visible = _visible; 
+    public void setVisible(boolean _visible) {
+        this.visible = _visible;
+        visual.w = _visible;
     }
     
     /**
@@ -79,16 +81,18 @@ public class Card {
     public void moveTo(CardSet _cardSet, int _position) {
         Tester tester = new Tester(cardSet, position, _cardSet, _position, new Application());
         Application.lsGame.runScriptFunction(cardSet.getCardSetClass() + "Remove", tester);
-        Application.lsGame.runScriptFunction(_cardSet.getCardSetClass() + "Add", tester);
+        Tester tester2 = new Tester(cardSet, position, _cardSet, _position, new Application());
+        Application.lsGame.runScriptFunction(_cardSet.getCardSetClass() + "Add", tester2);
         
-        if (tester.getB()) {                
+        if (tester.getB() && tester2.getB()) {
             this.cardSet.removeCard(position);
             cardSet = _cardSet;
             position = _position;
             this.cardSet.addCard(position, this);
+            Application.lsGame.runScriptFunction("afterMove", tester);
         }
     }
-    
+
     /**
      * 
      */
@@ -157,6 +161,10 @@ public class Card {
          */
         public int getNewPosition() {
             return newPosition;
+        }
+
+        public void setNewPosition(int x) {
+            newPosition = x;
         }
                 
         /**

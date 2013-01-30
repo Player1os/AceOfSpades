@@ -95,6 +95,7 @@ public class DrawGameMouse extends MouseAdapter {
                 if ((mx > 10+20*i) && (mx < (60+20*i))
                     && (my > _frame._height-100) && (my < (_frame._height))) {
                     _draw.selectlzCard = i;
+                    _draw.focus = true;
                 }
             }
         }
@@ -104,6 +105,7 @@ public class DrawGameMouse extends MouseAdapter {
                 if ((mx > _frame._width/2+10+20*i) && (mx < _frame._width/2+(60+20*i))
                     && (my > _frame._height-100) && (my < (_frame._height))) {
                     _draw.selectrzCard = i;
+                    _draw.focus = false;
                 }
             }
         }

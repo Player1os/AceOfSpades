@@ -3,4 +3,5 @@
 /dist/
 /nbproject/
 *.pdf
-
+/.idea/
+*.iml

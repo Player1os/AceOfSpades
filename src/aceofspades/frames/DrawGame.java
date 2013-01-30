@@ -2,6 +2,7 @@ package aceofspades.frames;
 
 import aceofspades.Application;
 import aceofspades.CardSet;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -20,7 +21,7 @@ public class DrawGame implements DrawStrategy{
     int selectrzCard = -1;
     int hoverrzCard = -1;
     
-    
+    boolean focus = true;   // fix podliezania karty
     public int rightZoom = -1;
     public int leftZoom = -1;
     CardSet rzCS;
@@ -53,50 +54,20 @@ public class DrawGame implements DrawStrategy{
         
         g.setColor(Color.WHITE);        
         
-        if (rightZoom != -1) {
-            rzCS = Application.getCardSet(rightZoom);
-            
-            g.setColor(Color.ORANGE);
-            g.fillRect(rzCS.getVisCardSet().getXPos() - 5, rzCS.getVisCardSet().getYPos() - 5, 60, 90);    
-             
-            for (int i=0; i < rzCS.getCardCount(); i++) {
-                /*String tmp1 = rzCS.getCard(i).getSuit();
-                String tmp2 = rzCS.getCard(i).getValue();
-                boolean tmp3 = rzCS.getCard(i).getVisible();*/
-               if (i == hoverrzCard){
-                   g.setColor(Color.YELLOW);
-               } else if (i == selectrzCard){
-                    g.setColor(Color.PINK);
-                } else {
-                    g.setColor(Color.WHITE);
-                }
-                if (selectrzCard != i) rzCS.getCard(i).getVisCard().setPosition(_frame._width/2+10+(i*20), _frame._height-90);
-                rzCS.getCard(i).getVisCard().draw(g);                
-            }
-            
-            
-        }   
-        if (leftZoom != -1) {
-            lzCS = Application.getCardSet(leftZoom);
-            
-            g.setColor(Color.BLUE);
-            g.fillRect(lzCS.getVisCardSet().getXPos() - 5, lzCS.getVisCardSet().getYPos() - 5, 60, 90);    
-            
-            for (int i=0; i < lzCS.getCardCount(); i++) {
-                 if (i == hoverlzCard){
-                   g.setColor(Color.YELLOW);
-               } else if (i == selectlzCard){
-                    g.setColor(Color.PINK);
-                } else {
-                    g.setColor(Color.WHITE);
-                }
-                if (selectlzCard != i) lzCS.getCard(i).getVisCard().setPosition(10+(i*20), _frame._height-90);
-                lzCS.getCard(i).getVisCard().draw(g);
-            }
+        if (focus) {
+            drawRightZoom(g);
+            drawLeftZoom(g);
+        }   else {
+            drawLeftZoom(g);
+            drawRightZoom(g);
         }
         
         for (int i=0; i < Application.getCardSetSize(); i++) {
-            Application.getCardSet(i).getVisCardSet().draw(g);
+            CardSet x = Application.getCardSet(i);
+            if (x != rzCS && x != lzCS) {
+                x.getVisCardSet().focus = 0;
+            }
+            x.getVisCardSet().draw(g);
         }
         
         //Quit button
@@ -122,4 +93,56 @@ public class DrawGame implements DrawStrategy{
         
         _frame.repaint();
     }
+
+    void drawRightZoom(Graphics g) {
+        if (rightZoom != -1) {
+            rzCS = Application.getCardSet(rightZoom);
+
+            /*g.setColor(Color.ORANGE);
+            g.fillRect(rzCS.getVisCardSet().getXPos() - 5, rzCS.getVisCardSet().getYPos() - 5, 60, 90);*/
+            rzCS.getVisCardSet().focus = 1;
+            int aaa = rzCS.getCardCount();
+            for (int i=0; i < rzCS.getCardCount(); i++) {
+                /*String tmp1 = rzCS.getCard(i).getSuit();
+                String tmp2 = rzCS.getCard(i).getValue();
+                boolean tmp3 = rzCS.getCard(i).getVisible();*/
+                if (i == hoverrzCard){
+                    g.setColor(Color.YELLOW);
+                } else if (i == selectrzCard){
+                    g.setColor(Color.PINK);
+                } else {
+                    g.setColor(Color.WHITE);
+                }
+                if (selectrzCard != i) rzCS.getCard(i).getVisCard().setPosition(_frame._width/2+10+(i*20), _frame._height-90);
+                rzCS.getCard(i).getVisCard().draw(g);
+            }
+
+            //rzCS.getVisCardSet().focus = 0;
+        }
+    }
+
+    void drawLeftZoom(Graphics g) {
+        if (leftZoom != -1) {
+            lzCS = Application.getCardSet(leftZoom);
+
+            /*g.setColor(Color.BLUE);
+            g.fillRect(lzCS.getVisCardSet().getXPos() - 5, lzCS.getVisCardSet().getYPos() - 5, 60, 90);*/
+            lzCS.getVisCardSet().focus = -1;
+
+            for (int i=0; i < lzCS.getCardCount(); i++) {
+                if (i == hoverlzCard){
+                    g.setColor(Color.YELLOW);
+                } else if (i == selectlzCard){
+                    g.setColor(Color.PINK);
+                } else {
+                    g.setColor(Color.WHITE);
+                }
+                if (selectlzCard != i) lzCS.getCard(i).getVisCard().setPosition(10+(i*20), _frame._height-90);
+                lzCS.getCard(i).getVisCard().draw(g);
+            }
+            //lzCS.getVisCardSet().focus = 0;
+        }
+    }
 }
+
+
