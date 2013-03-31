@@ -1,7 +1,4 @@
-/docs/
+/resources/
 /build/
 /dist/
 /nbproject/
-*.pdf
-/.idea/
-*.iml
