@@ -1,34 +1,18 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package aceofspades.frames;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-/**
- *
- * @author Wryxo
- */
-public class DrawOptionsMouse extends MouseAdapter{
+public class DrawOptionsMouse extends MouseAdapter {
+
     DrawOptions _draw;
     Frame _frame;
-    
-    /**
-     * 
-     * @param f
-     * @param draw 
-     */
+
     DrawOptionsMouse(Frame f, DrawStrategy draw) {
         _draw = (DrawOptions) draw;
         _frame = f;
     }
-    
-    /**
-     * 
-     * @param e 
-     */
+
     @Override
     public void mouseMoved(MouseEvent e) {
         int mx = e.getX();
@@ -36,8 +20,8 @@ public class DrawOptionsMouse extends MouseAdapter{
         /*
          * OnHover Main Menu Button
          */
-        if ( mx > _draw.menuButton.x && mx < (_draw.menuButton.x+_draw.menuButton.width) &&
-                my > _draw.menuButton.y && my < (_draw.menuButton.y+_draw.menuButton.height)) {
+        if (mx > _draw.menuButton.x && mx < (_draw.menuButton.x + _draw.menuButton.width)
+                && my > _draw.menuButton.y && my < (_draw.menuButton.y + _draw.menuButton.height)) {
             _draw.hoverMenuButton = true;
         } else {
             _draw.hoverMenuButton = false;
@@ -45,18 +29,14 @@ public class DrawOptionsMouse extends MouseAdapter{
         /*
          * OnHover Change Resoluion Button
          */
-        if ( mx > _draw.resolutionButton.x && mx < (_draw.resolutionButton.x+_draw.resolutionButton.width) &&
-                my > _draw.resolutionButton.y && my < (_draw.resolutionButton.y+_draw.resolutionButton.height)) {
+        if (mx > _draw.resolutionButton.x && mx < (_draw.resolutionButton.x + _draw.resolutionButton.width)
+                && my > _draw.resolutionButton.y && my < (_draw.resolutionButton.y + _draw.resolutionButton.height)) {
             _draw.hoverResolutionButton = true;
         } else {
             _draw.hoverResolutionButton = false;
         }
     }
-    
-    /**
-     * 
-     * @param e 
-     */
+
     @Override
     public void mousePressed(MouseEvent e) {
         int mx = e.getX();
@@ -64,12 +44,12 @@ public class DrawOptionsMouse extends MouseAdapter{
         /*
          * OnClick Main Menu Button
          */
-        if ( mx > _draw.menuButton.x && mx < (_draw.menuButton.x+_draw.menuButton.width) &&
-                my > _draw.menuButton.y && my < (_draw.menuButton.y+_draw.menuButton.height)) {
+        if (mx > _draw.menuButton.x && mx < (_draw.menuButton.x + _draw.menuButton.width)
+                && my > _draw.menuButton.y && my < (_draw.menuButton.y + _draw.menuButton.height)) {
             if (_draw.changedResolution) {
                 _frame._width = _draw.res_width;
                 _frame._height = _draw.res_height;
-                _frame.setBounds((_frame.screenSize.width/2)-(_frame._width/2), (_frame.screenSize.height/2)-(_frame._height/2), _frame._width, _frame._height);
+                _frame.setBounds((_frame.screenSize.width / 2) - (_frame._width / 2), (_frame.screenSize.height / 2) - (_frame._height / 2), _frame._width, _frame._height);
             }
             DrawStrategy draw = new DrawMenu(_frame);
             _frame.setDrawStrategy(draw);
@@ -79,9 +59,9 @@ public class DrawOptionsMouse extends MouseAdapter{
         /*
          * OnClick Change Resolution Button
          */
-        if ( mx > _draw.resolutionButton.x && mx < (_draw.resolutionButton.x+_draw.resolutionButton.width) &&
-                my > _draw.resolutionButton.y && my < (_draw.resolutionButton.y+_draw.resolutionButton.height)) {
-            _draw.changeResolution();            
+        if (mx > _draw.resolutionButton.x && mx < (_draw.resolutionButton.x + _draw.resolutionButton.width)
+                && my > _draw.resolutionButton.y && my < (_draw.resolutionButton.y + _draw.resolutionButton.height)) {
+            _draw.changeResolution();
         }
     }
 }

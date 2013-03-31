@@ -12,10 +12,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
 
-/**
- *
- * @author Player1os <player1os at gmail.com>
- */
 public class DrawEditor extends JFrame {
 
     int _width = 1280;
@@ -41,9 +37,6 @@ public class DrawEditor extends JFrame {
     JTextArea taGameWinCond;
     JScrollPane spGameWinCond;
 
-    /**
-     * 
-     */
     public DrawEditor() {
         final JFrame _frame = this;
 
@@ -66,7 +59,6 @@ public class DrawEditor extends JFrame {
         miNew.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N,
                 java.awt.Event.CTRL_MASK));
         miNew.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent event) {
                 openFile(new File("scripts/templates/tmpFile.lua"));
@@ -78,7 +70,6 @@ public class DrawEditor extends JFrame {
         miOpen.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O,
                 java.awt.Event.CTRL_MASK));
         miOpen.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent event) {
                 try {
@@ -89,7 +80,6 @@ public class DrawEditor extends JFrame {
                         openFile(fc.getSelectedFile());
                     }
                 } catch (Exception e) {
-                    
                 }
 
             }
@@ -100,7 +90,6 @@ public class DrawEditor extends JFrame {
         miSaveAs.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D,
                 java.awt.Event.CTRL_MASK));
         miSaveAs.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent event) {
                 try {
@@ -121,7 +110,6 @@ public class DrawEditor extends JFrame {
         miExit.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X,
                 java.awt.Event.CTRL_MASK));
         miExit.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent event) {
                 _frame.dispose();
@@ -162,22 +150,18 @@ public class DrawEditor extends JFrame {
         EditorPanel.add(spGameWinCond);
 
         MainPanel.add(EditorPanel);
-        
+
         openFile(new File("scripts/templates/tmpFile.lua"));
 
         this.setVisible(true);
     }
 
-    /**
-     * 
-     * @param file 
-     */
     private void openFile(File file) {
         Scanner sc = null;
         try {
             sc = new Scanner(file);
             StringBuilder textSB = new StringBuilder();
-            
+
             while (sc.hasNext()) {
                 String text = sc.nextLine();
                 if (text.equals("-- GameInit BEGIN")) {
@@ -187,21 +171,21 @@ public class DrawEditor extends JFrame {
 
             while (sc.hasNext()) {
                 String text = sc.nextLine();
-                if (text.equals("-- GameInit END")) {                
+                if (text.equals("-- GameInit END")) {
                     break;
                 }
                 textSB.append(text).append("\n");
             }
-            
+
             taGameInit.setText(textSB.toString());
-            
+
             while (sc.hasNext()) {
                 String text = sc.nextLine();
                 if (text.equals("-- GameRules BEGIN")) {
                     break;
                 }
             }
-            
+
             textSB = new StringBuilder();
 
             while (sc.hasNext()) {
@@ -211,7 +195,7 @@ public class DrawEditor extends JFrame {
                 }
                 textSB.append(text).append("\n");
             }
-            
+
             while (sc.hasNext()) {
                 String text = sc.nextLine();
                 if (text.equals("-- GameWinConds BEGIN")) {
@@ -223,7 +207,7 @@ public class DrawEditor extends JFrame {
             textSB = new StringBuilder();
 
             while (sc.hasNext()) {
-                String text = sc.nextLine();                
+                String text = sc.nextLine();
                 if (text.equals("-- GameWinConds END")) {
                     break;
                 }
@@ -238,10 +222,6 @@ public class DrawEditor extends JFrame {
         }
     }
 
-    /**
-     * 
-     * @param file 
-     */
     private void saveFile(File file) {
         PrintStream ps = null;
         try {
@@ -253,7 +233,7 @@ public class DrawEditor extends JFrame {
             ps.println(taGameRules.getText());
             ps.println("-- GameRules END");
             ps.println("-- GameWinConds BEGIN");
-            ps.print(taGameWinCond.getText());                    
+            ps.print(taGameWinCond.getText());
             ps.println("-- GameWinConds END");
         } catch (FileNotFoundException ex) {
             Logger.getLogger(DrawEditor.class.getName()).log(Level.SEVERE, null, ex);
