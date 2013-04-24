@@ -80,5 +80,6 @@
         <copy todir="dist/res">
           <fileset dir="res"/>
         </copy>
+        <copy file="config.prop" tofile="dist/config.prop"/>
     </target>    
 </project>
