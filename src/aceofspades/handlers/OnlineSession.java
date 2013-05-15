@@ -1,5 +1,16 @@
 package aceofspades.handlers;
 
-public class OnlineSession extends Session {
+import aceofspades.MainFrame;
 
+public class OnlineSession extends Session {
+    
+    public OnlineSession(int clientId, MainFrame frame) {
+        super(clientId, frame);
+    }
+
+    public synchronized void interpret() {
+        
+    }
+    
+    
 }

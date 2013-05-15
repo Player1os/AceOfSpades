@@ -66,10 +66,10 @@ public class DButton extends DComponent {
         g.setColor(Color.black);
         g.drawRect(_bounds.x, _bounds.y, _bounds.width, _bounds.height);
         
-        int strPosX = _bounds.x + (_bounds.width - 
+        int strPosX = _bounds.x + 1 + (_bounds.width - 
                 g.getFontMetrics().stringWidth(_text)) / 2;
-        int strPosY = _bounds.y + _bounds.height / 2 + 
-                g.getFontMetrics().getDescent();
+        int strPosY = _bounds.y + (_bounds.height + 
+                g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent()) / 2;
         g.setColor(_fontColor);        
         g.drawString(_text, strPosX, strPosY);
     }

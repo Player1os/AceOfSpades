@@ -1,6 +1,7 @@
 package aceofspades;
 
 import aceofspades.framestates.FrameState;
+import aceofspades.framestates.MainMenu;
 import java.awt.*;
 import java.util.Properties;
 import javax.swing.JFrame;
@@ -9,14 +10,14 @@ import javax.swing.JPanel;
 public final class MainFrame extends JFrame {
     
     private static MainFrame _instance = null;
-    private FrameState _contentManager;
+    private FrameState _frameState;
     private DrawPane _drawPane;
     
     private class DrawPane extends JPanel {
 
         @Override
         public void paintComponent(Graphics g) {
-            if (_contentManager == null) {
+            if (_frameState == null) {
                 return;
             }
             
@@ -25,7 +26,7 @@ public final class MainFrame extends JFrame {
             
             Image image = createImage(width, height);
             Graphics graphics = image.getGraphics();
-            _contentManager.draw(graphics);
+            _frameState.draw(graphics);
             g.drawImage(image, 0, 0, this);
             repaint();
         }
@@ -42,13 +43,15 @@ public final class MainFrame extends JFrame {
     private MainFrame() {
         super("Ace of Spades");
         
-        _contentManager = null;
+        _frameState = null;
         
         Properties prop = aceofspades.Main.getProperties();
         int frameWidth = Integer.parseInt(prop.getProperty("mainFrameWidth"));
         int frameHeight = Integer.parseInt(prop.getProperty("mainFrameHeight"));
         
         setResolution(new Dimension(frameWidth, frameHeight));
+        setFrameState(new MainMenu(this, getContentPane().getWidth(), 
+                        getContentPane().getHeight()));
         
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
@@ -65,16 +68,16 @@ public final class MainFrame extends JFrame {
         validate();
     }
     
-    public void setContentManager(FrameState contentManager) {
-        if (_contentManager != null) {
-            _contentManager.unload();
-            _drawPane.removeMouseMotionListener(_contentManager);
-            _drawPane.removeMouseListener(_contentManager);
+    public void setFrameState(FrameState frameState) {
+        if (_frameState != null) {
+            _frameState.unload();
+            _drawPane.removeMouseMotionListener(_frameState);
+            _drawPane.removeMouseListener(_frameState);
         }        
  
-        _contentManager = contentManager;
+        _frameState = frameState;
         
-        _drawPane.addMouseMotionListener(_contentManager);
-        _drawPane.addMouseListener(_contentManager);
+        _drawPane.addMouseMotionListener(_frameState);
+        _drawPane.addMouseListener(_frameState);
     }
 }

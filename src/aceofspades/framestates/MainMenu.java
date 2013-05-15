@@ -20,6 +20,11 @@ public class MainMenu extends FrameState {
     private DButton buttonOptions;
     private DButton buttonEditor;
     private DButton buttonQuit;
+    
+    public MainMenu(MainFrame frame) {
+        this(frame, frame.getContentPane().getWidth(), 
+                frame.getContentPane().getHeight());
+    }
 
     public MainMenu(MainFrame frame, int paneWidth, int paneHeight) {
         super(frame, paneWidth, paneHeight);
@@ -27,7 +32,7 @@ public class MainMenu extends FrameState {
         
         Font labelFont = new Font("SansSerif", Font.BOLD, 36);
         Color labelFontColor = Color.white;
-        Point labelPosition = new Point(paneWidth / 2, 5);
+        Point labelPosition = new Point(paneWidth / 2, 25);
         
         Font buttonFont = new Font("SansSerif", Font.BOLD, 20);
         Color buttonFontColor = Color.white;
@@ -42,7 +47,8 @@ public class MainMenu extends FrameState {
          * Main Menu Title
          */
         labelTitle = new DLabel("Main Menu");
-        labelTitle.setCenterPosition(labelPosition);
+        labelTitle.setPosition(labelPosition);
+        labelTitle.setAlignment(DLabel.centerAlign);
         labelTitle.setFont(labelFont, labelFontColor);
 
         /**
@@ -54,12 +60,12 @@ public class MainMenu extends FrameState {
         buttonLocalGame.setFont(buttonFont, buttonFontColor);
         buttonLocalGame.setBackground(buttonColor);
         buttonLocalGame.setHoverBackground(buttonHoverColor);
-        buttonLocalGame.setAction(new DAction(null) {
+        buttonLocalGame.setAction(new DAction() {
 
             @Override
             public void run() {
-                _frame.setContentManager(
-                        new CreateLocal(_frame, _paneWidth, _paneHeight));
+                _frame.setFrameState(
+                        new CreateLocalGame(_frame, _paneWidth, _paneHeight));
             }
             
         });
@@ -75,12 +81,12 @@ public class MainMenu extends FrameState {
         buttonHostOnlineGame.setFont(buttonFont, buttonFontColor);
         buttonHostOnlineGame.setBackground(buttonColor);
         buttonHostOnlineGame.setHoverBackground(buttonHoverColor);
-        buttonHostOnlineGame.setAction(new DAction(null) {
+        buttonHostOnlineGame.setAction(new DAction() {
 
             @Override
             public void run() {
-                _frame.setContentManager(
-                        new SelectSession(_frame, _paneWidth, _paneHeight));
+                //_frame.setFrameState(
+                  //      new SelectSession(_frame, _paneWidth, _paneHeight));
             }
             
         });
@@ -96,12 +102,12 @@ public class MainMenu extends FrameState {
         buttonJoinOnlineGame.setFont(buttonFont, buttonFontColor);
         buttonJoinOnlineGame.setBackground(buttonColor);
         buttonJoinOnlineGame.setHoverBackground(buttonHoverColor);
-        buttonJoinOnlineGame.setAction(new DAction(null) {
+        buttonJoinOnlineGame.setAction(new DAction() {
 
             @Override
             public void run() {
-                _frame.setContentManager(
-                        new SelectSession(_frame, _paneWidth, _paneHeight));
+                //_frame.setFrameState(
+                  //      new SelectSession(_frame, _paneWidth, _paneHeight));
             }
             
         });        
@@ -117,11 +123,11 @@ public class MainMenu extends FrameState {
         buttonOptions.setFont(buttonFont, buttonFontColor);
         buttonOptions.setBackground(buttonColor);
         buttonOptions.setHoverBackground(buttonHoverColor);
-        buttonOptions.setAction(new DAction(null) {
+        buttonOptions.setAction(new DAction() {
 
             @Override
             public void run() {
-                _frame.setContentManager(
+                _frame.setFrameState(
                         new Options(_frame, _paneWidth, _paneHeight));
             }
             
@@ -138,7 +144,7 @@ public class MainMenu extends FrameState {
         buttonEditor.setFont(buttonFont, buttonFontColor);
         buttonEditor.setBackground(buttonColor);
         buttonEditor.setHoverBackground(buttonHoverColor);
-        buttonEditor.setAction(new DAction(null) {
+        buttonEditor.setAction(new DAction() {
 
             @Override
             public void run() {
@@ -158,7 +164,7 @@ public class MainMenu extends FrameState {
         buttonQuit.setFont(buttonFont, buttonFontColor);
         buttonQuit.setBackground(buttonColor);
         buttonQuit.setHoverBackground(buttonHoverColor);
-        buttonQuit.setAction(new DAction(null) {
+        buttonQuit.setAction(new DAction() {
 
             @Override
             public void run() {

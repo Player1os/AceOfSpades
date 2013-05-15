@@ -4,6 +4,8 @@ import aceofspades.MainFrame;
 import aceofspades.utils.DComponent;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -31,14 +33,24 @@ public abstract class FrameState extends MouseAdapter {
     }
     
     public void draw(Graphics g) {
+        Graphics2D g2D = (Graphics2D)g;
+        g2D.setRenderingHint(
+            RenderingHints.KEY_TEXT_ANTIALIASING,
+            RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         g.drawImage(_imgBG, 0,0, _paneWidth, _paneHeight, _frame);
         for (DComponent component : _DComponents) {
             component.draw(g);
         }
     }
-
+    
     public void addComponent(DComponent component) {
         _DComponents.add(component);
+    }
+    
+    public void removeComponent(DComponent component) {
+        if (_DComponents.contains(component)) {
+            _DComponents.remove(component);
+        }
     }
     
     @Override
@@ -69,5 +81,13 @@ public abstract class FrameState extends MouseAdapter {
         }
     }
     
-    public void unload() {}
+    public MainFrame getFrame() {
+        return _frame;
+    }
+    
+    public void unload() {
+        for (DComponent component : _DComponents) {
+            component.unload();
+        }
+    }
 }

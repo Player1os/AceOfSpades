@@ -1,10 +1,8 @@
 package aceofspades;
 
-import aceofspades.framestates.Game;
-import aceofspades.handlers.Player;
-import aceofspades.handlers.Session;
-import aceofspades.handlers.LocalSession;
 import aceofspades.handlers.GameManager;
+import aceofspades.handlers.ServerHandler;
+import aceofspades.handlers.Session;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
@@ -17,6 +15,7 @@ import javax.imageio.ImageIO;
 public class Main {
 
     private static Properties _prop = null;
+    private static ServerHandler _serverHandler = null;
     private static Session _activeSession = null;
     
     private static TreeMap<String, BufferedImage> _imgResList = new TreeMap<>();
@@ -24,29 +23,20 @@ public class Main {
     private static MainFrame frame;
 
     public static void main(String[] args) {
-        _prop = new Properties();
         try {
+            _prop = new Properties();
             _prop.load(new FileInputStream("config.prop"));
+            loadImageResources();
+            loadGameFiles();
+            initServerHandler();
+            frame = MainFrame.getInstance();
         } catch (IOException ex) {
             throw new RuntimeException();
         }
-        
-        loadImageResources();
-        loadGameFiles();
-        
-        LocalSession s = new LocalSession();
-        setActiveSession(s);
-        GameManager g = _gameList.get(0);
-        s.setGameManager(g);
-        Player p = new Player();
-        s.addPlayer(p);
-        
-        frame = MainFrame.getInstance();
-        frame.setContentManager(
-                new Game(frame, 
-                    frame.getContentPane().getWidth(), 
-                    frame.getContentPane().getHeight())
-                );
+    }
+    
+    private static void initServerHandler() {
+        _serverHandler = new ServerHandler();
     }
     
     private static void loadGameFiles() {

@@ -1,43 +1,33 @@
 package aceofspades.framestates;
 
+import aceofspades.handlers.PlayerSlotManager;
 import aceofspades.Main;
 import aceofspades.MainFrame;
-import aceofspades.framestates.Game;
-import aceofspades.handlers.Session;
-import aceofspades.handlers.GameManager;
+import aceofspades.handlers.*;
 import aceofspades.utils.*;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.util.ArrayList;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
 
 public class GameLobby extends FrameState {
     
     private DLabel labelTitle;
     private DButton buttonBack;
     private DButton buttonNext;
-    private ArrayList<JComboBox> comboBoxPlayerSlots;
-    private ArrayList<JButton> buttonSlotOccupys;
+    private PlayerSlotManager _playerSlotManager;
     
     public GameLobby(MainFrame frame, int paneWidth, int paneHeight) {
         super(frame, paneWidth, paneHeight);
         setBackgroundImage(Color.darkGray, Main.getImageResource("bgMenu.jpg"));
         
-        Session session = Main.getActiveSession();
-        GameManager game = session.getGameManager();
+        Session activeSession = Main.getActiveSession();
+        GameManager activeGame = activeSession.getGameManager();
         
         Font labelFont = new Font("SansSerif", Font.BOLD, 36);
         Color labelFontColor = Color.white;
-        Point labelPosition = new Point(paneWidth / 2, 5);
-        
-        Rectangle playerSlotListBounds = new Rectangle(250, 100, 200, 25);
-        Rectangle playerSlotOccupyBounds = new Rectangle(
-                playerSlotListBounds.x + playerSlotListBounds.width + 10, 
-                playerSlotListBounds.y, 150, playerSlotListBounds.height);
+        Point labelPosition = new Point(paneWidth / 2, 25);
         
         Font buttonFont = new Font("SansSerif", Font.BOLD, 20);
         Color buttonFontColor = Color.white;
@@ -50,50 +40,41 @@ public class GameLobby extends FrameState {
          * Game Lobby Title
          */
         labelTitle = new DLabel("Game Lobby");
-        labelTitle.setCenterPosition(labelPosition);
+        labelTitle.setPosition(labelPosition);
+        labelTitle.setAlignment(DLabel.centerAlign);
         labelTitle.setFont(labelFont, labelFontColor);
         
         /**
-         * Create PlayerLists
+         * Game Name Label
          */
-        comboBoxPlayerSlots = new ArrayList<>();
-        buttonSlotOccupys = new ArrayList<>();
-        for (int i = 0; i < game.getMaxPlayerCount(); i++) {
-            JComboBox cb = new JComboBox();
-            cb.setBounds(playerSlotListBounds);
-            cb.addItem("Open");
-            cb.addItem("Closed");
-            cb.addItem("Human(Local)");
-            comboBoxPlayerSlots.add(cb);
-            
-            JButton b = new JButton("Occupy");
-            b.setBounds(playerSlotOccupyBounds);
-            buttonSlotOccupys.add(b);
-            
-            playerSlotListBounds.y += playerSlotListBounds.height + 5; 
-            playerSlotOccupyBounds.y = playerSlotListBounds.y;
-        }
         
         
         /**
-         * Back Button
+         * Create PlayerList
          */
-        buttonBack = new DButton("Back");
+        _playerSlotManager = activeSession.createPlayerSlotManager();
+        _playerSlotManager.setPosition(new Point((paneWidth - 
+                _playerSlotManager.getWidth()) / 2, 100));
+        
+        /**
+         * Leave Game Button
+         */
+        buttonBack = new DButton("Leave Game");
         buttonBack.setPosition(buttonPosition);
         buttonBack.setDimensions(buttonDimension);
         buttonBack.setFont(buttonFont, buttonFontColor);
         buttonBack.setBackground(buttonColor);
         buttonBack.setHoverBackground(buttonHoverColor);
-        buttonBack.setAction(new DAction(null) {
+        buttonBack.setAction(new DAction() {
 
             @Override
             public void run() {
-                _frame.setContentManager(new MainMenu(_frame, _paneWidth, _paneHeight));
+                _frame.setFrameState(new MainMenu(_frame, _paneWidth, _paneHeight));
             }
             
         });
         
-        buttonPosition.x = paneWidth - buttonDimension.width -100;
+        buttonPosition.x = paneWidth - buttonDimension.width - 100;
         
         /**
          * Select Game Button
@@ -104,34 +85,33 @@ public class GameLobby extends FrameState {
         buttonNext.setFont(buttonFont, buttonFontColor);
         buttonNext.setBackground(buttonColor);
         buttonNext.setHoverBackground(buttonHoverColor);
-        buttonNext.setAction(new DAction(null) {
+        buttonNext.setAction(new DAction() {
 
             @Override
             public void run() {
-                _frame.setContentManager(new Game(_frame, _paneWidth, _paneHeight));
+                _frame.setFrameState(new Game(_frame, _paneWidth, _paneHeight));
             }
             
         });
         
         addComponent(labelTitle);
-        for (JComboBox cb : comboBoxPlayerSlots) {
-            _frame.add(cb);
-        }
-        for (JButton b : buttonSlotOccupys) {
-            _frame.add(b);
+        ArrayList<DPlayerSlot> slots = _playerSlotManager.getSlots();
+        for (DPlayerSlot slot : slots) {
+            addComponent(slot);
         }
         addComponent(buttonBack);
-        addComponent(buttonNext);
+        if (activeSession.isMasterClient()) {
+            addComponent(buttonNext);
+        }
     }
     
     @Override
     public void unload() {
-        for (JComboBox cb : comboBoxPlayerSlots) {
-            _frame.getContentPane().remove(cb);
+        ArrayList<DPlayerSlot> slots = _playerSlotManager.getSlots();
+        for (DPlayerSlot slot : slots) {
+            slot.clearComponents();
         }
-        for (JButton b : buttonSlotOccupys) {
-            _frame.getContentPane().remove(b);
-        }
+        super.unload();
     }
 
 }

@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class Options extends FrameState {
     
-    private DLabel labelOptions;
+    private DLabel labelTitle;
     private DLabel labelResolution;
     private DButton buttonBack;
 
@@ -26,14 +26,13 @@ public class Options extends FrameState {
         Font buttonFont = new Font("SansSerif", Font.BOLD, 20);
         Dimension buttonDimension = new Dimension(300, 60);
         Dimension buttonResDimension = new Dimension(200, 40);
-        Point controlPosition = new Point(paneWidth / 2, 5);
+        Point controlPosition = new Point(paneWidth / 2, 25);
         Color buttonResColor = new Color(100, 0, 150);
         Color buttonResHoverColor = new Color(100, 50, 150);
         Color buttonColor = new Color(150, 0, 0);
         Color buttonHoverColor = new Color(150, 50, 50);
         Color buttonFontColor = Color.white;
         ArrayList<Dimension> resolutionList = new ArrayList<>();
-        resolutionList.add(new Dimension(800, 600));
         resolutionList.add(new Dimension(1024, 768));
         resolutionList.add(new Dimension(1280, 1024));
         resolutionList.add(new Dimension(1600, 1200));
@@ -43,9 +42,10 @@ public class Options extends FrameState {
         /**
          * Options Title
          */
-        labelOptions = new DLabel("Options");
-        labelOptions.setCenterPosition(controlPosition);
-        labelOptions.setFont(bigLabelFont, Color.white);
+        labelTitle = new DLabel("Options");
+        labelTitle.setPosition(controlPosition);
+        labelTitle.setAlignment(DLabel.centerAlign);
+        labelTitle.setFont(bigLabelFont, Color.white);
         
         controlPosition.x = 255;
         controlPosition.y += 100;
@@ -54,7 +54,8 @@ public class Options extends FrameState {
          * Resolution Title
          */
         labelResolution = new DLabel("Resolution");
-        labelResolution.setCenterPosition(controlPosition);
+        labelResolution.setPosition(controlPosition);
+        labelResolution.setAlignment(DLabel.centerAlign);
         labelResolution.setFont(smallLabelFont, Color.white);
         
         controlPosition.x = 150;
@@ -71,13 +72,13 @@ public class Options extends FrameState {
             resolutionButton.setFont(buttonFont, buttonFontColor);
             resolutionButton.setBackground(buttonResColor);
             resolutionButton.setHoverBackground(buttonResHoverColor);
-            resolutionButton.setAction(new DAction(r) {
+            final Dimension d = r;
+            resolutionButton.setAction(new DAction() {
               
                 @Override
                 public void run() {
-                    Dimension d = (Dimension)_o;
                     _frame.setResolution(d);
-                    _frame.setContentManager(new Options(_frame, d.width, d.height));
+                    _frame.setFrameState(new Options(_frame, d.width, d.height));
                 }
                 
             });          
@@ -99,16 +100,16 @@ public class Options extends FrameState {
         buttonBack.setFont(buttonFont, buttonFontColor);
         buttonBack.setBackground(buttonColor);
         buttonBack.setHoverBackground(buttonHoverColor);
-        buttonBack.setAction(new DAction(null) {
+        buttonBack.setAction(new DAction() {
 
             @Override
             public void run() {
-                _frame.setContentManager(new MainMenu(_frame, _paneWidth, _paneHeight));
+                _frame.setFrameState(new MainMenu(_frame, _paneWidth, _paneHeight));
             }
             
         });
         
-        addComponent(labelOptions);
+        addComponent(labelTitle);
         addComponent(labelResolution);
         addComponent(buttonBack);
     }

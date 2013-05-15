@@ -28,7 +28,7 @@ public class SelectSession extends FrameState {
         
         Font labelFont = new Font("SansSerif", Font.BOLD, 36);
         Color labelFontColor = Color.white;
-        Point labelPosition = new Point(paneWidth / 2, 5);
+        Point labelPosition = new Point(paneWidth / 2, 25);
         
         Font buttonFont = new Font("SansSerif", Font.BOLD, 20);
         Color buttonFontColor = Color.white;
@@ -41,7 +41,8 @@ public class SelectSession extends FrameState {
          * Select Session Title
          */
         labelTitle = new DLabel("Select Session");
-        labelTitle.setCenterPosition(labelPosition);
+        labelTitle.setPosition(labelPosition);
+        labelTitle.setAlignment(DLabel.centerAlign);
         labelTitle.setFont(labelFont, labelFontColor);
         
         /**
@@ -59,11 +60,11 @@ public class SelectSession extends FrameState {
         buttonBack.setFont(buttonFont, buttonFontColor);
         buttonBack.setBackground(buttonColor);
         buttonBack.setHoverBackground(buttonHoverColor);
-        buttonBack.setAction(new DAction(null) {
+        buttonBack.setAction(new DAction() {
 
             @Override
             public void run() {
-                _frame.setContentManager(new MainMenu(_frame, _paneWidth, _paneHeight));
+                _frame.setFrameState(new MainMenu(_frame, _paneWidth, _paneHeight));
             }
             
         });
@@ -79,16 +80,15 @@ public class SelectSession extends FrameState {
         buttonNext.setFont(buttonFont, buttonFontColor);
         buttonNext.setBackground(buttonColor);
         buttonNext.setHoverBackground(buttonHoverColor);
-        buttonNext.setAction(new DAction(listSessions) {
+        buttonNext.setAction(new DAction() {
 
             @Override
             public void run() {
-                JList listGames = (JList)_o;
-                Object sel = listGames.getSelectedValue();
+                Object sel = listSessions.getSelectedValue();
                 if (!sel.equals(-1)) {
                     
                     
-                    _frame.setContentManager(new GameLobby(_frame, _paneWidth, _paneHeight));
+                    _frame.setFrameState(new GameLobby(_frame, _paneWidth, _paneHeight));
                 }
             }
             
@@ -101,6 +101,7 @@ public class SelectSession extends FrameState {
     
     @Override
     public void unload() {
+        super.unload();
         _frame.getContentPane().remove(listSessions);
     }
 
