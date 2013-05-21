@@ -1,7 +1,7 @@
 package aceofspades.handlers;
 
 import aceofspades.MainFrame;
-import aceofspades.framestates.MainMenu;
+import aceofspades.framestates.FSMainMenu;
 import aceofspades.game.AIPlayer;
 import aceofspades.game.AIStrategy;
 import aceofspades.game.HumanPlayer;
@@ -86,7 +86,7 @@ public abstract class Session {
         }
         if (playerID == Player.MasterID) {
             if ((clientID == _clientID) || (clientID == MasterID)) {
-                _frame.setFrameState(new MainMenu(_frame));
+                _frame.setFrameState(new FSMainMenu(_frame));
             } else {
                 _playerSlotManager.removePlayers(clientID);
             }

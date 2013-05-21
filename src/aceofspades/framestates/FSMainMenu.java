@@ -11,7 +11,7 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
 
-public class MainMenu extends FrameState {
+public class FSMainMenu extends FrameState {
 
     private DLabel labelTitle;
     private DButton buttonLocalGame;
@@ -21,12 +21,12 @@ public class MainMenu extends FrameState {
     private DButton buttonEditor;
     private DButton buttonQuit;
     
-    public MainMenu(MainFrame frame) {
+    public FSMainMenu(MainFrame frame) {
         this(frame, frame.getContentPane().getWidth(), 
                 frame.getContentPane().getHeight());
     }
 
-    public MainMenu(MainFrame frame, int paneWidth, int paneHeight) {
+    public FSMainMenu(MainFrame frame, int paneWidth, int paneHeight) {
         super(frame, paneWidth, paneHeight);
         setBackgroundImage(Color.darkGray, Main.getImageResource("bgMenu.jpg"));
         
@@ -65,7 +65,7 @@ public class MainMenu extends FrameState {
             @Override
             public void run() {
                 _frame.setFrameState(
-                        new CreateLocalGame(_frame, _paneWidth, _paneHeight));
+                        new FSCreateLocal(_frame, _paneWidth, _paneHeight));
             }
             
         });
@@ -73,9 +73,9 @@ public class MainMenu extends FrameState {
         buttonPosition.y += buttonDistance;
         
         /**
-         * Host Online Game Button
+         * Create Online Game Button
          */
-        buttonHostOnlineGame = new DButton("Host Online Game");
+        buttonHostOnlineGame = new DButton("Create Online Game");
         buttonHostOnlineGame.setPosition(buttonPosition);
         buttonHostOnlineGame.setDimensions(buttonDimension);
         buttonHostOnlineGame.setFont(buttonFont, buttonFontColor);
@@ -128,7 +128,7 @@ public class MainMenu extends FrameState {
             @Override
             public void run() {
                 _frame.setFrameState(
-                        new Options(_frame, _paneWidth, _paneHeight));
+                        new FSOptions(_frame, _paneWidth, _paneHeight));
             }
             
         });
@@ -136,7 +136,7 @@ public class MainMenu extends FrameState {
         buttonPosition.y += buttonDistance;
         
         /**
-         * Editor Button
+         * Game Editor Button
          */
         buttonEditor = new DButton("Game Editor");
         buttonEditor.setPosition(buttonPosition);

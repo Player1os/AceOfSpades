@@ -1,7 +1,7 @@
 package aceofspades;
 
 import aceofspades.framestates.FrameState;
-import aceofspades.framestates.MainMenu;
+import aceofspades.framestates.FSMainMenu;
 import java.awt.*;
 import java.util.Properties;
 import javax.swing.JFrame;
@@ -50,7 +50,7 @@ public final class MainFrame extends JFrame {
         int frameHeight = Integer.parseInt(prop.getProperty("mainFrameHeight"));
         
         setResolution(new Dimension(frameWidth, frameHeight));
-        setFrameState(new MainMenu(this, getContentPane().getWidth(), 
+        setFrameState(new FSMainMenu(this, getContentPane().getWidth(), 
                         getContentPane().getHeight()));
         
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

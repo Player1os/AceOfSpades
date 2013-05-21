@@ -14,7 +14,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.JTextField;
 
-public class CreateLocalGame extends FrameState {
+public class FSCreateLocal extends FrameState {
     
     private DLabel labelTitle;
     private JList listGames;
@@ -23,7 +23,7 @@ public class CreateLocalGame extends FrameState {
     private DButton buttonBack;
     private DButton buttonNext;
     
-    public CreateLocalGame(MainFrame frame, int paneWidth, int paneHeight) {
+    public FSCreateLocal(MainFrame frame, int paneWidth, int paneHeight) {
         super(frame, paneWidth, paneHeight);
         setBackgroundImage(Color.darkGray, Main.getImageResource("bgMenu.jpg"));
         
@@ -91,7 +91,7 @@ public class CreateLocalGame extends FrameState {
 
             @Override
             public void run() {
-                _frame.setFrameState(new MainMenu(_frame, _paneWidth, _paneHeight));
+                _frame.setFrameState(new FSMainMenu(_frame, _paneWidth, _paneHeight));
             }
             
         });
@@ -120,7 +120,7 @@ public class CreateLocalGame extends FrameState {
                 s.setGameManager((GameManager) sel);
                 Main.setActiveSession(s);
                 s.addPlayer(s.createHumanPlayer(editPlayerName.getText()));
-                _frame.setFrameState(new GameLobby(_frame, _paneWidth, _paneHeight));                
+                _frame.setFrameState(new FSLobby(_frame, _paneWidth, _paneHeight));                
             }
             
         });

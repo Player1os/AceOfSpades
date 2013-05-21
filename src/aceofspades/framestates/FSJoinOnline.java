@@ -12,14 +12,14 @@ import java.awt.Point;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
 
-public class SelectSession extends FrameState {
+public class FSJoinOnline extends FrameState {
     
     private DLabel labelTitle;
     private JList listSessions;
     private DButton buttonBack;
     private DButton buttonNext;
     
-    public SelectSession(MainFrame frame, int paneWidth, int paneHeight) {
+    public FSJoinOnline(MainFrame frame, int paneWidth, int paneHeight) {
         super(frame, paneWidth, paneHeight);
         setBackgroundImage(Color.darkGray, Main.getImageResource("bgMenu.jpg"));
         
@@ -64,7 +64,7 @@ public class SelectSession extends FrameState {
 
             @Override
             public void run() {
-                _frame.setFrameState(new MainMenu(_frame, _paneWidth, _paneHeight));
+                _frame.setFrameState(new FSMainMenu(_frame, _paneWidth, _paneHeight));
             }
             
         });
@@ -88,7 +88,7 @@ public class SelectSession extends FrameState {
                 if (!sel.equals(-1)) {
                     
                     
-                    _frame.setFrameState(new GameLobby(_frame, _paneWidth, _paneHeight));
+                    _frame.setFrameState(new FSLobby(_frame, _paneWidth, _paneHeight));
                 }
             }
             

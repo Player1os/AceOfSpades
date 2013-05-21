@@ -11,14 +11,14 @@ import java.awt.Font;
 import java.awt.Point;
 import java.util.ArrayList;
 
-public class GameLobby extends FrameState {
+public class FSLobby extends FrameState {
     
     private DLabel labelTitle;
     private DButton buttonBack;
     private DButton buttonNext;
     private PlayerSlotManager _playerSlotManager;
     
-    public GameLobby(MainFrame frame, int paneWidth, int paneHeight) {
+    public FSLobby(MainFrame frame, int paneWidth, int paneHeight) {
         super(frame, paneWidth, paneHeight);
         setBackgroundImage(Color.darkGray, Main.getImageResource("bgMenu.jpg"));
         
@@ -69,7 +69,7 @@ public class GameLobby extends FrameState {
 
             @Override
             public void run() {
-                _frame.setFrameState(new MainMenu(_frame, _paneWidth, _paneHeight));
+                _frame.setFrameState(new FSMainMenu(_frame, _paneWidth, _paneHeight));
             }
             
         });
@@ -89,7 +89,7 @@ public class GameLobby extends FrameState {
 
             @Override
             public void run() {
-                _frame.setFrameState(new Game(_frame, _paneWidth, _paneHeight));
+                _frame.setFrameState(new FSGame(_frame, _paneWidth, _paneHeight));
             }
             
         });

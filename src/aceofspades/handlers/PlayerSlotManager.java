@@ -90,7 +90,9 @@ public class PlayerSlotManager {
         Player p = slot1.getPlayer();
         int id1 = _playerSlots.indexOf(slot1);
         int id2 = id1 - 1;
-        if (id2 < 0) id2 = _playerSlots.size() - 1;
+        if (id2 < 0) {
+            id2 = _playerSlots.size() - 1;
+        }
         do {
             DPlayerSlot slot2 = _playerSlots.get(id2);
             if (slot2.isAvailable()) {
@@ -103,7 +105,9 @@ public class PlayerSlotManager {
                 return;
             }
             id2 = id2 - 1;
-            if (id2 < 0) id2 = _playerSlots.size() - 1;
+            if (id2 < 0) {
+                id2 = _playerSlots.size() - 1;
+            }
         } while (id2 != id1);
     }
     

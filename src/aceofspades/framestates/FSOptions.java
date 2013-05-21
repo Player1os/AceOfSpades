@@ -11,13 +11,13 @@ import java.awt.Font;
 import java.awt.Point;
 import java.util.ArrayList;
 
-public class Options extends FrameState {
+public class FSOptions extends FrameState {
     
     private DLabel labelTitle;
     private DLabel labelResolution;
     private DButton buttonBack;
 
-    public Options(MainFrame frame, int paneWidth, int paneHeight) {
+    public FSOptions(MainFrame frame, int paneWidth, int paneHeight) {
         super(frame, paneWidth, paneHeight);
         setBackgroundImage(Color.darkGray, Main.getImageResource("bgMenu.jpg"));
         
@@ -78,7 +78,7 @@ public class Options extends FrameState {
                 @Override
                 public void run() {
                     _frame.setResolution(d);
-                    _frame.setFrameState(new Options(_frame, d.width, d.height));
+                    _frame.setFrameState(new FSOptions(_frame, d.width, d.height));
                 }
                 
             });          
@@ -104,7 +104,7 @@ public class Options extends FrameState {
 
             @Override
             public void run() {
-                _frame.setFrameState(new MainMenu(_frame, _paneWidth, _paneHeight));
+                _frame.setFrameState(new FSMainMenu(_frame, _paneWidth, _paneHeight));
             }
             
         });
