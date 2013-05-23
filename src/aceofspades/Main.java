@@ -7,10 +7,14 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.TreeMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 
 public class Main {
 
@@ -71,6 +75,18 @@ public class Main {
     
     public static Properties getProperties() {
         return _prop;
+    }
+    
+    public static void writeProperties() {
+        try {
+            _prop.store(new PrintStream("config.prop"), null);
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(frame,
+                "An error occured while saving the settings, applied changes "
+                    + "will be reveresed upon exiting the application.",
+                "Write error",
+                JOptionPane.ERROR_MESSAGE);
+        }
     }
     
     

@@ -10,6 +10,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Properties;
 
 public class FSOptions extends FrameState {
     
@@ -79,6 +80,10 @@ public class FSOptions extends FrameState {
                 public void run() {
                     _frame.setResolution(d);
                     _frame.setFrameState(new FSOptions(_frame, d.width, d.height));
+                    Properties prop = Main.getProperties();
+                    prop.setProperty("mainFrameWidth", Integer.toString(d.width));
+                    prop.setProperty("mainFrameHeight", Integer.toString(d.height));
+                    Main.writeProperties();
                 }
                 
             });          
@@ -112,5 +117,10 @@ public class FSOptions extends FrameState {
         addComponent(labelTitle);
         addComponent(labelResolution);
         addComponent(buttonBack);
+    }
+    
+    @Override
+    public void unload() {
+    
     }
 }

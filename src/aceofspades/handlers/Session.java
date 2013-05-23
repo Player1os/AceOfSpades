@@ -119,6 +119,15 @@ public abstract class Session {
         }
     }
     
+    
+    public void startGame() {
+        if (_playerSlotManager != null) {
+            _playerList = _playerSlotManager.getPlayerList();
+        }
+        
+        _gameManager.startGame();
+    }
+    
     public void leaveGame() {
         removePlayer(Player.MasterID, _clientID);
     }

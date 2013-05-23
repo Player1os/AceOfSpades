@@ -45,7 +45,7 @@ public final class MainFrame extends JFrame {
         
         _frameState = null;
         
-        Properties prop = aceofspades.Main.getProperties();
+        Properties prop = Main.getProperties();
         int frameWidth = Integer.parseInt(prop.getProperty("mainFrameWidth"));
         int frameHeight = Integer.parseInt(prop.getProperty("mainFrameHeight"));
         

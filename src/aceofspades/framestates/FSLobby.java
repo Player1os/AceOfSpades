@@ -69,6 +69,7 @@ public class FSLobby extends FrameState {
 
             @Override
             public void run() {
+                Main.getActiveSession().leaveGame();
                 _frame.setFrameState(new FSMainMenu(_frame, _paneWidth, _paneHeight));
             }
             
@@ -77,7 +78,7 @@ public class FSLobby extends FrameState {
         buttonPosition.x = paneWidth - buttonDimension.width - 100;
         
         /**
-         * Select Game Button
+         * Start Game Button
          */
         buttonNext = new DButton("Start Game");
         buttonNext.setPosition(buttonPosition);
@@ -89,6 +90,7 @@ public class FSLobby extends FrameState {
 
             @Override
             public void run() {
+                Main.getActiveSession().startGame();
                 _frame.setFrameState(new FSGame(_frame, _paneWidth, _paneHeight));
             }
             

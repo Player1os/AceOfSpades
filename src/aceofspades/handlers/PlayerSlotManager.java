@@ -147,4 +147,13 @@ public class PlayerSlotManager {
         return _playerSlots;
     }
     
+    public ArrayList<Player> getPlayerList() {
+        ArrayList<Player> playerList = new ArrayList<>();
+        for (DPlayerSlot playerSlot : _playerSlots) {
+            playerList.add(playerSlot.getPlayer());
+        }
+        
+        return playerList;
+    }
+    
 }

@@ -1,5 +1,7 @@
 package aceofspades.handlers;
 
+import aceofspades.CardSet;
+import aceofspades.Deck;
 import aceofspades.game.AIStrategy;
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,6 +13,7 @@ public class GameManager {
     private int _id;
     private String _name;
     private int _maxPlayerCount;
+    private int _minPlayerCount;
     private ArrayList<AIStrategy> _AIStrategies;
     
     public static GameManager createGameManager(File folder) {
@@ -29,9 +32,11 @@ public class GameManager {
             String id = getProperty(prop, "id");
             String name = getProperty(prop, "name");
             String maxPlayerCount = getProperty(prop, "maxPlayerCount");
-
+            String minPlayerCount = getProperty(prop, "minPlayerCount");
+            
             game = new GameManager(Integer.valueOf(id), name);
             game.setMaxPlayerCount(Integer.valueOf(maxPlayerCount));
+            game.setMinPlayerCount(Integer.valueOf(minPlayerCount));
             loadAIStrategies(game, new File(folder, "AI"));
         } catch (Exception ex) {
             game = null;
@@ -94,8 +99,16 @@ public class GameManager {
         _maxPlayerCount = maxPlayerCount;
     }
     
+    private void setMinPlayerCount(int minPlayerCount) {
+        _minPlayerCount = minPlayerCount;
+    }
+    
     public int getMaxPlayerCount() {
         return _maxPlayerCount;
+    }
+    
+    public int getMinPlayerCount() {
+        return _minPlayerCount;
     }
     
     public ArrayList<AIStrategy> getAIStrategies() {
@@ -106,9 +119,22 @@ public class GameManager {
         
     }
     
+    public boolean canEndTurn() {
+        return false;
+    }
+    
+    public boolean canMoveCardset(CardSet cardSet) {
+        return false;
+    }
+    
+    public ArrayList<Integer> availableCardsetPositions(CardSet cardSet, Deck deck) {
+        return null;
+    }
+    
     @Override
     public String toString() {
         StringBuilder b = new StringBuilder(getName());
+        b.append(", MinPlayerCount : ").append(getMinPlayerCount());
         b.append(", MaxPlayerCount : ").append(getMaxPlayerCount());
         return b.toString();
     }
