@@ -1,4 +1,4 @@
-package aceofspades.handlers;
+package aceofspades;
 
 import aceofspades.MainFrame;
 import aceofspades.framestates.FSMainMenu;
@@ -9,7 +9,7 @@ import aceofspades.game.Player;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public abstract class Session {
+public abstract class SessionManager {
     
     public final static int MasterID = 0;
     
@@ -34,7 +34,7 @@ public abstract class Session {
         return player;
     }
     
-    public Session(int clientID, MainFrame frame) {
+    public SessionManager(int clientID, MainFrame frame) {
         _frame = frame;
         _clientID = clientID;
         _gameManager = null;
@@ -120,12 +120,17 @@ public abstract class Session {
     }
     
     
-    public void startGame() {
+    public void startGame() throws Exception {
         if (_playerSlotManager != null) {
             _playerList = _playerSlotManager.getPlayerList();
         }
         
-        _gameManager.startGame();
+        for (int i = 0; i < _playerList.size(); i++) {
+            _playerList.get(i).setID(i);
+            _playerList.get(i).setNextPlayer(_playerList.get((i + 1) % _playerList.size()));
+        }
+
+        _gameManager.startGame(_playerList.size());
     }
     
     public void leaveGame() {

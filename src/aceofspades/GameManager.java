@@ -1,12 +1,18 @@
-package aceofspades.handlers;
+package aceofspades;
 
-import aceofspades.CardSet;
+import aceofspades.Card;
 import aceofspades.Deck;
+import aceofspades.framestates.FSGame;
 import aceofspades.game.AIStrategy;
+import aceofspades.game.Player;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Properties;
+import javax.script.Invocable;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
 
 public class GameManager {
     
@@ -15,6 +21,10 @@ public class GameManager {
     private int _maxPlayerCount;
     private int _minPlayerCount;
     private ArrayList<AIStrategy> _AIStrategies;
+    private ScriptEngine _engine;
+    private File _folder;
+    
+    private ArrayList<Deck> 
     
     public static GameManager createGameManager(File folder) {
         GameManager game = null;
@@ -37,6 +47,7 @@ public class GameManager {
             game = new GameManager(Integer.valueOf(id), name);
             game.setMaxPlayerCount(Integer.valueOf(maxPlayerCount));
             game.setMinPlayerCount(Integer.valueOf(minPlayerCount));
+            game.setFolder(folder);
             loadAIStrategies(game, new File(folder, "AI"));
         } catch (Exception ex) {
             game = null;
@@ -79,6 +90,10 @@ public class GameManager {
         this.setGameID(id);
     }   
     
+    private void setFolder(File f) {
+        _folder = f;
+    }
+    
     private void setGameID(int id) {
         _id = id;
     }
@@ -115,20 +130,39 @@ public class GameManager {
         return _AIStrategies;
     }
     
-    public void startGame() {
+    public void startGame(int playerCount) throws Exception {
+        ScriptEngineManager manager = new ScriptEngineManager();
+        _engine = manager.getEngineByName("JavaScript");
+        _engine.eval(new FileReader(new File(_folder, "scripts.js")));
         
+        Invocable inv = (Invocable) _engine;  
+        inv.invokeFunction("gameInit", playerCount);
     }
     
-    public boolean canEndTurn() {
-        return false;
+    public boolean canEndTurn(Player p) throws Exception {
+        Invocable inv = (Invocable) _engine;
+        return (Boolean)inv.invokeFunction("canEndTurn", p.getID());
     }
     
-    public boolean canMoveCardset(CardSet cardSet) {
-        return false;
+    public boolean canMoveCard(Card card, Player p) throws Exception {
+        Invocable inv = (Invocable) _engine;
+        return (Boolean)inv.invokeFunction(card.getDeck().toString() + "Remove", p.getID());
     }
     
-    public ArrayList<Integer> availableCardsetPositions(CardSet cardSet, Deck deck) {
-        return null;
+    public ArrayList<Boolean> availableCardPositions(Card card, Deck deck, Player p) throws Exception {
+        ArrayList<Boolean> result = new ArrayList<>();
+        
+        Invocable inv = (Invocable) _engine;
+        for (int i = 0; i < deck.getCardCount() + 1; i++) {
+            result.add((Boolean)inv.invokeFunction(card.getDeck().toString() + "Add", i, p.getID()));
+        }
+        
+        return result;
+    }
+    
+    public boolean hasWon(Player p) throws Exception {
+        Invocable inv = (Invocable) _engine;
+        return (Boolean)inv.invokeFunction("hasWon", p.getID());
     }
     
     @Override
@@ -137,6 +171,10 @@ public class GameManager {
         b.append(", MinPlayerCount : ").append(getMinPlayerCount());
         b.append(", MaxPlayerCount : ").append(getMaxPlayerCount());
         return b.toString();
+    }
+
+    public void updateFSGame(FSGame fsGame, Player p) {
+        fsGame.addComponent(null);
     }
     
 }

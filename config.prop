@@ -1,6 +1,6 @@
-#Thu May 23 09:08:52 CEST 2013
-mainFrameWidth=1024
-mainFrameHeight=768
+#Thu May 23 12:09:32 CEST 2013
+mainFrameWidth=1600
+mainFrameHeight=1200
+defaultPlayerName=Player1
 gameEditorHeight=800
 gameEditorWidth=1000
-playerName=Player1

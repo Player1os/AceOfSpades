@@ -2,9 +2,9 @@ package aceofspades.framestates;
 
 import aceofspades.Main;
 import aceofspades.MainFrame;
-import aceofspades.utils.DAction;
-import aceofspades.utils.DButton;
-import aceofspades.utils.DLabel;
+import aceofspades.components.DAction;
+import aceofspades.components.DButton;
+import aceofspades.components.DLabel;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;

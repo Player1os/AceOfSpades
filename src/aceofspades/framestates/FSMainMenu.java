@@ -1,15 +1,21 @@
 package aceofspades.framestates;
 
+import aceofspades.components.DAction;
+import aceofspades.components.DLabel;
+import aceofspades.components.DButton;
 import aceofspades.EditorFrame;
+import aceofspades.GameException;
 import aceofspades.Main;
 import aceofspades.MainFrame;
-import aceofspades.utils.*;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 public class FSMainMenu extends FrameState {
 
@@ -54,21 +60,13 @@ public class FSMainMenu extends FrameState {
         /**
          * Local Game Button
          */
-        buttonLocalGame = new DButton("Local Game");
+        buttonLocalGame = new DButton("Create Local Game");
         buttonLocalGame.setPosition(buttonPosition);
         buttonLocalGame.setDimensions(buttonDimension);
         buttonLocalGame.setFont(buttonFont, buttonFontColor);
         buttonLocalGame.setBackground(buttonColor);
         buttonLocalGame.setHoverBackground(buttonHoverColor);
-        buttonLocalGame.setAction(new DAction() {
-
-            @Override
-            public void run() {
-                _frame.setFrameState(
-                        new FSCreateLocal(_frame, _paneWidth, _paneHeight));
-            }
-            
-        });
+        buttonLocalGame.setAction(new CreateLocalGameAction());
 
         buttonPosition.y += buttonDistance;
         
@@ -81,15 +79,7 @@ public class FSMainMenu extends FrameState {
         buttonHostOnlineGame.setFont(buttonFont, buttonFontColor);
         buttonHostOnlineGame.setBackground(buttonColor);
         buttonHostOnlineGame.setHoverBackground(buttonHoverColor);
-        buttonHostOnlineGame.setAction(new DAction() {
-
-            @Override
-            public void run() {
-                //_frame.setFrameState(
-                  //      new SelectSession(_frame, _paneWidth, _paneHeight));
-            }
-            
-        });
+        buttonHostOnlineGame.setAction(new CreateOnlineGameAction());
         
         buttonPosition.y += buttonDistance;
         
@@ -102,15 +92,7 @@ public class FSMainMenu extends FrameState {
         buttonJoinOnlineGame.setFont(buttonFont, buttonFontColor);
         buttonJoinOnlineGame.setBackground(buttonColor);
         buttonJoinOnlineGame.setHoverBackground(buttonHoverColor);
-        buttonJoinOnlineGame.setAction(new DAction() {
-
-            @Override
-            public void run() {
-                //_frame.setFrameState(
-                  //      new SelectSession(_frame, _paneWidth, _paneHeight));
-            }
-            
-        });        
+        buttonJoinOnlineGame.setAction(new JoinOnlineGameAction());
 
         buttonPosition.y += buttonDistance;
         
@@ -123,15 +105,7 @@ public class FSMainMenu extends FrameState {
         buttonOptions.setFont(buttonFont, buttonFontColor);
         buttonOptions.setBackground(buttonColor);
         buttonOptions.setHoverBackground(buttonHoverColor);
-        buttonOptions.setAction(new DAction() {
-
-            @Override
-            public void run() {
-                _frame.setFrameState(
-                        new FSOptions(_frame, _paneWidth, _paneHeight));
-            }
-            
-        });
+        buttonOptions.setAction(new OptionsAction());
 
         buttonPosition.y += buttonDistance;
         
@@ -144,14 +118,7 @@ public class FSMainMenu extends FrameState {
         buttonEditor.setFont(buttonFont, buttonFontColor);
         buttonEditor.setBackground(buttonColor);
         buttonEditor.setHoverBackground(buttonHoverColor);
-        buttonEditor.setAction(new DAction() {
-
-            @Override
-            public void run() {
-                EditorFrame frame = new EditorFrame();
-            }
-            
-        });
+        buttonEditor.setAction(new EditorAction());
 
         buttonPosition.y += buttonDistance;
         
@@ -164,15 +131,7 @@ public class FSMainMenu extends FrameState {
         buttonQuit.setFont(buttonFont, buttonFontColor);
         buttonQuit.setBackground(buttonColor);
         buttonQuit.setHoverBackground(buttonHoverColor);
-        buttonQuit.setAction(new DAction() {
-
-            @Override
-            public void run() {
-                WindowEvent wev = new WindowEvent(_frame, WindowEvent.WINDOW_CLOSING);
-                Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(wev);
-            }
-            
-        });
+        buttonQuit.setAction(new QuitAction());
         
         addComponent(labelTitle);
         addComponent(buttonLocalGame);
@@ -181,6 +140,64 @@ public class FSMainMenu extends FrameState {
         addComponent(buttonOptions);
         addComponent(buttonEditor);
         addComponent(buttonQuit);
+    }
+    
+    private class CreateLocalGameAction extends DAction {
+
+        @Override
+        public void run() {
+            try {
+                Main.loadGameDataList();
+                _frame.setFrameState(new FSCreateLocal(_frame, _paneWidth, _paneHeight));
+            } catch (GameException ex) {
+                JOptionPane.showMessageDialog(_frame, ex.getMessage(), 
+                    "Fatal error", JOptionPane.ERROR_MESSAGE);
+                WindowEvent wev = new WindowEvent(_frame, WindowEvent.WINDOW_CLOSING);
+                Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(wev);
+            }            
+        }
+
+    }
+    
+    private class CreateOnlineGameAction extends DAction {
+        
+        @Override
+        public void run() {
+
+        }
+    }
+    
+    private class JoinOnlineGameAction extends DAction {
+        
+        @Override
+        public void run() {
+
+        }
+    }
+    
+    private class OptionsAction extends DAction {
+        
+        @Override
+        public void run() {
+            _frame.setFrameState(new FSOptions(_frame, _paneWidth, _paneHeight));
+        }
+    }
+    
+    private class EditorAction extends DAction {
+        
+        @Override
+        public void run() {
+            EditorFrame frame = new EditorFrame();
+        }
+    }
+    
+    private class QuitAction extends DAction {
+        
+        @Override
+        public void run() {
+            WindowEvent wev = new WindowEvent(_frame, WindowEvent.WINDOW_CLOSING);
+            Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(wev);
+        }
     }
 
 }

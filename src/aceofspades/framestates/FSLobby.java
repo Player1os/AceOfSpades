@@ -1,15 +1,20 @@
 package aceofspades.framestates;
 
-import aceofspades.handlers.PlayerSlotManager;
+import aceofspades.GameManager;
+import aceofspades.SessionManager;
+import aceofspades.components.DPlayerSlot;
+import aceofspades.components.DAction;
+import aceofspades.components.DLabel;
+import aceofspades.components.DButton;
+import aceofspades.PlayerSlotManager;
 import aceofspades.Main;
 import aceofspades.MainFrame;
-import aceofspades.handlers.*;
-import aceofspades.utils.*;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Point;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 public class FSLobby extends FrameState {
     
@@ -22,7 +27,7 @@ public class FSLobby extends FrameState {
         super(frame, paneWidth, paneHeight);
         setBackgroundImage(Color.darkGray, Main.getImageResource("bgMenu.jpg"));
         
-        Session activeSession = Main.getActiveSession();
+        SessionManager activeSession = Main.getActiveSession();
         GameManager activeGame = activeSession.getGameManager();
         
         Font labelFont = new Font("SansSerif", Font.BOLD, 36);
@@ -90,8 +95,16 @@ public class FSLobby extends FrameState {
 
             @Override
             public void run() {
-                Main.getActiveSession().startGame();
-                _frame.setFrameState(new FSGame(_frame, _paneWidth, _paneHeight));
+                try {
+                    Main.getActiveSession().startGame();
+                    _frame.setFrameState(new FSGame(_frame, _paneWidth, _paneHeight));
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(_frame,
+                        "Game files are corrupted.",
+                        "Game file error",
+                        JOptionPane.ERROR_MESSAGE);
+                    _frame.setFrameState(new FSMainMenu(_frame, _paneWidth, _paneHeight));
+                }                
             }
             
         });

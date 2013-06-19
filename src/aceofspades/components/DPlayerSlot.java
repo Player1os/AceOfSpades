@@ -1,9 +1,9 @@
-package aceofspades.utils;
+package aceofspades.components;
 
 import aceofspades.MainFrame;
 import aceofspades.game.AIStrategy;
 import aceofspades.game.Player;
-import aceofspades.handlers.Session;
+import aceofspades.SessionManager;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -23,7 +23,7 @@ public class DPlayerSlot extends DComponent {
     private Player _player;
 
     private int _slotID;
-    private Session _session;
+    private SessionManager _session;
     private Point _position;
     private ArrayList<AIStrategy> _AIStrategies;
     private MainFrame _frame;
@@ -56,7 +56,7 @@ public class DPlayerSlot extends DComponent {
 
     private ArrayList<DComponent> _activeComponents;
     
-    public DPlayerSlot(int slotID, Session session, 
+    public DPlayerSlot(int slotID, SessionManager session, 
             ArrayList<AIStrategy> AIStrategies, MainFrame frame) {
         _slotID = slotID;
         _session = session;

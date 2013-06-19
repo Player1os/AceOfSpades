@@ -1,7 +1,7 @@
 package aceofspades.framestates;
 
 import aceofspades.MainFrame;
-import aceofspades.utils.DComponent;
+import aceofspades.components.DComponent;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;

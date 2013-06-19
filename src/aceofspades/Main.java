@@ -1,8 +1,5 @@
 package aceofspades;
 
-import aceofspades.handlers.GameManager;
-import aceofspades.handlers.ServerHandler;
-import aceofspades.handlers.Session;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,99 +8,110 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.TreeMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 
 public class Main {
 
     private static Properties _prop = null;
-    private static ServerHandler _serverHandler = null;
-    private static Session _activeSession = null;
-    
     private static TreeMap<String, BufferedImage> _imgResList = new TreeMap<>();
-    private static ArrayList<GameManager> _gameList = new ArrayList<>();
-    private static MainFrame frame;
+    
+    private static ArrayList<GameData> _gameDataList = null;
+    private static SessionManager _sessionManager = null;
+    private static GameManager _gameManager = null;    
+    
+    private static MainFrame frame = null;
 
     public static void main(String[] args) {
         try {
-            _prop = new Properties();
-            _prop.load(new FileInputStream("config.prop"));
+            loadProperties();            
             loadImageResources();
-            loadGameFiles();
-            initServerHandler();
+            
             frame = MainFrame.getInstance();
+        } catch (GameException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), 
+                    "Fatal error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    private static void loadProperties() throws GameException {
+        _prop = new Properties();
+        try (FileInputStream in = new FileInputStream("config.prop")) {
+            _prop.load(in);
         } catch (IOException ex) {
-            throw new RuntimeException();
+            throw new GameException("The 'config.prop' file is corrupt or does not exist" + ex.getMessage());
         }
-    }
-    
-    private static void initServerHandler() {
-        _serverHandler = new ServerHandler();
-    }
-    
-    private static void loadGameFiles() {
-        File folder = new File("gamefiles");
-        File[] folderList = folder.listFiles();
-        
-        for (File gameFolder : folderList) {
-            GameManager game;            
-            
-            game = GameManager.createGameManager(gameFolder);
-            if (game != null) {
-                _gameList.add(game);
-            }
-        }
-        
-    }
-    
-    private static void loadImageResources() {
-        File folder = new File("res");
-        File[] fileList = folder.listFiles();
-
-        for (File imgFile : fileList) {
-            BufferedImage img;            
-            try {
-                img = ImageIO.read(imgFile);
-                _imgResList.put(imgFile.getName(), img);
-            } catch (IOException ex) {}
-            
-        }
-        
-    }    
-    
-    public static Properties getProperties() {
-        return _prop;
     }
     
     public static void writeProperties() {
-        try {
-            _prop.store(new PrintStream("config.prop"), null);
+        try (PrintStream out = new PrintStream("config.prop")) {
+            _prop.store(out, null);
         } catch (IOException ex) {
-            JOptionPane.showMessageDialog(frame,
-                "An error occured while saving the settings, applied changes "
-                    + "will be reveresed upon exiting the application.",
-                "Write error",
-                JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(frame,"An error occured while saving"
+                    + " the settings, applied changes will be reveresed upon "
+                    + "exiting the application.", "Write error",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }
     
-    
-    public static void setActiveSession(Session s) {
-        _activeSession = s;
+    public static String getProperty(String key) {
+        return _prop.getProperty(key);
     }
     
-    public static Session getActiveSession() {
-        return _activeSession;
+    public static void setProperty(String key, String value) {
+        _prop.setProperty(key, value);
+    }
+    
+    private static void loadImageResources() throws GameException {
+        File folder = new File("res", "img");
+        File[] fileList = folder.listFiles();
+        if (fileList == null) throw new GameException("The 'res/img' directory is corrupt or does not exist.");
+
+        for (File imgFile : fileList) {
+            try {
+                BufferedImage img = ImageIO.read(imgFile);
+                _imgResList.put(imgFile.getName(), img);
+            } catch (IOException ex) {}            
+        }
     }
     
     public static BufferedImage getImageResource(String name) {
         return _imgResList.get(name);
     }
-
-    public static ArrayList<GameManager> getGameManagers() {
-        return _gameList;
+    
+    public static void loadGameDataList() throws GameException {
+        _gameDataList = new ArrayList<>();
+        
+        File folder = new File("gamefiles");
+        File[] folderList = folder.listFiles();
+        if (folderList == null) throw new GameException("The 'gamefiles' directory is corrupt or does not exist.");
+        
+        for (File gameFolder : folderList) {
+            try {
+                GameData gamedata = new GameData(gameFolder);
+                _gameDataList.add(gamedata);
+            } catch (GameException | NullPointerException ex) {}
+        }
+    }
+    
+    public static ArrayList<GameData> getGameDataList() {
+        return _gameDataList;
+    }
+    
+    public static void setSessionManager(SessionManager sessionManager) {
+        _sessionManager = sessionManager;
+    }
+    
+    public static SessionManager getSessionManager() {
+        return _sessionManager;
+    }
+    
+    public static void setGameManager(GameManager gameManager) {
+        _gameManager = gameManager;
+    }
+    
+    public static GameManager getGameManager() {
+        return _gameManager;
     }
     
 }

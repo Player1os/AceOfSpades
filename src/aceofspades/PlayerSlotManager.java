@@ -1,17 +1,18 @@
-package aceofspades.handlers;
+package aceofspades;
 
+import aceofspades.SessionManager;
 import aceofspades.MainFrame;
 import aceofspades.game.AIStrategy;
 import aceofspades.game.Player;
-import aceofspades.utils.DPlayerSlot;
+import aceofspades.components.DPlayerSlot;
 import java.awt.Point;
 import java.util.ArrayList;
 
 public class PlayerSlotManager {
     private ArrayList<DPlayerSlot> _playerSlots;
-    private Session _session;
+    private SessionManager _session;
     
-    public PlayerSlotManager(int slotCount, Session session, 
+    public PlayerSlotManager(int slotCount, SessionManager session, 
             ArrayList<AIStrategy> AIStrategies, MainFrame frame) {
         _playerSlots = new ArrayList<>(slotCount);
         _session = session;

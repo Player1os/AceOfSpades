@@ -1,4 +1,4 @@
-package aceofspades.utils;
+package aceofspades.components;
 
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;

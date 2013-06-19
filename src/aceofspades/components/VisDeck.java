@@ -1,4 +1,4 @@
-package aceofspades;
+package aceofspades.components;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -8,7 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
-public class VisCardSet {
+public class VisDeck extends DComponent {
 
     public Rectangle position;
     String setClass;
@@ -18,7 +18,7 @@ public class VisCardSet {
     BufferedImage backo;
     BufferedImage backb;
 
-    public VisCardSet(int _x, int _y, String s, Color c) {
+    public VisDeck(int _x, int _y, String s, Color c) {
         position = new Rectangle(_x, _y, 50, 80);
         setClass = s;
         color = c;
@@ -30,6 +30,7 @@ public class VisCardSet {
         }
     }
 
+    @Override
     public void draw(Graphics g) {
         g.setColor(color);
         g.fillRect(position.x - 3, position.y - 3, 56, 86);

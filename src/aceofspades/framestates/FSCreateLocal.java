@@ -1,9 +1,11 @@
 package aceofspades.framestates;
 
+import aceofspades.GameData;
+import aceofspades.components.DAction;
+import aceofspades.components.DLabel;
+import aceofspades.components.DButton;
 import aceofspades.Main;
 import aceofspades.MainFrame;
-import aceofspades.handlers.*;
-import aceofspades.utils.*;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -28,9 +30,9 @@ public class FSCreateLocal extends FrameState {
         setBackgroundImage(Color.darkGray, Main.getImageResource("bgMenu.jpg"));
         
         DefaultListModel listModel = new DefaultListModel();
-        ArrayList<GameManager> gameList = Main.getGameManagers();
-        for (GameManager game : gameList) {
-            listModel.addElement(game);
+        ArrayList<GameData> gameDataList = Main.getGameDataList();
+        for (GameData gameData : gameDataList) {
+            listModel.addElement(gameData);
         }
         
         Font labelFont = new Font("SansSerif", Font.BOLD, 36);
@@ -87,14 +89,7 @@ public class FSCreateLocal extends FrameState {
         buttonBack.setFont(buttonFont, buttonFontColor);
         buttonBack.setBackground(buttonColor);
         buttonBack.setHoverBackground(buttonHoverColor);
-        buttonBack.setAction(new DAction() {
-
-            @Override
-            public void run() {
-                _frame.setFrameState(new FSMainMenu(_frame, _paneWidth, _paneHeight));
-            }
-            
-        });
+        buttonBack.setAction(new BackAction());
         
         buttonPosition.x = paneWidth - buttonDimension.width -100;
         
@@ -107,23 +102,7 @@ public class FSCreateLocal extends FrameState {
         buttonNext.setFont(buttonFont, buttonFontColor);
         buttonNext.setBackground(buttonColor);
         buttonNext.setHoverBackground(buttonHoverColor);
-        buttonNext.setAction(new DAction() {
-
-            @Override
-            public void run() {
-                Object sel = listGames.getSelectedValue();
-                if (sel == null) {
-                    return;
-                }
-                
-                LocalSession s = new LocalSession(_frame);
-                s.setGameManager((GameManager) sel);
-                Main.setActiveSession(s);
-                s.addPlayer(s.createHumanPlayer(editPlayerName.getText()));
-                _frame.setFrameState(new FSLobby(_frame, _paneWidth, _paneHeight));                
-            }
-            
-        });
+        buttonNext.setAction(new SelectGameAction());
         
         addComponent(labelTitle);
         frame.getContentPane().add(listGames);
@@ -140,4 +119,23 @@ public class FSCreateLocal extends FrameState {
         _frame.getContentPane().remove(editPlayerName);
     }
 
+    private class BackAction extends DAction {
+
+        @Override
+        public void run() {
+            _frame.setFrameState(new FSMainMenu(_frame, _paneWidth, _paneHeight));
+        }
+    }
+    
+    private class SelectGameAction extends DAction {
+
+        @Override
+        public void run() {
+            Object sel = listGames.getSelectedValue();
+            if (sel == null) {
+                return;
+            }
+            _frame.setFrameState(new FSLobby(_frame, _paneWidth, _paneHeight));                
+        }
+    }
 }

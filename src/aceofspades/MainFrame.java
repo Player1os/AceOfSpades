@@ -3,7 +3,6 @@ package aceofspades;
 import aceofspades.framestates.FrameState;
 import aceofspades.framestates.FSMainMenu;
 import java.awt.*;
-import java.util.Properties;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -12,6 +11,9 @@ public final class MainFrame extends JFrame {
     private static MainFrame _instance = null;
     private FrameState _frameState;
     private DrawPane _drawPane;
+    
+    private static int frameWidth = 1024;
+    private static int frameHeight = 800;
     
     private class DrawPane extends JPanel {
 
@@ -45,9 +47,21 @@ public final class MainFrame extends JFrame {
         
         _frameState = null;
         
-        Properties prop = Main.getProperties();
-        int frameWidth = Integer.parseInt(prop.getProperty("mainFrameWidth"));
-        int frameHeight = Integer.parseInt(prop.getProperty("mainFrameHeight"));
+        
+        try {
+            String strFrameWidth = Main.getProperty("mainFrameWidth");
+            if (strFrameWidth == null) throw new NullPointerException();
+            frameWidth = Integer.parseInt(strFrameWidth);
+            
+            String strFrameHeight = Main.getProperty("mainFrameHeight");
+            if (strFrameHeight == null) throw new NullPointerException();
+            frameHeight = Integer.parseInt(strFrameHeight);
+            
+        } catch (NullPointerException | NumberFormatException ex) {
+            Main.setProperty("mainFrameWidth", Integer.toString(frameWidth));
+            Main.setProperty("mainFrameHeight", Integer.toString(frameHeight));
+            Main.writeProperties();
+        }
         
         setResolution(new Dimension(frameWidth, frameHeight));
         setFrameState(new FSMainMenu(this, getContentPane().getWidth(), 

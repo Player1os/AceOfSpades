@@ -6,6 +6,7 @@ abstract public class Player {
     
     protected int _playerID;
     protected int _clientID;
+    protected int _ID;
     protected String _name;
     
     protected Player _nextPlayer;
@@ -14,6 +15,14 @@ abstract public class Player {
         _playerID = playerID;
         _clientID = clientID;
         _name = name;
+    }
+    
+    public int getID() {
+        return _ID;
+    }
+    
+    public void setID(int ID) {
+        _ID = ID;
     }
     
     public int getPlayerID() {

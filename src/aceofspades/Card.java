@@ -1,19 +1,21 @@
 package aceofspades;
 
+import aceofspades.components.VisCard;
+
 public class Card {
 
     protected String value;
     protected String suit;
     protected boolean visible;
     protected VisCard visual;
-    protected CardSet cardSet;
+    protected Deck _deck;
     protected int position;
 
-    public Card(String _value, String _suit, int x, int y, CardSet cardset, int position, boolean visible) {
+    public Card(String _value, String _suit, int x, int y, Deck cardset, int position, boolean visible) {
         this.value = _value;
         this.suit = _suit;
         this.visual = new VisCard(x, y, _suit, _value, visible);
-        this.cardSet = cardset;
+        this._deck = cardset;
         this.position = position;
         this.visible = visible;
     }
@@ -39,7 +41,7 @@ public class Card {
         visual.w = _visible;
     }
 
-    public void moveTo(CardSet _cardSet, int _position) {
+    public void moveTo(Deck _cardSet, int _position) {
         /*Tester tester = new Tester(cardSet, position, _cardSet, _position, new Application());
         Application.lsGame.runScriptFunction(cardSet.getCardSetClass() + "Remove", tester);
         Tester tester2 = new Tester(cardSet, position, _cardSet, _position, new Application());
@@ -53,13 +55,17 @@ public class Card {
             Application.lsGame.runScriptFunction("afterMove", tester);
         }*/
     }
+    
+    public Deck getDeck() {
+        return _deck;
+    }
 
     class Tester {
 
         boolean b;
-        CardSet oldCardset;
+        Deck oldCardset;
         int oldPosition;
-        CardSet newCardset;
+        Deck newCardset;
         int newPosition;
         /*Application app;
 
@@ -76,11 +82,11 @@ public class Card {
             return app;
         }*/
 
-        public CardSet getOldCardSet() {
+        public Deck getOldCardSet() {
             return oldCardset;
         }
 
-        public CardSet getNewCardSet() {
+        public Deck getNewCardSet() {
             return newCardset;
         }
 

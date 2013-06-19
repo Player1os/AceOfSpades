@@ -1,3 +1,4 @@
-id=2
+gameID=2
 name=Autobus
+minPlayerCount=2
 maxPlayerCount=4

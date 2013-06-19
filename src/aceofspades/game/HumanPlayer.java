@@ -1,6 +1,6 @@
 package aceofspades.game;
 
-import aceofspades.handlers.Session;
+import aceofspades.SessionManager;
 
 public class HumanPlayer extends Player{
     
@@ -11,7 +11,7 @@ public class HumanPlayer extends Player{
     
     @Override
     public String getType(int clientID) {
-        if ((_clientID == Session.MasterID) && (_playerID == Player.MasterID)) {
+        if ((_clientID == SessionManager.MasterID) && (_playerID == Player.MasterID)) {
             return "Session Host";
         } else if (clientID == _clientID) {
             if (_playerID == Player.MasterID) {
