@@ -1,20 +1,18 @@
 package aceofspades.framestates;
 
-import aceofspades.components.DAction;
-import aceofspades.components.DLabel;
-import aceofspades.components.DButton;
 import aceofspades.EditorFrame;
 import aceofspades.GameException;
 import aceofspades.Main;
 import aceofspades.MainFrame;
+import aceofspades.components.DAction;
+import aceofspades.components.DButton;
+import aceofspades.components.DLabel;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 public class FSMainMenu extends FrameState {
@@ -154,7 +152,7 @@ public class FSMainMenu extends FrameState {
                     "Fatal error", JOptionPane.ERROR_MESSAGE);
                 WindowEvent wev = new WindowEvent(_frame, WindowEvent.WINDOW_CLOSING);
                 Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(wev);
-            }            
+            }
         }
 
     }
