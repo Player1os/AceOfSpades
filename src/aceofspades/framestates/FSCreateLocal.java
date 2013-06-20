@@ -1,6 +1,6 @@
 package aceofspades.framestates;
 
-import aceofspades.GameData;
+import aceofspades.game.GameData;
 import aceofspades.Main;
 import aceofspades.MainFrame;
 import aceofspades.components.DAction;
@@ -15,6 +15,10 @@ import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 public class FSCreateLocal extends FrameState {
     
@@ -66,6 +70,7 @@ public class FSCreateLocal extends FrameState {
          */
         listGames = new JList(listModel);
         listGames.setBounds(listGamesBounds);
+        listGames.addListSelectionListener(new GameListSelection());
         
         /**
          * Player Name Label
@@ -79,6 +84,7 @@ public class FSCreateLocal extends FrameState {
          */
         editPlayerName = new JTextField();
         editPlayerName.setBounds(editPlayerBounds);
+        editPlayerName.getDocument().addDocumentListener(new PlayerNameAction());
         
         /**
          * Back Button
@@ -94,15 +100,16 @@ public class FSCreateLocal extends FrameState {
         buttonPosition.x = paneWidth - buttonDimension.width -100;
         
         /**
-         * Select Game Button
+         * Create Game Button
          */
-        buttonNext = new DButton("Select Game");
+        buttonNext = new DButton("Create Game");
+        buttonNext.setEnabled(false);
         buttonNext.setPosition(buttonPosition);
         buttonNext.setDimensions(buttonDimension);
         buttonNext.setFont(buttonFont, buttonFontColor);
         buttonNext.setBackground(buttonColor);
         buttonNext.setHoverBackground(buttonHoverColor);
-        buttonNext.setAction(new SelectGameAction());
+        buttonNext.setAction(new CreateGameAction());
         
         addComponent(labelTitle);
         frame.getContentPane().add(listGames);
@@ -118,6 +125,38 @@ public class FSCreateLocal extends FrameState {
         _frame.getContentPane().remove(listGames);
         _frame.getContentPane().remove(editPlayerName);
     }
+    
+    private class GameListSelection implements ListSelectionListener {
+
+        @Override
+        public void valueChanged(ListSelectionEvent lse) {
+            buttonNext.setEnabled((listGames.getSelectedIndex() != -1) && 
+                    (!editPlayerName.getText().isEmpty()));
+        }
+        
+    }
+    
+    private class PlayerNameAction implements DocumentListener {
+
+        @Override
+        public void insertUpdate(DocumentEvent de) {
+            buttonNext.setEnabled((listGames.getSelectedIndex() != -1) && 
+                    (!editPlayerName.getText().isEmpty()));
+        }
+
+        @Override
+        public void removeUpdate(DocumentEvent de) {
+            buttonNext.setEnabled((listGames.getSelectedIndex() != -1) && 
+                    (!editPlayerName.getText().isEmpty()));
+        }
+
+        @Override
+        public void changedUpdate(DocumentEvent de) {
+            buttonNext.setEnabled((listGames.getSelectedIndex() != -1) && 
+                    (!editPlayerName.getText().isEmpty()));
+        }
+        
+    }
 
     private class BackAction extends DAction {
 
@@ -127,14 +166,21 @@ public class FSCreateLocal extends FrameState {
         }
     }
     
-    private class SelectGameAction extends DAction {
+    private class CreateGameAction extends DAction {
 
         @Override
         public void run() {
             Object sel = listGames.getSelectedValue();
-            if (sel == null) {
+            if ((sel == null) || !(sel instanceof GameData)) {
                 return;
             }
+            
+            SessionManager s = new SessionManager(GameData);
+            s.addPlayer();
+            
+            Main.setSessionManager(s);
+            
+            
             _frame.setFrameState(new FSLobby(_frame, _paneWidth, _paneHeight));                
         }
     }

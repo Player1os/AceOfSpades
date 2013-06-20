@@ -10,21 +10,28 @@ import java.awt.event.MouseEvent;
 
 public class DButton extends DComponent {
     
+    private boolean _enabled;
+    
     private String _text;
     private Font _textFont;
     private Color _fontColor;
     private Color _backgroundColor;
     private Color _hoverBackgroundColor;
-    private Boolean _isHovered;
+    private boolean _isHovered;
     private Rectangle _bounds;
     private DAction _action;
     
     public DButton(String text) {
         _text = text;
         _isHovered = false;
+        _enabled = true;
         _bounds = new Rectangle();
         _action = null;
     }    
+    
+    public void setEnabled(boolean e) {
+        _enabled = e;
+    }
     
     public void setFont(Font f, Color c) {
         _textFont = f;
@@ -56,10 +63,14 @@ public class DButton extends DComponent {
     @Override
     public void draw(Graphics g) {
         g.setFont(_textFont);
-        if (_isHovered) {
-            g.setColor(_hoverBackgroundColor);
+        if (_enabled) {
+            if (_isHovered) {
+                g.setColor(_hoverBackgroundColor);
+            } else {
+                g.setColor(_backgroundColor);
+            }
         } else {
-            g.setColor(_backgroundColor);
+            g.setColor(new Color(150, 150, 150));
         }
         
         g.fillRect(_bounds.x, _bounds.y, _bounds.width, _bounds.height);
@@ -76,16 +87,18 @@ public class DButton extends DComponent {
     
     @Override
     public void mouseMoved(MouseEvent e) {
-        if (_bounds.contains(e.getPoint())) {
-            _isHovered = true;
-        } else {
-            _isHovered = false;
+        if (_enabled) {
+            if (_bounds.contains(e.getPoint())) {
+                _isHovered = true;
+            } else {
+                _isHovered = false;
+            }
         }
     }
     
     @Override
     public void mousePressed(MouseEvent e) {
-        if (_action != null) {
+        if (_enabled && (_action != null)) {
             if (_bounds.contains(e.getPoint())) {
                 _action.run();
             }

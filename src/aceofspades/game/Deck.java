@@ -1,17 +1,18 @@
-package aceofspades;
+package aceofspades.game;
 
-import aceofspades.components.VisDeck;
+import aceofspades.game.Card;
+import aceofspades.components.DDeck;
 import java.awt.*;
 import java.util.ArrayList;
 
 public class Deck {
 
     ArrayList<Card> Cards;
-    VisDeck visual;
+    DDeck visual;
     String _class;
 
     public Deck(int x, int y, String s, Color c) {
-        visual = new VisDeck(x, y, s, c);
+        visual = new DDeck(x, y, s, c);
         _class = s;
         Cards = new ArrayList<>();
     }
@@ -41,7 +42,7 @@ public class Deck {
     public void shuffle() {
     }
 
-    public VisDeck getVisCardSet() {
+    public DDeck getVisCardSet() {
         return visual;
     }
     

@@ -1,4 +1,5 @@
 gameID=3
 name=Solitair
+author=Wryx
 minPlayerCount=1
 maxPlayerCount=1

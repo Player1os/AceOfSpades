@@ -1,7 +1,7 @@
-package aceofspades;
+package aceofspades.game;
 
-import aceofspades.Card;
-import aceofspades.Deck;
+import aceofspades.game.Card;
+import aceofspades.game.Deck;
 import aceofspades.framestates.FSGame;
 import aceofspades.game.AIStrategy;
 import aceofspades.game.Player;

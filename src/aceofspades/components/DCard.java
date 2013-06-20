@@ -8,7 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
-public class VisCard extends DComponent{
+public class DCard extends DComponent{
 
     public Rectangle position;
     public String s;
@@ -16,7 +16,7 @@ public class VisCard extends DComponent{
     public boolean w;
     BufferedImage back;
 
-    public VisCard(int x, int y, String suit, String value, boolean visible) {
+    public DCard(int x, int y, String suit, String value, boolean visible) {
         position = new Rectangle(x, y, 50, 80);
         s = suit;
         v = value;

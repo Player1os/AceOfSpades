@@ -1,4 +1,5 @@
 gameID=1
 name=Simple Game
+author=Wryx
 minPlayerCount=1
 maxPlayerCount=2

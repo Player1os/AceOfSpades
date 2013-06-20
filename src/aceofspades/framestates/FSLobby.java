@@ -1,12 +1,11 @@
 package aceofspades.framestates;
 
-import aceofspades.GameManager;
-import aceofspades.SessionManager;
+import aceofspades.game.GameManager;
+import aceofspades.game.SessionManager;
 import aceofspades.components.DPlayerSlot;
 import aceofspades.components.DAction;
 import aceofspades.components.DLabel;
 import aceofspades.components.DButton;
-import aceofspades.PlayerSlotManager;
 import aceofspades.Main;
 import aceofspades.MainFrame;
 import java.awt.Color;
@@ -21,7 +20,6 @@ public class FSLobby extends FrameState {
     private DLabel labelTitle;
     private DButton buttonBack;
     private DButton buttonNext;
-    private PlayerSlotManager _playerSlotManager;
     
     public FSLobby(MainFrame frame, int paneWidth, int paneHeight) {
         super(frame, paneWidth, paneHeight);

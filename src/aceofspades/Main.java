@@ -1,5 +1,8 @@
 package aceofspades;
 
+import aceofspades.game.GameData;
+import aceofspades.game.GameManager;
+import aceofspades.game.SessionManager;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;

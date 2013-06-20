@@ -1,7 +1,5 @@
 package aceofspades.game;
 
-import aceofspades.SessionManager;
-
 public class HumanPlayer extends Player{
     
     public HumanPlayer(int playerID, int clientID, String name) {

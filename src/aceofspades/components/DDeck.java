@@ -8,7 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
-public class VisDeck extends DComponent {
+public class DDeck extends DComponent {
 
     public Rectangle position;
     String setClass;
@@ -18,7 +18,7 @@ public class VisDeck extends DComponent {
     BufferedImage backo;
     BufferedImage backb;
 
-    public VisDeck(int _x, int _y, String s, Color c) {
+    public DDeck(int _x, int _y, String s, Color c) {
         position = new Rectangle(_x, _y, 50, 80);
         setClass = s;
         color = c;

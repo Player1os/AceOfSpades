@@ -3,7 +3,7 @@ package aceofspades.components;
 import aceofspades.MainFrame;
 import aceofspades.game.AIStrategy;
 import aceofspades.game.Player;
-import aceofspades.SessionManager;
+import aceofspades.game.SessionManager;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;

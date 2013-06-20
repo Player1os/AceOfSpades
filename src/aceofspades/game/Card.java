@@ -1,20 +1,20 @@
-package aceofspades;
+package aceofspades.game;
 
-import aceofspades.components.VisCard;
+import aceofspades.components.DCard;
 
 public class Card {
 
     protected String value;
     protected String suit;
     protected boolean visible;
-    protected VisCard visual;
+    protected DCard visual;
     protected Deck _deck;
     protected int position;
 
     public Card(String _value, String _suit, int x, int y, Deck cardset, int position, boolean visible) {
         this.value = _value;
         this.suit = _suit;
-        this.visual = new VisCard(x, y, _suit, _value, visible);
+        this.visual = new DCard(x, y, _suit, _value, visible);
         this._deck = cardset;
         this.position = position;
         this.visible = visible;
@@ -32,7 +32,7 @@ public class Card {
         return this.visible;
     }
 
-    public VisCard getVisCard() {
+    public DCard getVisCard() {
         return visual;
     }
 

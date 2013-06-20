@@ -1,14 +1,17 @@
-package aceofspades;
+package aceofspades.game;
 
+import aceofspades.GameException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
 public class GameData {
+    private File _folder;
+    
     private int _gameID;
     private String _name;
-    private File _folder;
+    private String _author;
     private int _minPlayerCount;
     private int _maxPlayerCount;
     
@@ -34,6 +37,9 @@ public class GameData {
             _name = prop.getProperty("name");
             if (_name == null) throw new NullPointerException("'name' not found");
             
+            _author = prop.getProperty("author");
+            if (_author == null) throw new NullPointerException("'author' not found");
+            
             String strMinPlayerCount = prop.getProperty("minPlayerCount");
             if (strMinPlayerCount == null) throw new NullPointerException("'minPlayerCount' not found");
             _minPlayerCount = Integer.parseInt(strMinPlayerCount);
@@ -46,6 +52,31 @@ public class GameData {
             throw new GameException("The 'gamedata.prop' file in " + _folder.getName() + " is corrupt : " + ex.getMessage());
         }
         
+    }
+    
+    public String getName() {
+        return _name;
+    }
+    
+    public String getAuthor() {
+        return _author;
+    }
+    
+    public int getMinPlayerCount() {
+        return _minPlayerCount;
+    }
+    
+    public int getMaxPlayerCount() {
+        return _maxPlayerCount;
+    }
+    
+    @Override
+    public String toString() {
+        StringBuilder b = new StringBuilder(getName());
+        b.append(", Author : ").append(getAuthor());
+        b.append(", MinPlayerCount : ").append(getMinPlayerCount());
+        b.append(", MaxPlayerCount : ").append(getMaxPlayerCount());
+        return b.toString();
     }
     
 }
