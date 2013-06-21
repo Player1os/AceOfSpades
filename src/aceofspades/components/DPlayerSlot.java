@@ -3,7 +3,7 @@ package aceofspades.components;
 import aceofspades.MainFrame;
 import aceofspades.game.AIStrategy;
 import aceofspades.game.Player;
-import aceofspades.game.SessionManager;
+import aceofspades.game.PlayerSlot;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -15,15 +15,9 @@ import javax.swing.JComboBox;
 import javax.swing.JTextField;
 
 public class DPlayerSlot extends DComponent {
-    public final static int typeClosed = -1;
-    public final static int typeAvailable = 0;
-    public final static int typeOccupied = 1;
-
-    private int _type;
-    private Player _player;
-
-    private int _slotID;
-    private SessionManager _session;
+    private PlayerSlot _playerSlot;
+    private int _state;
+    
     private Point _position;
     private ArrayList<AIStrategy> _AIStrategies;
     private MainFrame _frame;
@@ -42,8 +36,8 @@ public class DPlayerSlot extends DComponent {
     private DLabel _lblName;
     private DLabel _lblType;
     private DLabel _lblLocation;
-    private DButton _btnChangePositionUp;
-    private DButton _btnChangePositionDown;
+    private DButton _btnMoveUp;
+    private DButton _btnMoveDown;
     private DButton _btnRemove;
 
     private JTextField _edtName;
@@ -56,13 +50,11 @@ public class DPlayerSlot extends DComponent {
 
     private ArrayList<DComponent> _activeComponents;
     
-    public DPlayerSlot(int slotID, SessionManager session, 
-            ArrayList<AIStrategy> AIStrategies, MainFrame frame) {
-        _slotID = slotID;
-        _session = session;
+    public DPlayerSlot(PlayerSlot playerSlot, ArrayList<AIStrategy> AIStrategies, MainFrame frame) {
+        _state = playerSlot.getType();
+        _playerSlot = playerSlot;
         _AIStrategies = AIStrategies;
         _frame = frame;
-        _player = null;
         _activeComponents = new ArrayList<>();
         
         Font font = new Font("SansSerif", Font.BOLD, 20);
@@ -92,53 +84,23 @@ public class DPlayerSlot extends DComponent {
         _lblLocation.setDimensions(locationDimension);
         _lblLocation.setFont(font, fontColor);
 
-        _btnChangePositionDown = new DButton("\\/");
-        _btnChangePositionDown.setDimensions(smallButtonDimension);
-        _btnChangePositionDown.setFont(font, fontColor);
-        _btnChangePositionDown.setBackground(buttonColor);
-        _btnChangePositionDown.setHoverBackground(buttonHoverColor);
-        _btnChangePositionDown.setAction(new DAction() {
-
-            @Override
-            public void run() {
-                if (_player != null) {
-                    _session.moveDown(_player.getPlayerID(), _player.getClientID());
-                }
-            }
-
-        });
+        _btnMoveDown = new DButton("\\/");
+        _btnMoveDown.setDimensions(smallButtonDimension);
+        _btnMoveDown.setFont(font, fontColor);
+        _btnMoveDown.setBackground(buttonColor);
+        _btnMoveDown.setHoverBackground(buttonHoverColor);
         
-        _btnChangePositionUp = new DButton("/\\");
-        _btnChangePositionUp.setDimensions(smallButtonDimension);
-        _btnChangePositionUp.setFont(font, fontColor);
-        _btnChangePositionUp.setBackground(buttonColor);
-        _btnChangePositionUp.setHoverBackground(buttonHoverColor);
-        _btnChangePositionUp.setAction(new DAction() {
-
-            @Override
-            public void run() {
-                if (_player != null) {
-                    _session.moveUp(_player.getPlayerID(), _player.getClientID());
-                }
-            }
-
-        });
+        _btnMoveUp = new DButton("/\\");
+        _btnMoveUp.setDimensions(smallButtonDimension);
+        _btnMoveUp.setFont(font, fontColor);
+        _btnMoveUp.setBackground(buttonColor);
+        _btnMoveUp.setHoverBackground(buttonHoverColor);
         
         _btnRemove = new DButton("X");
         _btnRemove.setDimensions(smallButtonDimension);
         _btnRemove.setFont(font, fontColor);
         _btnRemove.setBackground(buttonColor);
         _btnRemove.setHoverBackground(buttonHoverColor);
-        _btnRemove.setAction(new DAction() {
-
-            @Override
-            public void run() {
-                if (_player != null) {
-                    _session.removePlayer(_player.getPlayerID(), _player.getClientID());
-                }    
-            }
-
-        });
         
         
         _edtName = new JTextField();
@@ -155,35 +117,12 @@ public class DPlayerSlot extends DComponent {
         _btnAdd.setFont(font, fontColor);
         _btnAdd.setBackground(buttonColor);
         _btnAdd.setHoverBackground(buttonHoverColor);
-        _btnAdd.setAction(new DAction() {
-
-            @Override
-            public void run() {
-                Object o = _combType.getSelectedItem();
-                if (o instanceof AIStrategy) {
-                    _session.addPlayer(_session.createAIPlayer(
-                            _edtName.getText(), (AIStrategy)o));
-                } else {
-                    _session.addPlayer(_session.createHumanPlayer(
-                            _edtName.getText()));
-                }
-            }
-
-        });
         
         _btnClose = new DButton("Close");
         _btnClose.setDimensions(largeButtonDimension);
         _btnClose.setFont(font, fontColor);
         _btnClose.setBackground(buttonColor);
         _btnClose.setHoverBackground(buttonHoverColor);
-        _btnClose.setAction(new DAction() {
-
-            @Override
-            public void run() {
-                _session.closeSlot(_slotID);
-            }
-
-        });
         
         
         _lblClosed = new DLabel("-- Closed --");
@@ -195,14 +134,6 @@ public class DPlayerSlot extends DComponent {
         _btnOpen.setFont(font, fontColor);
         _btnOpen.setBackground(buttonColor);
         _btnOpen.setHoverBackground(buttonHoverColor);
-        _btnOpen.setAction(new DAction() {
-
-            @Override
-            public void run() {
-                _session.openSlot(_slotID);
-            }
-
-        });
     }
     
     public void setPosition(Point position) {
@@ -217,9 +148,9 @@ public class DPlayerSlot extends DComponent {
         _lblLocation.setPosition(basePos);      
         basePos.x += locationWidth + margin;
         basePos.y = _position.y + (getHeight() - smallButtonDimension.height) / 2;
-        _btnChangePositionDown.setPosition(basePos);        
+        _btnMoveDown.setPosition(basePos);        
         basePos.x += smallButtonDimension.width + margin;
-        _btnChangePositionUp.setPosition(basePos);        
+        _btnMoveUp.setPosition(basePos);        
         basePos.x += smallButtonDimension.width + margin;        
         _btnRemove.setPosition(basePos);
 
@@ -243,78 +174,80 @@ public class DPlayerSlot extends DComponent {
         basePos.y = _position.y + (getHeight() - largeButtonDimension.height) / 2;
         _btnOpen.setPosition(basePos);
     }
-
-    public void clearComponents() {
-        if (_type == typeAvailable) {
-            _frame.getContentPane().remove(_edtName);
-            _frame.getContentPane().remove(_combType);
-        }
-    }
     
     public void setOccupied(Player player, String type, 
             String location, boolean isRemovable) {
-        clearComponents();
+        if (_state == PlayerSlot.typeAvailable) {
+            _frame.getContentPane().remove(_edtName);
+            _frame.getContentPane().remove(_combType);
+        }
 
         _activeComponents.clear();
         _activeComponents.add(_lblName);
         _activeComponents.add(_lblType);
         _activeComponents.add(_lblLocation);
-        _activeComponents.add(_btnChangePositionUp);
-        _activeComponents.add(_btnChangePositionDown);
-        _activeComponents.add(_btnRemove);
+        if (isRemovable) {
+            _activeComponents.add(_btnMoveUp);
+            _activeComponents.add(_btnMoveDown);
+            _activeComponents.add(_btnRemove);
+        }
         
-        _lblName.setText(player.getName());
-        _lblType.setText(type);
-        _lblLocation.setText(location);
+        _lblName.setText(_playerSlot.getPlayer().getName());
+        _lblType.setText(_playerSlot.getPlayer().getType());
+        _lblLocation.setText(_playerSlot.getPlayer().getLocation());
         
-        _player = player;
-        _type = typeOccupied;
+        _state = PlayerSlot.typeOccupied;
     }
     
     public void setAvailable(boolean isCloseable) {
-        _player = null;
-        clearComponents();
-
         _activeComponents.clear();
         _frame.getContentPane().add(_edtName);
         _frame.getContentPane().add(_combType);
         _activeComponents.add(_btnAdd);
-        _activeComponents.add(_btnClose);
-
-        _type = typeAvailable;
+        if (isCloseable) {
+            _activeComponents.add(_btnClose);
+        }
+        
+        _state = PlayerSlot.typeAvailable;
     }
 
     public void setClosed(boolean isOpenable) {
-        _player = null;
-        clearComponents();
+        if (_playerSlot.getType() == PlayerSlot.typeAvailable) {
+            _frame.getContentPane().remove(_edtName);
+            _frame.getContentPane().remove(_combType);
+        }
 
         _activeComponents.clear();
         _activeComponents.add(_lblClosed);
-        _activeComponents.add(_btnOpen);
+        if (isOpenable) {
+            _activeComponents.add(_btnOpen);
+        }
         
-        _type = typeClosed;
-    }
-
-    public boolean isClosed() {
-        return _type == typeClosed;
-    }
-
-    public boolean isAvailable() {
-        return _type == typeAvailable;
-    }
-
-    public boolean isOccupied() {
-        return _type > typeAvailable;
+        _state = PlayerSlot.typeClosed;
     }
     
-    public void setPlayer(Player p) {
-        if (_type == typeAvailable) {
-            _player = p;
-        }
+    public void setMoveUpAction(DAction a) {
+        _btnMoveUp.setAction(a);
     }
-
-    public Player getPlayer() {
-        return _player;
+    
+    public void setMoveDownAction(DAction a) {
+        _btnMoveDown.setAction(a);
+    }
+    
+    public void setAddAction(DAction a) {
+        _btnAdd.setAction(a);
+    }
+    
+    public void setRemoveAction(DAction a) {
+        _btnRemove.setAction(a);
+    }
+    
+    public void setOpenAction(DAction a) {
+        _btnOpen.setAction(a);
+    }
+    
+    public void setCloseAction(DAction a) {
+        _btnClose.setAction(a);
     }
     
     public static int getWidth() {
@@ -334,34 +267,22 @@ public class DPlayerSlot extends DComponent {
         g.drawRect(_position.x, _position.y, 
                 DPlayerSlot.getWidth(), DPlayerSlot.getHeight());
         
-        int type = _type;
         for (DComponent component : _activeComponents) {
             component.draw(g);
-            if (type != _type) {
-                break;
-            }
         }
     }
     
     @Override
     public void mouseMoved(MouseEvent e) {
-        int type = _type;
         for (DComponent component : _activeComponents) {
             component.mouseMoved(e);
-            if (type != _type) {
-                break;
-            }
         }
     }
     
     @Override
     public void mousePressed(MouseEvent e) {
-        int type = _type;
         for (DComponent component : _activeComponents) {
             component.mousePressed(e);
-            if (type != _type) {
-                break;
-            }
         }
     }
 }

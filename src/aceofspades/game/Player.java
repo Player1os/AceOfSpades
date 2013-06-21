@@ -6,38 +6,32 @@ abstract public class Player {
     
     protected int _playerID;
     protected int _clientID;
-    protected int _ID;
+    protected int _localID;
     protected String _name;
+    protected SessionManager _session;
     
     protected Player _nextPlayer;
     
-    public Player(int playerID, int clientID, String name) {
+    public Player(SessionManager session, int playerID, int clientID, String name) {
+        _session = session;
         _playerID = playerID;
         _clientID = clientID;
         _name = name;
-    }
-    
-    public int getID() {
-        return _ID;
-    }
-    
-    public void setID(int ID) {
-        _ID = ID;
     }
     
     public int getPlayerID() {
         return _playerID;
     }
     
-    public int getClientID() {
-        return _clientID;
-    }
-    
     public String getName() {
         return _name;
     }
     
-    public abstract String getType(int clientID);
+    public String getLocation() {
+        _session.getPlayerLocation(_playerID);
+    }
+    
+    public abstract String getType();
     
     public void setNextPlayer(Player nextPlayer) {
         _nextPlayer = nextPlayer;

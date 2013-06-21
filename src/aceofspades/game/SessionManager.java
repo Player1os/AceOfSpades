@@ -1,31 +1,40 @@
 package aceofspades.game;
 
-import aceofspades.game.Player;
 import java.util.ArrayList;
 
 public class SessionManager {
     
+    public final static int MasterID = 0;
+    private int _clientID;
+    private int _clientName;
+    
     private GameData _gameData;
     private ArrayList<PlayerSlot> _playerSlots;
+    private ArrayList<Player> _players;
     
     public SessionManager(GameData gameData) {
         _gameData = gameData;
         _playerSlots = new ArrayList<>();
+        
+        for (int i = 0; i < gameData.getMaxPlayerCount(); i++) {
+            _playerSlots.add(new PlayerSlot());
+        }
     }
     
-    public boolean addPlayer(Player p) {
-        _playerList.add(p);
-        for (DPlayerSlot slot : _playerSlots) {
-            if (slot.isAvailable()) {
-                Boolean isLocal = _session.isPlayerLocal(p);
-                Boolean isRemovable = (isLocal && !p.isMaster()) ||
-                    (_session.isMasterClient() && !(p.isMaster() && isLocal));
-                slot.setOccupied(p, p.getType(_session.getClientID()), 
-                        getLocation(p), isRemovable);
-                
-                return false;
-            }
+    public int getClientID() {
+        return _clientID;
+    }
+    
+    public boolean addPlayer(int slotID, Player p) {
+        if ((slotID < 0) || (slotID >= _playerSlots.size())) {
+            return false;
         }
+        if (!_playerSlots.get(slotID).isAvailable()) {
+            return false;
+        }
+        
+        
+        _players.add(p);
         return true;
     }
     
