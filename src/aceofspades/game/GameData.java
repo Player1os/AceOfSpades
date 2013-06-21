@@ -1,6 +1,7 @@
 package aceofspades.game;
 
 import aceofspades.GameException;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -8,6 +9,7 @@ import java.util.Properties;
 
 public class GameData {
     private File _folder;
+    private BufferedImage _img;
     
     private int _gameID;
     private String _name;
@@ -31,21 +33,31 @@ public class GameData {
             }
             
             String strGameID = prop.getProperty("gameID");
-            if (strGameID == null) throw new NullPointerException("'gameID' not found");
+            if (strGameID == null) {
+                throw new NullPointerException("'gameID' not found");
+            }
             _gameID = Integer.parseInt(strGameID);
             
             _name = prop.getProperty("name");
-            if (_name == null) throw new NullPointerException("'name' not found");
+            if (_name == null) {
+                throw new NullPointerException("'name' not found");
+            }
             
             _author = prop.getProperty("author");
-            if (_author == null) throw new NullPointerException("'author' not found");
+            if (_author == null) {
+                throw new NullPointerException("'author' not found");
+            }
             
             String strMinPlayerCount = prop.getProperty("minPlayerCount");
-            if (strMinPlayerCount == null) throw new NullPointerException("'minPlayerCount' not found");
+            if (strMinPlayerCount == null) {
+                throw new NullPointerException("'minPlayerCount' not found");
+            }
             _minPlayerCount = Integer.parseInt(strMinPlayerCount);
             
             String strMaxPlayerCount = prop.getProperty("maxPlayerCount");
-            if (strMaxPlayerCount == null) throw new NullPointerException("'maxPlayerCount' not found");
+            if (strMaxPlayerCount == null) {
+                throw new NullPointerException("'maxPlayerCount' not found");
+            }
             _maxPlayerCount = Integer.parseInt(strMaxPlayerCount);
             
         } catch (IOException | NullPointerException | NumberFormatException ex) {
