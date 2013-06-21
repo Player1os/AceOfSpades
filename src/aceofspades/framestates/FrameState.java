@@ -37,7 +37,7 @@ public abstract class FrameState extends MouseAdapter {
         g2D.setRenderingHint(
             RenderingHints.KEY_TEXT_ANTIALIASING,
             RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-        g.drawImage(_imgBG, 0,0, _paneWidth, _paneHeight, _frame);
+        g.drawImage(_imgBG, 0,0, _paneWidth, _paneHeight, null);
         for (DComponent component : _DComponents) {
             component.draw(g);
         }

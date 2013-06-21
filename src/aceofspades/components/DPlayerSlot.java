@@ -177,7 +177,7 @@ public class DPlayerSlot extends DComponent {
     
     public void setOccupied(Player player, String type, 
             String location, boolean isRemovable) {
-        if (_state == PlayerSlot.typeAvailable) {
+        if (_state == PlayerSlot.typeOpen) {
             _frame.getContentPane().remove(_edtName);
             _frame.getContentPane().remove(_combType);
         }
@@ -208,11 +208,11 @@ public class DPlayerSlot extends DComponent {
             _activeComponents.add(_btnClose);
         }
         
-        _state = PlayerSlot.typeAvailable;
+        _state = PlayerSlot.typeOpen;
     }
 
     public void setClosed(boolean isOpenable) {
-        if (_playerSlot.getType() == PlayerSlot.typeAvailable) {
+        if (_playerSlot.getType() == PlayerSlot.typeOpen) {
             _frame.getContentPane().remove(_edtName);
             _frame.getContentPane().remove(_combType);
         }

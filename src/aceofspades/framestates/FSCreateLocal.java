@@ -1,11 +1,11 @@
 package aceofspades.framestates;
 
-import aceofspades.game.GameData;
 import aceofspades.Main;
 import aceofspades.MainFrame;
 import aceofspades.components.DAction;
 import aceofspades.components.DButton;
 import aceofspades.components.DLabel;
+import aceofspades.game.GameData;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;

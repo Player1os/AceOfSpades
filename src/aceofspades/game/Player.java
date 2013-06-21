@@ -1,8 +1,8 @@
 package aceofspades.game;
 
-abstract public class Player {
+public abstract class Player {
     
-    public final static int MasterID = 0;
+    private final static int MasterID = 0;
     
     protected int _playerID;
     protected int _clientID;
@@ -12,10 +12,10 @@ abstract public class Player {
     
     protected Player _nextPlayer;
     
-    public Player(SessionManager session, int playerID, int clientID, String name) {
+    public Player(SessionManager session, int clientID, int localID, String name) {
         _session = session;
-        _playerID = playerID;
         _clientID = clientID;
+        _localID = localID;
         _name = name;
     }
     
@@ -23,12 +23,20 @@ abstract public class Player {
         return _playerID;
     }
     
+    public void setPlayerID(int playerID) {
+        _playerID = playerID;
+    }
+    
+    public int getClientID() {
+        return _clientID;
+    }
+    
     public String getName() {
         return _name;
     }
     
     public String getLocation() {
-        _session.getPlayerLocation(_playerID);
+        return _session.getPlayerLocation(this);
     }
     
     public abstract String getType();
@@ -38,7 +46,14 @@ abstract public class Player {
     }
     
     public boolean isMaster() {
-        return _playerID != MasterID;
+        return _localID == MasterID;
     }
     
+    public boolean isCreator() {
+        return (_localID == MasterID) && (_clientID == MasterID);
+    }
+    
+    public boolean isLocal() {
+        return _clientID == _session.getClientID();
+    }
 }
