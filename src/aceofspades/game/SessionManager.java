@@ -3,28 +3,48 @@ package aceofspades.game;
 import java.util.ArrayList;
 
 public class SessionManager {
+    
+    private final static int MasterID = 0;
+    
+    private int _sessionID;
     private int _clientID;
-    private String _clientName;
     
     private int _localIDCounter;
     private GameData _gameData;
     private ArrayList<PlayerSlot> _playerSlots;
     private ArrayList<Player> _players;
     
-    public SessionManager(GameData gameData, int clientID, String clientName) {
+    public SessionManager(GameData gameData, int sessionID, int clientID) {
         _gameData = gameData;
+        _sessionID = sessionID;
         _clientID = clientID;
-        _clientName = clientName;
         _localIDCounter = 0;
         _playerSlots = new ArrayList<>();
+        _players = new ArrayList<>();
         
         for (int i = 0; i < gameData.getMaxPlayerCount(); i++) {
             _playerSlots.add(new PlayerSlot());
         }
     }
     
+    public int getSessionID() {
+        return _sessionID;
+    }
+    
     public int getClientID() {
         return _clientID;
+    }
+    
+    public boolean isMasterClient() {
+        return _clientID == MasterID;
+    }
+    
+    public ArrayList<PlayerSlot> getPlayerSlots() {
+        return _playerSlots;
+    }
+    
+    public GameData getGameData() {
+        return _gameData;
     }
     
     public String getPlayerLocation(Player player) {

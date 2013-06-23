@@ -1,21 +1,29 @@
 package aceofspades.game;
 
 import aceofspades.GameException;
+import aceofspades.Main;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Properties;
+import java.util.TreeMap;
+import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 
 public class GameData {
     private File _folder;
-    private BufferedImage _img;
+    private BufferedImage _icon;
+    private TreeMap<String, BufferedImage> _imgResList = new TreeMap<>();
     
     private int _gameID;
     private String _name;
     private String _author;
     private int _minPlayerCount;
     private int _maxPlayerCount;
+    
+    private ArrayList<AIStrategy> _AIStrategies;
     
     public GameData(File folder) throws GameException, NullPointerException {
         if (folder == null) {
@@ -64,6 +72,52 @@ public class GameData {
             throw new GameException("The 'gamedata.prop' file in " + _folder.getName() + " is corrupt : " + ex.getMessage());
         }
         
+        try {
+            _icon = ImageIO.read(new File(folder, "icon.jpg"));
+        } catch (IOException ex) {
+            _icon = Main.getImageResource("gameIcon.jpg");
+        }
+        
+        _imgResList = new TreeMap<>();
+        File imgfolder = new File(folder, "img");
+        if (imgfolder.exists()) {
+            File[] fileList = imgfolder.listFiles();
+            if (fileList != null) {
+                for (File imgFile : fileList) {
+                    try {
+                        BufferedImage img = ImageIO.read(imgFile);
+                        _imgResList.put(imgFile.getName(), img);
+                    } catch (IOException ex) {
+                        JOptionPane.showMessageDialog(null, "Warning the object '" +
+                            imgFile.getName() + "' located within the '" + 
+                            folder.getName() + "' Game Data folder is not a "
+                            + "valid Image", "Read error", JOptionPane.WARNING_MESSAGE);
+                    }            
+                }
+            }
+        }
+        
+        _AIStrategies = new ArrayList<>();
+        File aifolder = new File(folder, "ai");
+        if (aifolder.exists()) {
+            File[] fileList = aifolder.listFiles();
+            if (fileList != null) {
+                for (File aiFile : fileList) {
+                    try {
+                        _AIStrategies.add(new AIStrategy(aiFile));
+                    } catch (NullPointerException | NumberFormatException ex) {
+                        JOptionPane.showMessageDialog(null, "Warning the object '" +
+                            aiFile.getName() + "' located within the '" + 
+                            folder.getName() + "' Game Data folder is not a "
+                            + "valid AI File", "Read error", JOptionPane.WARNING_MESSAGE);
+                    }
+                }
+            }
+        }
+    }
+    
+    public int getGameID() {
+        return _gameID;
     }
     
     public String getName() {
@@ -82,13 +136,21 @@ public class GameData {
         return _maxPlayerCount;
     }
     
+    public ArrayList<AIStrategy> getAIStrategies() {
+        return _AIStrategies;
+    }
+    
+    public BufferedImage getIcon() {
+        return _icon;
+    }
+    
+    public BufferedImage getImageResource(String name) {
+        return _imgResList.get(name);
+    }
+    
     @Override
     public String toString() {
-        StringBuilder b = new StringBuilder(getName());
-        b.append(", Author : ").append(getAuthor());
-        b.append(", MinPlayerCount : ").append(getMinPlayerCount());
-        b.append(", MaxPlayerCount : ").append(getMaxPlayerCount());
-        return b.toString();
+        return getName();
     }
     
 }

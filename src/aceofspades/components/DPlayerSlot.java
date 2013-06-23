@@ -133,7 +133,11 @@ public class DPlayerSlot extends DComponent {
         _btnOpen.setDimensions(largeButtonDimension);
         _btnOpen.setFont(font, fontColor);
         _btnOpen.setBackground(buttonColor);
-        _btnOpen.setHoverBackground(buttonHoverColor);
+        _btnOpen.setHoverBackground(buttonHoverColor);       
+    }
+    
+    public PlayerSlot getPlayerSlot() {
+        return _playerSlot;
     }
     
     public void setPosition(Point position) {
@@ -175,12 +179,8 @@ public class DPlayerSlot extends DComponent {
         _btnOpen.setPosition(basePos);
     }
     
-    public void setOccupied(Player player, String type, 
-            String location, boolean isRemovable) {
-        if (_state == PlayerSlot.typeOpen) {
-            _frame.getContentPane().remove(_edtName);
-            _frame.getContentPane().remove(_combType);
-        }
+    public void setOccupied(boolean isRemovable) {
+        clearComponents();
 
         _activeComponents.clear();
         _activeComponents.add(_lblName);
@@ -199,7 +199,9 @@ public class DPlayerSlot extends DComponent {
         _state = PlayerSlot.typeOccupied;
     }
     
-    public void setAvailable(boolean isCloseable) {
+    public void setOpen(boolean isCloseable) {
+        clearComponents();
+        
         _activeComponents.clear();
         _frame.getContentPane().add(_edtName);
         _frame.getContentPane().add(_combType);
@@ -212,10 +214,7 @@ public class DPlayerSlot extends DComponent {
     }
 
     public void setClosed(boolean isOpenable) {
-        if (_playerSlot.getType() == PlayerSlot.typeOpen) {
-            _frame.getContentPane().remove(_edtName);
-            _frame.getContentPane().remove(_combType);
-        }
+        clearComponents();
 
         _activeComponents.clear();
         _activeComponents.add(_lblClosed);
@@ -256,6 +255,13 @@ public class DPlayerSlot extends DComponent {
 
     public static int getHeight() {
         return slotDimention.height;
+    }
+    
+    public void clearComponents() {
+        if (_state == PlayerSlot.typeOpen) {
+            _frame.getContentPane().remove(_edtName);
+            _frame.getContentPane().remove(_combType);
+        }
     }
 
     @Override

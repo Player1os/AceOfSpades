@@ -31,23 +31,27 @@ public class DLabel extends DComponent {
         _showBorder = false;
     }
 
+    public String getText() {
+        return _text;
+    }
+    
     public void setText(String text) {
         _text = text;
     }
     
-    public void setPosition(Point p) {
-        _bounds.x = p.x;
-        _bounds.y = p.y;
+    public void setPosition(Point position) {
+        _bounds.x = position.x;
+        _bounds.y = position.y;
     }
     
-    public void setDimensions(Dimension d) {
-        _bounds.width = d.width;
-        _bounds.height = d.height;
+    public void setDimensions(Dimension dimension) {
+        _bounds.width = dimension.width;
+        _bounds.height = dimension.height;
     }
     
-    public void setFont(Font f, Color c) {
-        _textFont = f;
-        _fontColor = c;
+    public void setFont(Font font, Color color) {
+        _textFont = font;
+        _fontColor = color;
     }
 
     public void setAlignment(int align) {
@@ -58,13 +62,13 @@ public class DLabel extends DComponent {
         
     }
     
-    public void showBorder(boolean b) {
-        _showBorder = b;
+    public void showBorder(boolean showBorder) {
+        _showBorder = showBorder;
         
     }
     
-    public void setBorderColor(Color c) {
-        _borderColor = c;
+    public void setBorderColor(Color color) {
+        _borderColor = color;
     }
     
     @Override

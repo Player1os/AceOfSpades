@@ -12,8 +12,8 @@ public final class MainFrame extends JFrame {
     private FrameState _frameState;
     private DrawPane _drawPane;
     
-    private static int frameWidth = 1024;
-    private static int frameHeight = 800;
+    private static int _frameWidth = 1024;
+    private static int _frameHeight = 800;
     
     private class DrawPane extends JPanel {
 
@@ -50,20 +50,24 @@ public final class MainFrame extends JFrame {
         
         try {
             String strFrameWidth = Main.getProperty("mainFrameWidth");
-            if (strFrameWidth == null) throw new NullPointerException();
-            frameWidth = Integer.parseInt(strFrameWidth);
+            if (strFrameWidth == null) {
+                throw new NullPointerException();
+            }
+            _frameWidth = Integer.parseInt(strFrameWidth);
             
             String strFrameHeight = Main.getProperty("mainFrameHeight");
-            if (strFrameHeight == null) throw new NullPointerException();
-            frameHeight = Integer.parseInt(strFrameHeight);
+            if (strFrameHeight == null) {
+                throw new NullPointerException();
+            }
+            _frameHeight = Integer.parseInt(strFrameHeight);
             
         } catch (NullPointerException | NumberFormatException ex) {
-            Main.setProperty("mainFrameWidth", Integer.toString(frameWidth));
-            Main.setProperty("mainFrameHeight", Integer.toString(frameHeight));
+            Main.setProperty("mainFrameWidth", Integer.toString(_frameWidth));
+            Main.setProperty("mainFrameHeight", Integer.toString(_frameHeight));
             Main.writeProperties();
         }
         
-        setResolution(new Dimension(frameWidth, frameHeight));
+        setResolution(new Dimension(_frameWidth, _frameHeight));
         setFrameState(new FSMainMenu(this, getContentPane().getWidth(), 
                         getContentPane().getHeight()));
         
