@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Properties;
 import java.util.TreeMap;
 import javax.imageio.ImageIO;
+import javax.script.Invocable;
 import javax.swing.JOptionPane;
 
 public class GameData {
@@ -134,6 +135,10 @@ public class GameData {
     
     public int getMaxPlayerCount() {
         return _maxPlayerCount;
+    }
+    
+    public Invocable getEngine() {
+        return null;
     }
     
     public ArrayList<AIStrategy> getAIStrategies() {
