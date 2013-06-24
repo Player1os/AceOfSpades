@@ -11,10 +11,13 @@ public class GameManager {
     private ArrayList<Player> _players;
     private ArrayList<Deck> deckList;
     
-    public GameManager(GameData gameData, ArrayList<Player> players) throws ScriptException, NoSuchMethodException {
+    public GameManager(GameData gameData, ArrayList<Player> players) {
         _engine = gameData.getEngine();
         _players = players;
-        deckList = new ArrayList<>();
+        deckList = new ArrayList<>();        
+    }
+    
+    public void startGame() throws ScriptException, NoSuchMethodException {
         _engine.invokeFunction("gameInit", this);
     }
 

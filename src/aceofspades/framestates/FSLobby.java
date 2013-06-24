@@ -11,10 +11,13 @@ import aceofspades.components.DSessionInfo;
 import aceofspades.components.DSlot;
 import aceofspades.components.DSlotsAction;
 import aceofspades.game.AIStrategy;
+import aceofspades.game.GameManager;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Point;
+import javax.script.ScriptException;
+import javax.swing.JOptionPane;
 
 public class FSLobby extends FrameState {
     
@@ -148,8 +151,16 @@ public class FSLobby extends FrameState {
     private class StartAction extends DAction {
         @Override
         public void run() {
-            Main.setGameManager(_sessionManager.createGameManager());
-            _frame.setFrameState(new FSGame(_frame, _paneWidth, _paneHeight));
+            try {
+                GameManager gm = _sessionManager.createGameManager();
+                gm.startGame();
+                Main.setGameManager(gm);
+                _frame.setFrameState(new FSGame(_frame, _paneWidth, _paneHeight));
+            } catch (ScriptException | NoSuchMethodException ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage(),
+                    "Game error", JOptionPane.ERROR_MESSAGE);
+                _frame.setFrameState(new FSMainMenu(_frame, _paneWidth, _paneHeight));
+            }
         }
     }
     
