@@ -1,7 +1,7 @@
 package aceofspades.game;
 
-import aceofspades.game.Card;
 import aceofspades.components.DDeck;
+
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -10,6 +10,7 @@ public class Deck {
     ArrayList<Card> Cards;
     DDeck visual;
     String _class;
+    String _owner;
 
     public Deck(int x, int y, String s, Color c) {
         visual = new DDeck(x, y, s, c);
@@ -45,10 +46,21 @@ public class Deck {
     public DDeck getVisCardSet() {
         return visual;
     }
-    
+
     @Override
     public String toString() {
         return _class;
     }
-    
+
+    public void setOwner(String owner) {
+        _owner = owner;
+    }
+
+    public void setClass(String c) {
+        _class = c;
+    }
+
+    public String getType() {
+        return _class;
+    }
 }
