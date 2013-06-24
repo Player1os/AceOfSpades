@@ -1,66 +1,102 @@
 package aceofspades.game;
 
 import aceofspades.components.DDeck;
-
-import java.awt.*;
+import java.awt.Point;
 import java.util.ArrayList;
 
 public class Deck {
 
-    ArrayList<Card> Cards;
-    DDeck visual;
-    String _class;
-    String _owner;
+    protected int _deckID;
+    protected ArrayList<Card> _cards;
+    protected ArrayList<Boolean> _ownership;
+    protected String _type;
+    
+    protected Point _position;
 
-    public Deck(int x, int y, String s, Color c) {
-        visual = new DDeck(x, y, s, c);
-        _class = s;
-        Cards = new ArrayList<>();
-    }
-
-    public void addCard(int _pos, Card _card) {
-        this.Cards.add(_pos, _card);
-        for (int i = _pos; i < Cards.size(); i++) {
-            this.Cards.get(i).position = i;
+    public Deck(int deckID, String type, int playerCount) {
+        _deckID = deckID;
+        _type = type;
+        
+        _cards = new ArrayList<>();
+        _ownership = new ArrayList<>();
+        _ownership.ensureCapacity(playerCount);
+        for (int i = 0; i < playerCount; i++) {
+            _ownership.add(false);
         }
     }
 
-    public void removeCard(int _pos) {
-        this.Cards.remove(_pos);
-        for (int i = _pos; i < Cards.size(); i++) {
-            this.Cards.get(i).position = i;
+    public void addCard(int deckPosition, Card card) {
+        _cards.add(deckPosition, card);
+        card.addToDeck(this, deckPosition);
+        for (int i = deckPosition; i < _cards.size(); i++) {
+            _cards.get(i).addToDeck(this, i);
         }
     }
 
-    public Card getCard(int _pos) {
-        return this.Cards.get(_pos);
+    public void removeCard(int deckPosition) {
+        _cards.remove(deckPosition);
+        for (int i = deckPosition; i < _cards.size(); i++) {
+            this._cards.get(i).addToDeck(this, i);
+        }
+    }
+
+    public ArrayList<Card> getCards() {
+        return _cards;
+    }
+    
+    public Card getCard(int deckPosition) {
+        return _cards.get(deckPosition);
     }
 
     public int getCardCount() {
-        return Cards.size();
+        return _cards.size();
     }
 
     public void shuffle() {
+        int n = _cards.size();
+        for (int j = 0; j < n; j++) {
+            for (int i = 0; i < n; i++) {
+                int change = (i + new Double(Math.random()).intValue()) % n;
+                Card helper = _cards.get(i);
+                _cards.set(i, _cards.get(change));
+                _cards.set(change, helper);
+            }
+        }
     }
 
-    public DDeck getVisCardSet() {
-        return visual;
+    public DDeck getDDeck() {
+        DDeck dDeck = new DDeck(this);
+        dDeck.setPosition(_deckID, _deckID);
+        dDeck.setImage();        
+        return dDeck;
+    }
+    
+    public void setDDeckPosition(Point position) {
+        _position = position;
     }
 
     @Override
     public String toString() {
-        return _class;
+        return _type + Integer.toString(_deckID);
+    }
+    
+    public boolean isOwner(int playerID) {
+        return _ownership.get(playerID);
     }
 
-    public void setOwner(String owner) {
-        _owner = owner;
+    public void addOwner(int playerID) {
+        _ownership.add(playerID, true);
+    }
+    
+    public void removeOwner(int playerID) {
+        _ownership.add(playerID, false);
     }
 
-    public void setClass(String c) {
-        _class = c;
+    public void setType(String type) {
+        _type = type;
     }
 
     public String getType() {
-        return _class;
+        return _type;
     }
 }
