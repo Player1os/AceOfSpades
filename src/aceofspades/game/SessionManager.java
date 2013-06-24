@@ -3,28 +3,64 @@ package aceofspades.game;
 import java.util.ArrayList;
 
 public class SessionManager {
+    
+    private final static int MasterID = 0;
+    
+    private int _sessionID;
     private int _clientID;
-    private String _clientName;
     
     private int _localIDCounter;
     private GameData _gameData;
-    private ArrayList<PlayerSlot> _playerSlots;
+    private ArrayList<Slot> _playerSlots;
     private ArrayList<Player> _players;
     
-    public SessionManager(GameData gameData, int clientID, String clientName) {
+    public SessionManager(GameData gameData, int sessionID, int clientID) {
         _gameData = gameData;
+        _sessionID = sessionID;
         _clientID = clientID;
-        _clientName = clientName;
         _localIDCounter = 0;
         _playerSlots = new ArrayList<>();
+        _players = new ArrayList<>();
         
         for (int i = 0; i < gameData.getMaxPlayerCount(); i++) {
-            _playerSlots.add(new PlayerSlot());
+            _playerSlots.add(new Slot(i));
         }
+    }
+    
+    public int getSessionID() {
+        return _sessionID;
     }
     
     public int getClientID() {
         return _clientID;
+    }
+    
+    public boolean isMasterClient() {
+        return _clientID == MasterID;
+    }
+    
+    public ArrayList<Slot> getPlayerSlots() {
+        return _playerSlots;
+    }
+    
+    public ArrayList<Player> getPlayers() {
+        return _players;
+    }
+    
+    public int getOpenSlotCount() {
+        int result = 0;
+        
+        for (Slot s : _playerSlots) {
+            if (s.isOpen()) {
+                result++;
+            }
+        }
+        
+        return result;
+    }
+    
+    public GameData getGameData() {
+        return _gameData;
     }
     
     public String getPlayerLocation(Player player) {
@@ -149,6 +185,25 @@ public class SessionManager {
         AIPlayer player = new AIPlayer(this, _clientID, _localIDCounter, name, strategy);
         _localIDCounter++;
         return player;
+    }
+    
+    public GameManager createGameManager() {
+        if (_players.size() < _gameData.getMinPlayerCount()) {
+            return null;
+        }
+        
+        ArrayList<Player> players = new ArrayList<>();
+        
+        for (int i = 0; i < _playerSlots.size(); i++) {
+            Slot s = _playerSlots.get(i);
+            if (s.isOccupied()) {
+                Player p = s.getPlayer();
+                p.setPlayerID(i);
+                players.add(p);
+            }
+        }        
+        
+        return new GameManager(_gameData, players);
     }
 
 }

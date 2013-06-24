@@ -17,7 +17,7 @@ import javax.swing.JOptionPane;
 public class Main {
 
     private static Properties _prop = null;
-    private static TreeMap<String, BufferedImage> _imgResList = new TreeMap<>();
+    private static TreeMap<String, BufferedImage> _imgResList = null;
     
     private static ArrayList<GameData> _gameDataList = null;
     private static SessionManager _sessionManager = null;
@@ -50,7 +50,7 @@ public class Main {
         try (PrintStream out = new PrintStream("config.prop")) {
             _prop.store(out, null);
         } catch (IOException ex) {
-            JOptionPane.showMessageDialog(frame,"An error occured while saving"
+            JOptionPane.showMessageDialog(null, "An error occured while saving"
                     + " the settings, applied changes will be reveresed upon "
                     + "exiting the application.", "Write error",
                     JOptionPane.ERROR_MESSAGE);
@@ -68,7 +68,11 @@ public class Main {
     private static void loadImageResources() throws GameException {
         File folder = new File("res", "img");
         File[] fileList = folder.listFiles();
-        if (fileList == null) throw new GameException("The 'res/img' directory is corrupt or does not exist.");
+        if (fileList == null) {
+            throw new GameException("The 'res/img' directory is corrupt or does not exist.");
+        }
+        
+        _imgResList = new TreeMap<>();
 
         for (File imgFile : fileList) {
             try {
@@ -87,13 +91,20 @@ public class Main {
         
         File folder = new File("gamefiles");
         File[] folderList = folder.listFiles();
-        if (folderList == null) throw new GameException("The 'gamefiles' directory is corrupt or does not exist.");
+        if (folderList == null) {
+            throw new GameException("The 'gamefiles' directory is corrupt or does not exist.");
+        }
         
         for (File gameFolder : folderList) {
             try {
                 GameData gamedata = new GameData(gameFolder);
                 _gameDataList.add(gamedata);
-            } catch (GameException | NullPointerException ex) {}
+            } catch (GameException | NullPointerException ex) {
+                JOptionPane.showMessageDialog(null, "Warning the object " +
+                    gameFolder.getName() + " located within the 'gamefiles' " +
+                    " is not a valid Game Data folder.", "Read error",
+                    JOptionPane.WARNING_MESSAGE);
+            }
         }
     }
     

@@ -17,13 +17,13 @@ import javax.swing.JOptionPane;
 
 public class FSMainMenu extends FrameState {
 
-    private DLabel labelTitle;
-    private DButton buttonLocalGame;
-    private DButton buttonHostOnlineGame;
-    private DButton buttonJoinOnlineGame;
-    private DButton buttonOptions;
-    private DButton buttonEditor;
-    private DButton buttonQuit;
+    private DLabel _labelTitle;
+    private DButton _buttonLocalGame;
+    private DButton _buttonHostOnlineGame;
+    private DButton _buttonJoinOnlineGame;
+    private DButton _buttonOptions;
+    private DButton _buttonEditor;
+    private DButton _buttonQuit;
     
     public FSMainMenu(MainFrame frame) {
         this(frame, frame.getContentPane().getWidth(), 
@@ -34,9 +34,9 @@ public class FSMainMenu extends FrameState {
         super(frame, paneWidth, paneHeight);
         setBackgroundImage(Color.darkGray, Main.getImageResource("bgMenu.jpg"));
         
-        Font labelFont = new Font("SansSerif", Font.BOLD, 36);
-        Color labelFontColor = Color.white;
-        Point labelPosition = new Point(paneWidth / 2, 25);
+        Font titleFont = new Font("SansSerif", Font.BOLD, 50);
+        Color titleFontColor = Color.white;
+        Point titlePosition = new Point(paneWidth / 2, 50);
         
         Font buttonFont = new Font("SansSerif", Font.BOLD, 20);
         Color buttonFontColor = Color.white;
@@ -45,99 +45,99 @@ public class FSMainMenu extends FrameState {
         Dimension buttonDimension = new Dimension(300, 60);
         int buttonDistance = buttonDimension.height + 15;
         Point buttonPosition = 
-                new Point(80, (paneHeight - buttonDistance * 6) / 2);
+                new Point(80, (titlePosition.y + paneHeight - buttonDistance * 6) / 2);
         
         /**
          * Main Menu Title
          */
-        labelTitle = new DLabel("Main Menu");
-        labelTitle.setPosition(labelPosition);
-        labelTitle.setAlignment(DLabel.centerAlign);
-        labelTitle.setFont(labelFont, labelFontColor);
+        _labelTitle = new DLabel("Main Menu");
+        _labelTitle.setPosition(titlePosition);
+        _labelTitle.setAlignment(DLabel.centerAlign);
+        _labelTitle.setFont(titleFont, titleFontColor);
 
         /**
          * Local Game Button
          */
-        buttonLocalGame = new DButton("Create Local Game");
-        buttonLocalGame.setPosition(buttonPosition);
-        buttonLocalGame.setDimensions(buttonDimension);
-        buttonLocalGame.setFont(buttonFont, buttonFontColor);
-        buttonLocalGame.setBackground(buttonColor);
-        buttonLocalGame.setHoverBackground(buttonHoverColor);
-        buttonLocalGame.setAction(new CreateLocalGameAction());
+        _buttonLocalGame = new DButton("Create Local Game");
+        _buttonLocalGame.setPosition(buttonPosition);
+        _buttonLocalGame.setDimensions(buttonDimension);
+        _buttonLocalGame.setFont(buttonFont, buttonFontColor);
+        _buttonLocalGame.setBackground(buttonColor);
+        _buttonLocalGame.setHoverBackground(buttonHoverColor);
+        _buttonLocalGame.setAction(new CreateLocalGameAction());
 
         buttonPosition.y += buttonDistance;
         
         /**
          * Create Online Game Button
          */
-        buttonHostOnlineGame = new DButton("Create Online Game");
-        buttonHostOnlineGame.setPosition(buttonPosition);
-        buttonHostOnlineGame.setDimensions(buttonDimension);
-        buttonHostOnlineGame.setFont(buttonFont, buttonFontColor);
-        buttonHostOnlineGame.setBackground(buttonColor);
-        buttonHostOnlineGame.setHoverBackground(buttonHoverColor);
-        buttonHostOnlineGame.setAction(new CreateOnlineGameAction());
+        _buttonHostOnlineGame = new DButton("Create Online Game");
+        _buttonHostOnlineGame.setPosition(buttonPosition);
+        _buttonHostOnlineGame.setDimensions(buttonDimension);
+        _buttonHostOnlineGame.setFont(buttonFont, buttonFontColor);
+        _buttonHostOnlineGame.setBackground(buttonColor);
+        _buttonHostOnlineGame.setHoverBackground(buttonHoverColor);
+        _buttonHostOnlineGame.setAction(new CreateOnlineGameAction());
         
         buttonPosition.y += buttonDistance;
         
         /**
          * Join Online Game Button
          */
-        buttonJoinOnlineGame = new DButton("Join Online Game");
-        buttonJoinOnlineGame.setPosition(buttonPosition);
-        buttonJoinOnlineGame.setDimensions(buttonDimension);
-        buttonJoinOnlineGame.setFont(buttonFont, buttonFontColor);
-        buttonJoinOnlineGame.setBackground(buttonColor);
-        buttonJoinOnlineGame.setHoverBackground(buttonHoverColor);
-        buttonJoinOnlineGame.setAction(new JoinOnlineGameAction());
+        _buttonJoinOnlineGame = new DButton("Join Online Game");
+        _buttonJoinOnlineGame.setPosition(buttonPosition);
+        _buttonJoinOnlineGame.setDimensions(buttonDimension);
+        _buttonJoinOnlineGame.setFont(buttonFont, buttonFontColor);
+        _buttonJoinOnlineGame.setBackground(buttonColor);
+        _buttonJoinOnlineGame.setHoverBackground(buttonHoverColor);
+        _buttonJoinOnlineGame.setAction(new JoinOnlineGameAction());
 
         buttonPosition.y += buttonDistance;
         
         /**
          * Options Button
          */
-        buttonOptions = new DButton("Options");
-        buttonOptions.setPosition(buttonPosition);
-        buttonOptions.setDimensions(buttonDimension);
-        buttonOptions.setFont(buttonFont, buttonFontColor);
-        buttonOptions.setBackground(buttonColor);
-        buttonOptions.setHoverBackground(buttonHoverColor);
-        buttonOptions.setAction(new OptionsAction());
+        _buttonOptions = new DButton("Options");
+        _buttonOptions.setPosition(buttonPosition);
+        _buttonOptions.setDimensions(buttonDimension);
+        _buttonOptions.setFont(buttonFont, buttonFontColor);
+        _buttonOptions.setBackground(buttonColor);
+        _buttonOptions.setHoverBackground(buttonHoverColor);
+        _buttonOptions.setAction(new OptionsAction());
 
         buttonPosition.y += buttonDistance;
         
         /**
          * Game Editor Button
          */
-        buttonEditor = new DButton("Game Editor");
-        buttonEditor.setPosition(buttonPosition);
-        buttonEditor.setDimensions(buttonDimension);
-        buttonEditor.setFont(buttonFont, buttonFontColor);
-        buttonEditor.setBackground(buttonColor);
-        buttonEditor.setHoverBackground(buttonHoverColor);
-        buttonEditor.setAction(new EditorAction());
+        _buttonEditor = new DButton("Game Editor");
+        _buttonEditor.setPosition(buttonPosition);
+        _buttonEditor.setDimensions(buttonDimension);
+        _buttonEditor.setFont(buttonFont, buttonFontColor);
+        _buttonEditor.setBackground(buttonColor);
+        _buttonEditor.setHoverBackground(buttonHoverColor);
+        _buttonEditor.setAction(new EditorAction());
 
         buttonPosition.y += buttonDistance;
         
         /**
          * Quit Button
          */
-        buttonQuit = new DButton("Quit Game");
-        buttonQuit.setPosition(buttonPosition);
-        buttonQuit.setDimensions(buttonDimension);
-        buttonQuit.setFont(buttonFont, buttonFontColor);
-        buttonQuit.setBackground(buttonColor);
-        buttonQuit.setHoverBackground(buttonHoverColor);
-        buttonQuit.setAction(new QuitAction());
+        _buttonQuit = new DButton("Quit Game");
+        _buttonQuit.setPosition(buttonPosition);
+        _buttonQuit.setDimensions(buttonDimension);
+        _buttonQuit.setFont(buttonFont, buttonFontColor);
+        _buttonQuit.setBackground(buttonColor);
+        _buttonQuit.setHoverBackground(buttonHoverColor);
+        _buttonQuit.setAction(new QuitAction());
         
-        addComponent(labelTitle);
-        addComponent(buttonLocalGame);
-        addComponent(buttonHostOnlineGame);
-        addComponent(buttonJoinOnlineGame);
-        addComponent(buttonOptions);
-        addComponent(buttonEditor);
-        addComponent(buttonQuit);
+        addComponent(_labelTitle);
+        addComponent(_buttonLocalGame);
+        addComponent(_buttonHostOnlineGame);
+        addComponent(_buttonJoinOnlineGame);
+        addComponent(_buttonOptions);
+        addComponent(_buttonEditor);
+        addComponent(_buttonQuit);
     }
     
     private class CreateLocalGameAction extends DAction {

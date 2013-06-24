@@ -29,35 +29,35 @@ public class DButton extends DComponent {
         _action = null;
     }    
     
-    public void setEnabled(boolean e) {
-        _enabled = e;
+    public void setEnabled(boolean enabled) {
+        _enabled = enabled;
     }
     
-    public void setFont(Font f, Color c) {
-        _textFont = f;
-        _fontColor = c;
+    public void setFont(Font font, Color color) {
+        _textFont = font;
+        _fontColor = color;
     }
     
-    public void setPosition(Point p) {
-        _bounds.x = p.x;
-        _bounds.y = p.y;
+    public void setPosition(Point position) {
+        _bounds.x = position.x;
+        _bounds.y = position.y;
     }
     
-    public void setDimensions(Dimension d) {
-        _bounds.width = d.width;
-        _bounds.height = d.height;
+    public void setDimensions(Dimension dimension) {
+        _bounds.width = dimension.width;
+        _bounds.height = dimension.height;
     }
     
-    public void setBackground(Color c) {
-        _backgroundColor = c;
+    public void setBackground(Color color) {
+        _backgroundColor = color;
     }
     
-    public void setHoverBackground(Color c) {
-        _hoverBackgroundColor = c;
+    public void setHoverBackground(Color color) {
+        _hoverBackgroundColor = color;
     }
     
-    public void setAction(DAction a) {
-        _action = a;
+    public void setAction(DAction action) {
+        _action = action;
     }
     
     @Override
