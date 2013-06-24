@@ -1,17 +1,16 @@
 package aceofspades.framestates;
 
-import aceofspades.game.SessionManager;
-import aceofspades.components.DAction;
-import aceofspades.components.DLabel;
-import aceofspades.components.DButton;
 import aceofspades.Main;
 import aceofspades.MainFrame;
-import aceofspades.components.DSlotManager;
+import aceofspades.components.DAction;
+import aceofspades.components.DButton;
+import aceofspades.components.DLabel;
 import aceofspades.components.DSessionInfo;
-import aceofspades.components.DSlot;
+import aceofspades.components.DSlotManager;
 import aceofspades.components.DSlotsAction;
 import aceofspades.game.AIStrategy;
 import aceofspades.game.GameManager;
+import aceofspades.game.SessionManager;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -152,9 +151,9 @@ public class FSLobby extends FrameState {
         @Override
         public void run() {
             try {
-                GameManager gm = _sessionManager.createGameManager();
-                gm.startGame();
-                Main.setGameManager(gm);
+                GameManager gameManager = _sessionManager.createGameManager();
+                gameManager.startGame();
+                Main.setGameManager(gameManager);
                 _frame.setFrameState(new FSGame(_frame, _paneWidth, _paneHeight));
             } catch (ScriptException | NoSuchMethodException ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage(),

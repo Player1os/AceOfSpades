@@ -1,5 +1,6 @@
 package aceofspades.components;
 
+import aceofspades.game.Card;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
@@ -16,7 +17,7 @@ public class DCard extends DComponent{
     public boolean w;
     BufferedImage back;
 
-    public DCard(int x, int y, String suit, String value, boolean visible) {
+    public DCard(Card card) {
         position = new Rectangle(x, y, 50, 80);
         s = suit;
         v = value;
@@ -25,6 +26,16 @@ public class DCard extends DComponent{
             back = ImageIO.read(new File("res/card_back.jpg"));
         } catch (IOException ex) {
         }
+    }
+    
+    public void setPosition(int _x, int _y) {
+        position.x = _x;
+        position.y = _y;
+    }
+    
+    public void setDimension(int _x, int _y) {
+        position.x = _x;
+        position.y = _y;
     }
 
     @Override
@@ -58,10 +69,5 @@ public class DCard extends DComponent{
         } else {
             g.drawImage(back, position.x, position.y, null);
         }
-    }
-
-    public void setPosition(int _x, int _y) {
-        position.x = _x;
-        position.y = _y;
     }
 }

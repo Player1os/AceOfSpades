@@ -1,45 +1,69 @@
 package aceofspades.game;
 
 import aceofspades.components.DCard;
+import java.util.ArrayList;
 
 public class Card {
 
-    protected String value;
-    protected String suit;
-    protected boolean visible;
-    protected DCard visual;
+    protected int _cardID;
+    protected String _value;
+    protected String _suit;
+    
+    protected int _deckPosition;
     protected Deck _deck;
-    protected int position;
-    protected boolean[] visibility;
+    protected ArrayList<Boolean> _visibility;
 
-    public Card(String _value, String _suit, int x, int y, Deck cardset, int position, int playerCount) {
-        this.value = _value;
-        this.suit = _suit;
-        this.visual = new DCard(x, y, _suit, _value, visible);
-        this._deck = cardset;
-        this.position = position;
-        this.visibility = new boolean[playerCount];
+    public Card(int cardID, String value, String suit, int playerCount) {
+        _cardID = cardID;
+        _value = value;
+        _suit = suit;
+        
+        _visibility = new ArrayList<>();
+        _visibility.ensureCapacity(playerCount);
+        for (int i = 0; i < playerCount; i++) {
+            _visibility.add(false);
+        }
+    }
+    
+    public int getCardID() {
+        return _cardID;
     }
 
     public String getValue() {
-        return this.value;
+        return _value;
     }
 
     public String getSuit() {
-        return this.suit;
+        return _suit;
+    }
+    
+    public boolean isVisible(int playerID) {
+        return _visibility.get(playerID);
     }
 
-    public Boolean getVisible() {
-        return this.visible;
+    public void setVisible(int playerID) {
+        _visibility.set(playerID, true);
+    }
+    
+    public void unsetVisible(int playerID) {
+        _visibility.set(playerID, false);
     }
 
-    public DCard getVisCard() {
-        return visual;
+    public DCard getDCard() {
+        return new DCard(this);
     }
-
-    public void setVisible(boolean _visible) {
-        this.visible = _visible;
-        visual.w = _visible;
+    
+    public Deck getDeck() {
+        return _deck;
+    }
+    
+    public int getDeckPosition() {
+        return _deckPosition;
+    }
+    
+    public void addToDeck(Deck deck, int deckPosition) {
+        _deck = deck;
+        _deckPosition = deckPosition;
     }
 
     public void moveTo(Deck _cardSet, int _position) {
@@ -57,9 +81,7 @@ public class Card {
         }*/
     }
 
-    public Deck getDeck() {
-        return _deck;
-    }
+    
 
     class Tester {
 
