@@ -10,14 +10,15 @@ public class Card {
     protected DCard visual;
     protected Deck _deck;
     protected int position;
+    protected boolean[] visibility;
 
-    public Card(String _value, String _suit, int x, int y, Deck cardset, int position, boolean visible) {
+    public Card(String _value, String _suit, int x, int y, Deck cardset, int position, int playerCount) {
         this.value = _value;
         this.suit = _suit;
         this.visual = new DCard(x, y, _suit, _value, visible);
         this._deck = cardset;
         this.position = position;
-        this.visible = visible;
+        this.visibility = new boolean[playerCount];
     }
 
     public String getValue() {
@@ -55,7 +56,7 @@ public class Card {
             Application.lsGame.runScriptFunction("afterMove", tester);
         }*/
     }
-    
+
     public Deck getDeck() {
         return _deck;
     }
