@@ -1,31 +1,25 @@
 package aceofspades.framestates;
 
-import aceofspades.GameException;
 import aceofspades.game.SessionManager;
-import aceofspades.components.DPlayerSlot;
 import aceofspades.components.DAction;
 import aceofspades.components.DLabel;
 import aceofspades.components.DButton;
 import aceofspades.Main;
 import aceofspades.MainFrame;
-import aceofspades.components.DGameInfo;
-import aceofspades.components.DPlayerSlotManager;
+import aceofspades.components.DSlotManager;
 import aceofspades.components.DSessionInfo;
+import aceofspades.components.DSlot;
+import aceofspades.components.DSlotsAction;
 import aceofspades.game.AIStrategy;
-import aceofspades.game.GameData;
-import aceofspades.game.PlayerSlot;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Point;
-import java.awt.Rectangle;
-import java.util.ArrayList;
-import javax.swing.JOptionPane;
 
 public class FSLobby extends FrameState {
     
     private DLabel _labelTitle;
-    private DPlayerSlotManager _playerSlotManager;
+    private DSlotManager _playerSlotManager;
     private DSessionInfo _sessionInfo;
     private DButton _buttonLeave;
     private DButton _buttonStart;
@@ -65,7 +59,7 @@ public class FSLobby extends FrameState {
         
         int playerSlotsHeight = 60 * _sessionManager.getPlayerSlots().size();
         int playerSlotsWidth = paneWidth - sessionInfoWidth - 90;
-        Point playerSlotsPosition = new Point(30, ((100 + paneHeight - 
+        Point playerSlotsPosition = new Point(30, ((50 + paneHeight - 
                 (buttonDimension.height + 30)) - playerSlotsHeight) / 2);
         
         /**
@@ -79,9 +73,16 @@ public class FSLobby extends FrameState {
         /**
          * Player Slots
          */
-        _playerSlotManager = new DPlayerSlotManager(_sessionManager, _frame);
+        _playerSlotManager = new DSlotManager(_sessionManager, this);
         _playerSlotManager.setPosition(playerSlotsPosition);
         _playerSlotManager.setWidth(playerSlotsWidth);
+        _playerSlotManager.setAddAction(new AddPlayerAction(_playerSlotManager));
+        _playerSlotManager.setRemoveAction(new RemovePlayerAction(_playerSlotManager));
+        _playerSlotManager.setMoveUpAction(new MoveUpAction(_playerSlotManager));
+        _playerSlotManager.setMoveDownAction(new MoveDownAction(_playerSlotManager));
+        _playerSlotManager.setOpenAction(new OpenSlotAction(_playerSlotManager));
+        _playerSlotManager.setCloseAction(new CloseSlotAction(_playerSlotManager));
+        _playerSlotManager.update();
         
         /**
          * Session Info
@@ -91,7 +92,8 @@ public class FSLobby extends FrameState {
         _sessionInfo.setWidth(sessionInfoWidth);
         _sessionInfo.setBackgroundColor(sessionInfoBackgroundColor);
         _sessionInfo.setHeaderFont(headerFont, headerFontColor);
-        _sessionInfo.setContentFont(contentFont, contentFontColor);        
+        _sessionInfo.setContentFont(contentFont, contentFontColor); 
+        _sessionInfo.updateSessionManager(_sessionManager);
         
         /**
          * Leave Game Button
@@ -114,6 +116,8 @@ public class FSLobby extends FrameState {
         _buttonStart.setBackground(buttonColor);
         _buttonStart.setHoverBackground(buttonHoverColor);
         _buttonStart.setAction(new StartAction());
+        _buttonStart.setEnabled(!(_sessionManager.getPlayers().size() < 
+                    _sessionManager.getGameData().getMinPlayerCount()));
         
         addComponent(_labelTitle);
         addComponent(_playerSlotManager);
@@ -127,6 +131,7 @@ public class FSLobby extends FrameState {
     @Override
     public void unload() {
         super.unload();
+        _playerSlotManager.unload();
     }
     
     private class LeaveAction extends DAction {
@@ -143,27 +148,141 @@ public class FSLobby extends FrameState {
     private class StartAction extends DAction {
         @Override
         public void run() {
-            /*try {
-                Main.getActiveSession().startGame();
-                _frame.setFrameState(new FSGame(_frame, _paneWidth, _paneHeight));
-            } catch (GameException ex) {
-                JOptionPane.showMessageDialog(_frame,
-                    "Game files are corrupted.",
-                    "Game file error",
-                    JOptionPane.ERROR_MESSAGE);
-                _frame.setFrameState(new FSMainMenu(_frame, _paneWidth, _paneHeight));
-            }                
-        */
+            Main.setGameManager(_sessionManager.createGameManager());
+            _frame.setFrameState(new FSGame(_frame, _paneWidth, _paneHeight));
         }
     }
     
-    private class AddPlayerAction extends DAction {
+    private class AddPlayerAction extends DSlotsAction {
+
+        public AddPlayerAction(DSlotManager playerSlotManager) {
+            super(playerSlotManager);
+        }
+        
+        @Override
+        public void run() {
+            AIStrategy selection = _playerSlot.getSelectedAIStrategy();
+            if (selection == null) {
+                _sessionManager.addPlayer(_playerSlot.getPlayerSlot().getSlotID(),
+                        _sessionManager.createHumanPlayer(_playerSlot.getName()));
+            } else {
+                _sessionManager.addPlayer(_playerSlot.getPlayerSlot().getSlotID(), 
+                        _sessionManager.createAIPlayer(_playerSlot.getName(), selection));
+            }
+            _sessionInfo.updateSessionManager(_sessionManager);
+            
+            _buttonStart.setEnabled(!(_sessionManager.getPlayers().size() < 
+                    _sessionManager.getGameData().getMinPlayerCount()));
+        }
+        
+        @Override
+        public AddPlayerAction clone() {
+            AddPlayerAction a = new AddPlayerAction(_playerSlotManager);
+            a.setDSlot(_playerSlot);
+            return a;            
+        }
+        
+    }
+    
+    private class RemovePlayerAction extends DSlotsAction {
+
+        public RemovePlayerAction(DSlotManager playerSlotManager) {
+            super(playerSlotManager);
+        }
+        
+        @Override
+        public void run() {
+            _sessionManager.removePlayer(_playerSlot.getPlayerSlot().getSlotID());
+            _sessionInfo.updateSessionManager(_sessionManager);
+            
+            _buttonStart.setEnabled(!(_sessionManager.getPlayers().size() < 
+                    _sessionManager.getGameData().getMinPlayerCount()));
+        }
+        
+        @Override
+        public RemovePlayerAction clone() {
+            RemovePlayerAction a = new RemovePlayerAction(_playerSlotManager);
+            a.setDSlot(_playerSlot);
+            return a;            
+        }
+    }
+    
+    private class MoveUpAction extends DSlotsAction {
+        
+        public MoveUpAction(DSlotManager playerSlotManager) {
+            super(playerSlotManager);
+        }
 
         @Override
         public void run() {
-            
+            _sessionManager.moveUp(_playerSlot.getPlayerSlot().getSlotID());
         }
         
+        @Override
+        public MoveUpAction clone() {
+            MoveUpAction a = new MoveUpAction(_playerSlotManager);
+            a.setDSlot(_playerSlot);
+            return a;            
+        }
+    }
+    
+    private class MoveDownAction extends DSlotsAction {
+        
+        public MoveDownAction(DSlotManager playerSlotManager) {
+            super(playerSlotManager);
+        }
+
+        @Override
+        public void run() {
+            _sessionManager.moveDown(_playerSlot.getPlayerSlot().getSlotID());
+        }
+        
+        @Override
+        public MoveDownAction clone() {
+            MoveDownAction a = new MoveDownAction(_playerSlotManager);
+            a.setDSlot(_playerSlot);
+            return a;            
+        }
+    }
+    
+    private class CloseSlotAction extends DSlotsAction {
+        
+        public CloseSlotAction(DSlotManager playerSlotManager) {
+            super(playerSlotManager);
+        }
+
+        @Override
+        public void run() {
+            _sessionManager.closeSlot(_playerSlot.getPlayerSlot().getSlotID());
+            _sessionInfo.updateSessionManager(_sessionManager);
+        }
+        
+        @Override
+        public CloseSlotAction clone() {
+            CloseSlotAction a = new CloseSlotAction(_playerSlotManager);
+            a.setDSlot(_playerSlot);
+            return a;            
+        }
+    }
+    
+    private class OpenSlotAction extends DSlotsAction {
+        
+        public OpenSlotAction(DSlotManager playerSlotManager) {
+            super(playerSlotManager);
+        }
+
+        @Override
+        public void run() {
+            _sessionManager.openSlot(_playerSlot.getPlayerSlot().getSlotID());
+            _sessionInfo.updateSessionManager(_sessionManager);
+        }
+        
+        @Override
+        public OpenSlotAction clone() {
+            OpenSlotAction a = new OpenSlotAction(_playerSlotManager);
+            a.setDSlot(_playerSlot);
+            return a;            
+        }
     }
     
 }
