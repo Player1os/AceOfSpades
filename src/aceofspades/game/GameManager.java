@@ -2,6 +2,7 @@ package aceofspades.game;
 
 import aceofspades.Main;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.TreeMap;
 import javax.script.Invocable;
@@ -22,7 +23,8 @@ public class GameManager {
     
     private int _activePlayerID;
     
-    public GameManager(GameData gameData, ArrayList<Player> players) {
+    public GameManager(GameData gameData, ArrayList<Player> players) 
+            throws IOException, ScriptException {
         _gameData = gameData;
         _engine = gameData.getEngine();
         _players = players;

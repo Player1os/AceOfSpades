@@ -5,12 +5,16 @@ import aceofspades.Main;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.TreeMap;
 import javax.imageio.ImageIO;
 import javax.script.Invocable;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 import javax.swing.JOptionPane;
 
 public class GameData {
@@ -137,8 +141,12 @@ public class GameData {
         return _maxPlayerCount;
     }
     
-    public Invocable getEngine() {
-        return null;
+    public Invocable getEngine() throws IOException, ScriptException {
+        ScriptEngineManager manager = new ScriptEngineManager();
+        ScriptEngine engine = manager.getEngineByName("JavaScript");
+
+        engine.eval(new FileReader(new File(_folder, "scripts.js")));
+        return (Invocable)engine;
     }
     
     public ArrayList<AIStrategy> getAIStrategies() {

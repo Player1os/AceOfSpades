@@ -1,5 +1,5 @@
 function gameInit(gameManager) {
-    vyrobKopu();
+    vyrobKopu(gameManager);
     var kopa = gameManager.getDeck(0);
     var tmp;
     for (var i = 0; i < gameManager.getPlayerCount(); i++) {
@@ -33,7 +33,7 @@ function gameInit(gameManager) {
 }
 
 function vyrobKopu(gameManager) {
-    var d = createDeck("pile");
+    var d = gameManager.createDeck("pile");
     d.setOwnedByAll();
     d.addCard(0, gameManager.createCard("A", "hearts"));
     d.addCard(0, gameManager.createCard("2", "hearts"));
