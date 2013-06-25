@@ -45,18 +45,26 @@ public class FSGame extends FrameState {
         
         Point rightDeckZoomPosition = new Point();
         Point leftDeckZoomPosition = new Point();
-        Dimension deckZoomDimension = new Dimension();
-        
+        Dimension deckZoomDimension = new Dimension();        
         
         Font buttonFont = new Font("SansSerif", Font.BOLD, 20);
         Color buttonFontColor = Color.white;
         Color buttonColor = new Color(150, 0, 0);
         Color buttonHoverColor = new Color(150, 50, 50);
         Dimension buttonDimension = new Dimension(100, 50);
-        Point quitButtonPosition = new Point(150, paneHeight - buttonDimension.height - 35);
-        Point endTurnButtonPosition = new Point(150, paneHeight - buttonDimension.height - 35);
+        Point quitButtonPosition = new Point(10, 10);
+        Point endTurnButtonPosition = 
+                new Point(paneWidth - buttonDimension.width - 10, 10);
         
         _dDecks = new ArrayList<>();
+        ArrayList<DDeck> dDecks = 
+                _gameManager.getDDecks(_gameManager.getActivePlayer());
+        
+        for (DDeck dDeck : dDecks) {
+            dDeck.setAction(new DDeckAction(dDeck));
+            addComponent(dDeck);
+            _dDecks.add(dDeck);
+        }
         
         _rightDeckZoom = new DDeckZoom(this);
         _rightDeckZoom.setPosition(rightDeckZoomPosition);
@@ -88,6 +96,7 @@ public class FSGame extends FrameState {
         
         addComponent(_leftDeckZoom);
         addComponent(_rightDeckZoom);
+        addComponent(_endTurnButton);
         addComponent(_quitButton);
     }
     
@@ -96,14 +105,14 @@ public class FSGame extends FrameState {
             removeComponent(dDeck);
         }
         
-        ArrayList<Deck> decks = _gameManager.getDecks(null, player.getPlayerID());
+        ArrayList<DDeck> dDecks = 
+                _gameManager.getDDecks(_gameManager.getActivePlayer());
         
-        for (Deck deck : decks) {
-            DDeck dDeck = deck.getDDeck();
+        for (DDeck dDeck : dDecks) {
             dDeck.setAction(new DDeckAction(dDeck));
             addComponent(dDeck);
             _dDecks.add(dDeck);
-        }        
+        }
     }
     
     private class QuitAction extends DAction {
@@ -144,6 +153,11 @@ public class FSGame extends FrameState {
         public void run() {
             for (DDeck dDeck : _dDecks) {
                 dDeck.setHighlightColor(null);
+            }
+            if (_e == null) {
+                System.out.println("gg");
+            } else {
+                System.out.println("hh");
             }
             
             if (_e.getButton() == MouseEvent.BUTTON1) {

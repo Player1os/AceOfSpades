@@ -21,6 +21,7 @@ public class DDeck extends DComponent {
     public DDeck(Deck deck) {
         _deck = deck;
         _name = deck.toString();
+        _bounds = new Rectangle();
     }
     
     public void setPosition(Point position) {
@@ -69,6 +70,11 @@ public class DDeck extends DComponent {
         if (_action != null) {
             if (_bounds.contains(e.getPoint())) {
                 _action.setMouseEvent(e);
+                if (e == null) {
+                    System.out.println("jj");
+                } else {
+                    System.out.println("ll");
+                }
                 _action.run();
             }
         }

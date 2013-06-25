@@ -113,8 +113,8 @@ public class Deck {
         return _dDeck;
     }
     
-    public void setDDeckPosition(Point position) {
-        _position = position;
+    public void setDDeckPosition(int x, int y) {
+        _dDeck.setPosition(new Point(x, y));
     }
 
     @Override

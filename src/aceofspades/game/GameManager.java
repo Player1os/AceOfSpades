@@ -1,6 +1,8 @@
 package aceofspades.game;
 
 import aceofspades.Main;
+import aceofspades.components.DDeck;
+import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -29,6 +31,7 @@ public class GameManager {
         _engine = gameData.getEngine();
         _players = players;
         _decks = new TreeMap<>();
+        _cards= new ArrayList<>();
         
         _cardIDCounter = 0;
         _deckIDCounter = 0;
@@ -137,6 +140,20 @@ public class GameManager {
     /**
      * UI Functions
      */
+    
+    public ArrayList<DDeck> getDDecks(Player activePlayer) {
+        ArrayList<Deck> decks = getDecks(null, activePlayer.getPlayerID());
+        ArrayList<DDeck> dDecks = new ArrayList<>();
+        
+        for (Deck deck : decks) {
+            DDeck dDeck = deck.getDDeck();
+            dDeck.setDimensions(new Dimension(50, 80));
+            dDeck.setImage(Main.getImageResource("cardBack.jpg"));
+            dDecks.add(dDeck);
+        }
+        
+        return dDecks;
+    }
     
     public Player getActivePlayer() {
         return _players.get(_activePlayerID);

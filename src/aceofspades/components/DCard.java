@@ -22,6 +22,7 @@ public class DCard extends DComponent{
         _card = card;
         _backImg = Main.getImageResource("cardBack.jpg");
         bumpUp = false;
+        _bounds = new Rectangle();
     }
     
     public Card getCard() {

@@ -123,10 +123,12 @@ public class DDeckZoom extends DComponent {
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        _action.setMouseEvent(e);
-        _action.run();
-        _action.setSelectedCard(null);
-        _frameState.removeComponent(_selectedDCard);
+        if (_selectedDCard != null) {
+            _action.setMouseEvent(e);
+            _action.run();
+            _action.setSelectedCard(null);
+            _frameState.removeComponent(_selectedDCard);
+        }
     }
     
 }
