@@ -19,9 +19,10 @@ public class SessionManager {
         _sessionID = sessionID;
         _clientID = clientID;
         _localIDCounter = 0;
-        _playerSlots = new ArrayList<>();
         _players = new ArrayList<>();
         
+        _playerSlots = new ArrayList<>();
+        _playerSlots.ensureCapacity(gameData.getMaxPlayerCount());
         for (int i = 0; i < gameData.getMaxPlayerCount(); i++) {
             _playerSlots.add(new Slot(i));
         }

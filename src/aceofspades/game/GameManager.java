@@ -1,7 +1,8 @@
 package aceofspades.game;
 
+import aceofspades.Main;
 import aceofspades.components.DDeck;
-import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.TreeMap;
 import javax.script.Invocable;
@@ -11,7 +12,7 @@ public class GameManager {
 
     private int _cardIDCounter;
     private int _deckIDCounter;
-    
+    private GameData _gameData;
     private Invocable _engine;
     private ArrayList<Player> _players;
     private ArrayList<Card> _cards;
@@ -20,6 +21,7 @@ public class GameManager {
     private int _activePlayerID;
     
     public GameManager(GameData gameData, ArrayList<Player> players) {
+        _gameData = gameData;
         _engine = gameData.getEngine();
         _players = players;
         _decks = new TreeMap<>();
@@ -28,10 +30,6 @@ public class GameManager {
         _deckIDCounter = 0;
         
         _activePlayerID = 0;
-    }
-    
-    public Player getActivePlayer() {
-        return _players.get(_activePlayerID);
     }
     
     /**
@@ -50,69 +48,98 @@ public class GameManager {
     }
     
     public Deck getDeck(int deckID) {
-        return 
+        return _decks.get(deckID);
     }
     
     public ArrayList<Deck> getDecks(String type, Integer ownerPlayerID) {
-        ArrayList<Deck> decks = new ArrayList<>();
+        ArrayList<Deck> decks = new ArrayList<>(_decks.values());        
         
         if (type != null) {
-            
+            ArrayList<Deck> filterDecks = new ArrayList<>();
+            for (Deck deck : decks) {
+                if (type.equals(deck.getType())) {
+                    filterDecks.add(deck);
+                }
+            }
+            decks = filterDecks;
         }
         
         if (ownerPlayerID != null) {
-            
+            ArrayList<Deck> filterDecks = new ArrayList<>();
+            for (Deck deck : decks) {
+                if (deck.isOwner(ownerPlayerID)) {
+                    filterDecks.add(deck);
+                }
+            }
+            decks = filterDecks;
         }
         
         return decks;
     }
     
     public Deck createDeck(String type) {
-        Deck d = new Deck(_deckIDCounter, type, _players.size());
+        Deck deck = new Deck(_deckIDCounter, type, _players.size());
+        _decks.put(_deckIDCounter, deck);
+        
+        BufferedImage img = _gameData.getImageResource(type + "Deck.jpg");
+        if (img == null) {
+            img = Main.getImageResource("cardBack.jpg");
+        }        
+        deck.getDDeck().setImage(img);
+        
         _deckIDCounter++;
-        return d;
+        return deck;
     }
     
-    public Deck mergeDecks(ArrayList<Deck> decks, String type) {
-        Deck d = new Deck(_deckIDCounter, type, _players.size());
-        
-        for (Deck deck : decks) {
-            
+    public void mergeDecks(ArrayList<Deck> decks, Deck destDeck) {
+        if (decks.contains(destDeck)) {
+            decks.remove(destDeck);
         }
         
-        return d;
+        for (Deck deck : decks) {
+            destDeck.addCards(destDeck.getCardCount(), deck.getCards());
+            deck.removeAllCards();
+            deleteDeck(deck);
+        }
     }
     
-    public void deleteDeck(String s) {
-
-    }
-    
-    public void startGame() throws ScriptException, NoSuchMethodException {
-        _engine.invokeFunction("gameInit", this);
+    public boolean deleteDeck(Deck deck) {
+        if (deck.getCardCount() == 0) {
+            _decks.remove(deck.getDeckID());
+            return true;
+        }        
+        return false;
     }
 
     /**
      * UI Functions
      */
     
-    public ArrayList<DDeck> getDDecks() {
-        ArrayList<DDeck> decks = new ArrayList<>();
+    public Player getActivePlayer() {
+        return _players.get(_activePlayerID);
+    }
+    
+    public void startGame() throws ScriptException, NoSuchMethodException {
+        _engine.invokeFunction("gameInit", this);
+    }
+    
+    public boolean moveCard(Card card, Deck destDeck, int deckPos) throws ScriptException, NoSuchMethodException {
+        boolean canRemove = (Boolean)_engine.invokeFunction("canRemove", this, card, destDeck, deckPos);
+        boolean canAdd = (Boolean)_engine.invokeFunction("canAdd", this, card, destDeck, deckPos);
         
-        for (int i = 0; i < _deckIDCounter; i++) {
-            if (_decks.containsKey(i)) {
-                
-            }
+        if (canRemove && canAdd) {
+            card.getDeck().removeCard(card.getDeckPosition());
+            destDeck.addCard(deckPos, card);
+            card.addToDeck(destDeck, deckPos);
+            
+            _engine.invokeFunction("afterMove", this);
         }
         
-        return decks;
+        return canRemove && canAdd;
     }
     
-    public void moveCard(int cardID, int destinationDeckID, int deckPosition) {
-
-    }
-    
-    public boolean canEndTurn() {
-        return false;        
+    public boolean canEndTurn() throws ScriptException, NoSuchMethodException {
+        return (Boolean)_engine.invokeFunction("canEndTurn", this);
     }
     
     

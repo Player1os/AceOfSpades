@@ -53,6 +53,12 @@ public abstract class FrameState extends MouseAdapter {
         }
     }
     
+    public void addFirstComponent(DComponent component) {
+        _DComponents.add(0, component);
+    }
+    
+    
+    
     @Override
     public void mouseMoved(MouseEvent e) {
         for (DComponent component : _DComponents) {

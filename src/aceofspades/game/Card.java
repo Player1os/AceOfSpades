@@ -28,9 +28,28 @@ public class Card {
     public int getCardID() {
         return _cardID;
     }
-
+    
     public String getValue() {
         return _value;
+    }
+    
+    public int getNumValue(boolean isABig) {
+        switch (_value) {
+            case "A":
+                if (isABig) {
+                    return 14;
+                } else {
+                    return 1;
+                }
+            case "J":
+                return 11;
+            case "Q":
+                return 12;
+            case "K":
+                return 13;
+            default:
+                return Integer.parseInt(_value);
+        }
     }
 
     public String getSuit() {
@@ -48,10 +67,6 @@ public class Card {
     public void unsetVisible(int playerID) {
         _visibility.set(playerID, false);
     }
-
-    public DCard getDCard() {
-        return new DCard(this);
-    }
     
     public Deck getDeck() {
         return _deck;
@@ -65,72 +80,9 @@ public class Card {
         _deck = deck;
         _deckPosition = deckPosition;
     }
-
-    public void moveTo(Deck _cardSet, int _position) {
-        /*Tester tester = new Tester(cardSet, position, _cardSet, _position, new Application());
-        Application.lsGame.runScriptFunction(cardSet.getCardSetClass() + "Remove", tester);
-        Tester tester2 = new Tester(cardSet, position, _cardSet, _position, new Application());
-        Application.lsGame.runScriptFunction(_cardSet.getCardSetClass() + "Add", tester2);*/
-
-        /*if (tester.getB() && tester2.getB()) {
-            this.cardSet.removeCard(position);
-            cardSet = _cardSet;
-            position = _position;
-            this.cardSet.addCard(position, this);
-            Application.lsGame.runScriptFunction("afterMove", tester);
-        }*/
-    }
-
     
-
-    class Tester {
-
-        boolean b;
-        Deck oldCardset;
-        int oldPosition;
-        Deck newCardset;
-        int newPosition;
-        /*Application app;
-
-        public Tester(CardSet _oldCardset, int _oldPosition, CardSet _newCardset, int _newPosition, Application _app) {
-            oldCardset = _oldCardset;
-            oldPosition = _oldPosition;
-            newCardset = _newCardset;
-            newPosition = _newPosition;
-            app = _app;
-            b = true;
-        }
-
-        public Application getApp() {
-            return app;
-        }*/
-
-        public Deck getOldCardSet() {
-            return oldCardset;
-        }
-
-        public Deck getNewCardSet() {
-            return newCardset;
-        }
-
-        public int getOldPosition() {
-            return oldPosition;
-        }
-
-        public int getNewPosition() {
-            return newPosition;
-        }
-
-        public void setNewPosition(int x) {
-            newPosition = x;
-        }
-
-        public void setB(boolean _b) {
-            b = _b;
-        }
-
-        public boolean getB() {
-            return b;
-        }
+    public DCard getDCard() {
+        return new DCard(this);
     }
+    
 }

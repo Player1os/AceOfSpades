@@ -16,7 +16,7 @@ public class DDeck extends DComponent {
     private String _name;
     private BufferedImage _img;
     private Color _highlightColor;
-    private DAction _action;
+    private DClickAction _action;
 
     public DDeck(Deck deck) {
         _deck = deck;
@@ -41,7 +41,7 @@ public class DDeck extends DComponent {
         _highlightColor = color;
     }
     
-    public void setAction(DAction action) {
+    public void setAction(DClickAction action) {
         _action = action;
     }
     
@@ -59,15 +59,13 @@ public class DDeck extends DComponent {
         int padding = 10;
         Rectangle smallBounds = new Rectangle(_bounds.x - padding, _bounds.y - 
                 padding, _bounds.width - padding, _bounds.height - padding);
-        
-        
-        
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
         if (_action != null) {
             if (_bounds.contains(e.getPoint())) {
+                _action.setMouseClick(e);
                 _action.run();
             }
         }
