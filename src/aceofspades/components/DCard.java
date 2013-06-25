@@ -82,23 +82,13 @@ public class DCard extends DComponent{
         }
     }
     
+    public boolean isInBounds(Point position) {
+        return _bounds.contains(position);
+    }
+    
     @Override
     public void mouseMoved(MouseEvent e) {
         bumpUp = _bounds.contains(e.getPoint());
     }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-        
-    }
-
-    @Override
-    public void mouseDragged(MouseEvent e) {
-        
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-        
-    }
+    
 }

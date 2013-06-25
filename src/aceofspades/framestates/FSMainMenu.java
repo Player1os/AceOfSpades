@@ -149,7 +149,7 @@ public class FSMainMenu extends FrameState {
                 _frame.setFrameState(new FSCreateLocal(_frame, _paneWidth, _paneHeight));
             } catch (GameException ex) {
                 JOptionPane.showMessageDialog(_frame, ex.getMessage(), 
-                    "Fatal error", JOptionPane.ERROR_MESSAGE);
+                        "Fatal error", JOptionPane.ERROR_MESSAGE);
                 WindowEvent wev = new WindowEvent(_frame, WindowEvent.WINDOW_CLOSING);
                 Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(wev);
             }
@@ -185,7 +185,8 @@ public class FSMainMenu extends FrameState {
         
         @Override
         public void run() {
-            EditorFrame frame = new EditorFrame();
+            JOptionPane.showMessageDialog(_frame, "Functionality not yet implemented", 
+                    "Feature unavailable", JOptionPane.INFORMATION_MESSAGE);
         }
     }
     

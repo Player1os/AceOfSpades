@@ -17,6 +17,9 @@ public class GameManager {
     private ArrayList<Card> _cards;
     private TreeMap<Integer, Deck> _decks;
     
+    private TreeMap<String, Integer> _vars;
+    private ArrayList<TreeMap<String, Integer>> _playerVars;
+    
     private int _activePlayerID;
     
     public GameManager(GameData gameData, ArrayList<Player> players) {
@@ -29,6 +32,9 @@ public class GameManager {
         _deckIDCounter = 0;
         
         _activePlayerID = 0;
+        
+        _vars = new TreeMap<>();
+        _playerVars = new ArrayList<>();
     }
     
     /**
@@ -109,7 +115,23 @@ public class GameManager {
         }        
         return false;
     }
-
+    
+    public int getVar(String key) {
+        return _vars.get(key);
+    }
+    
+    public void setVar(String key, int value) {
+        _vars.put(key, value);
+    }
+    
+    public int getPlayerVar(int playerID, String key) {
+        return _playerVars.get(playerID).get(key);
+    }
+    
+    public void setPlayerVar(int playerID, String key, int value) {
+        _playerVars.get(playerID).put(key, value);
+    }
+    
     /**
      * UI Functions
      */
@@ -127,19 +149,21 @@ public class GameManager {
         int canAdd = (Integer)_engine.invokeFunction("canAdd", this, card, destDeck, deckPos);
         
         if ((canRemove >= 0) && (canAdd >= 0)) {
-            card.getDeck().removeCard(card.getDeckPosition());
-            destDeck.addCard(canAdd, card);
-            card.addToDeck(destDeck, canAdd);
-            
+            uncheckedMoveCard(card, destDeck, canAdd);            
             _engine.invokeFunction("afterMove", this);
         }
         
         return (canRemove >= 0) && (canAdd >= 0);
     }
     
+    public void uncheckedMoveCard(Card card, Deck destDeck, int deckPos) {
+        card.getDeck().removeCard(card.getDeckPosition());
+        destDeck.addCard(deckPos, card);
+        card.addToDeck(destDeck, deckPos);        
+    }
+    
     public boolean canEndTurn() throws ScriptException, NoSuchMethodException {
         return (Boolean)_engine.invokeFunction("canEndTurn", this);
     }
-    
-    
+        
 }

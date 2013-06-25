@@ -45,11 +45,11 @@ public class Deck {
     }
 
     public void addOwner(int playerID) {
-        _ownership.add(playerID, true);
+        _ownership.set(playerID, true);
     }
     
     public void removeOwner(int playerID) {
-        _ownership.add(playerID, false);
+        _ownership.set(playerID, false);
     }
     
     public void setOwnedByAll() {
@@ -85,9 +85,11 @@ public class Deck {
     }
 
     public void removeCard(int deckPosition) {
-        _cards.remove(deckPosition);
-        for (int i = deckPosition; i < _cards.size(); i++) {
-            this._cards.get(i).addToDeck(this, i);
+        if (deckPosition < _cards.size()) {
+            _cards.remove(deckPosition);
+            for (int i = deckPosition; i < _cards.size(); i++) {
+                this._cards.get(i).addToDeck(this, i);
+            }
         }
     }
     
