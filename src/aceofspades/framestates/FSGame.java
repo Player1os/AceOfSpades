@@ -4,12 +4,12 @@ import aceofspades.Main;
 import aceofspades.MainFrame;
 import aceofspades.components.DAction;
 import aceofspades.components.DButton;
-import aceofspades.components.DDragAction;
-import aceofspades.components.DClickAction;
+import aceofspades.components.DMouseAction;
 import aceofspades.components.DDeck;
-import static aceofspades.components.DDeckClickAction.leftClick;
-import static aceofspades.components.DDeckClickAction.rightClick;
 import aceofspades.components.DDeckZoom;
+import aceofspades.components.DDeckZoomAction;
+import aceofspades.game.Card;
+import aceofspades.game.Deck;
 import aceofspades.game.GameManager;
 import aceofspades.game.Player;
 import aceofspades.game.SessionManager;
@@ -17,7 +17,10 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Point;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import javax.script.ScriptException;
+import javax.swing.JOptionPane;
 
 public class FSGame extends FrameState {
     
@@ -55,15 +58,17 @@ public class FSGame extends FrameState {
         
         _dDecks = new ArrayList<>();
         
-        _rightDeckZoom = new DDeckZoom();
+        _rightDeckZoom = new DDeckZoom(this);
         _rightDeckZoom.setPosition(rightDeckZoomPosition);
         _rightDeckZoom.setDimensions(deckZoomDimension);
         _rightDeckZoom.setBackgroundColor(rightDeckZoomColor);
+        _rightDeckZoom.setAction(new RightZoomAction(_rightDeckZoom));
         
-        _leftDeckZoom = new DDeckZoom();
+        _leftDeckZoom = new DDeckZoom(this);
         _leftDeckZoom.setPosition(leftDeckZoomPosition);
         _leftDeckZoom.setDimensions(deckZoomDimension);
         _leftDeckZoom.setBackgroundColor(leftDeckZoomColor);
+        _leftDeckZoom.setAction(new LeftZoomAction(_leftDeckZoom));
         
         _endTurnButton = new DButton("End Turn");
         _endTurnButton.setBackground(buttonColor);
@@ -81,9 +86,6 @@ public class FSGame extends FrameState {
         _quitButton.setFont(buttonFont, buttonFontColor);
         _quitButton.setAction(new QuitAction());
         
-        for (DDeck dDeck : _dDecks) {
-            addComponent(dDeck);
-        }
         addComponent(_leftDeckZoom);
         addComponent(_rightDeckZoom);
         addComponent(_quitButton);
@@ -94,11 +96,13 @@ public class FSGame extends FrameState {
             removeComponent(dDeck);
         }
         
-        _dDecks = _gameManager.getDDecks(_gameManager.getDecks(null, player.getPlayerID()));
+        ArrayList<Deck> decks = _gameManager.getDecks(null, player.getPlayerID());
         
-        for (DDeck dDeck : _dDecks) {
-            dDeck.setAction(new DDeckClickAction(dDeck));
+        for (Deck deck : decks) {
+            DDeck dDeck = deck.getDDeck();
+            dDeck.setAction(new DDeckAction(dDeck));
             addComponent(dDeck);
+            _dDecks.add(dDeck);
         }        
     }
     
@@ -116,35 +120,97 @@ public class FSGame extends FrameState {
         
         @Override
         public void run() {
-            if (_gameManager.canEndTurn())  {
-                _gameManager.endTurn();
-            }
+            try {
+                if (_gameManager.canEndTurn())  {
+                    //_gameManager.endTurn();
+                }
+            } catch (ScriptException | NoSuchMethodException ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage(),
+                        "Game error", JOptionPane.ERROR_MESSAGE);
+                _frame.setFrameState(new FSMainMenu(_frame, _paneWidth, _paneHeight));
+            }            
             
         }
     }
     
-    public class DDeckClickAction extends DClickAction {
-        protected DDeck _deck;
+    public class DDeckAction extends DMouseAction {
+        protected DDeck _dDeck;
 
-        public DDeckClickAction(DDeck deck) {
-            _deck = deck;
+        public DDeckAction(DDeck dDeck) {
+            _dDeck = dDeck;
         }
         
         @Override
         public void run() {
-            if (_click == rightClick) {
-                _deck.setHighlightColor(rightDeckZoomColor);
-                _rightDeckZoom.loadDeck(_deck.getDeck());
+            for (DDeck dDeck : _dDecks) {
+                dDeck.setHighlightColor(null);
+            }
+            
+            if (_e.getButton() == MouseEvent.BUTTON1) {
+                _dDeck.setHighlightColor(rightDeckZoomColor);
+                _rightDeckZoom.loadDeck(_dDeck.getDeck(), _gameManager);
 
-            } else if (_click == leftClick) {
-                _deck.setHighlightColor(leftDeckZoomColor);
-                _leftDeckZoom.loadDeck(_deck.getDeck());
+            } else if (_e.getButton() == MouseEvent.BUTTON2) {
+                _dDeck.setHighlightColor(leftDeckZoomColor);
+                _leftDeckZoom.loadDeck(_dDeck.getDeck(), _gameManager);
             }
         }
     }
     
+    public class RightZoomAction extends DDeckZoomAction {
+
+        public RightZoomAction(DDeckZoom dDeckZoom) {
+            super(dDeckZoom);
+        }
+        
+        @Override
+        public void run() {
+            int deckPosition = _leftDeckZoom.getDeckPosition(_e.getPoint());
+            if (deckPosition > -1) {
+                Card card = _selectedCard.getCard();
+                Deck deck = _leftDeckZoom.getDeck();
+                
+                try {
+                    _gameManager.moveCard(card, deck, deckPosition);
+                } catch (ScriptException | NoSuchMethodException ex) {
+                    JOptionPane.showMessageDialog(null, ex.getMessage(),
+                            "Game error", JOptionPane.ERROR_MESSAGE);
+                    _frame.setFrameState(new FSMainMenu(_frame, _paneWidth, _paneHeight));
+                }
+                
+            } else {
+                _dDeckZoom.loadDeck(_dDeckZoom.getDeck(), _gameManager);
+            }
+        }
+        
+    }
     
-    public class DDeckZoomCardAction extends DDragAction {
+    
+    public class LeftZoomAction extends DDeckZoomAction {
+
+        public LeftZoomAction(DDeckZoom dDeckZoom) {
+            super(dDeckZoom);
+        }
+        
+        @Override
+        public void run() {
+            int deckPosition = _rightDeckZoom.getDeckPosition(_e.getPoint());
+            if (deckPosition > -1) {
+                Card card = _selectedCard.getCard();
+                Deck deck = _rightDeckZoom.getDeck();
+                
+                try {
+                    _gameManager.moveCard(card, deck, deckPosition);
+                } catch (ScriptException | NoSuchMethodException ex) {
+                    JOptionPane.showMessageDialog(null, ex.getMessage(),
+                            "Game error", JOptionPane.ERROR_MESSAGE);
+                    _frame.setFrameState(new FSMainMenu(_frame, _paneWidth, _paneHeight));
+                }
+                
+            } else {
+                _dDeckZoom.loadDeck(_dDeckZoom.getDeck(), _gameManager);
+            }            
+        }
         
     }
     

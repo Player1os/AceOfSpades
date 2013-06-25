@@ -15,18 +15,24 @@ import java.util.ArrayList;
 public class DDeckZoom extends DComponent {
     
     private static Dimension cardDimensions = new Dimension(50, 80);
+    private static int _margin = 10;
     
+    private Deck _deck;
     private FrameState _frameState;
     private Rectangle _bounds;
     private Color _backgroundColor;
     private ArrayList<DCard> _cards;
     private DCard _selectedDCard;
+    private DDeckZoomAction _action;
 
     public DDeckZoom(FrameState frameState) {
         _frameState = frameState;
         _bounds = new Rectangle();
         _cards = null;
-        _selectedDCard = null;
+    }
+    
+    public Deck getDeck() {
+        return _deck;
     }
     
     public void setPosition(Point position) {
@@ -43,11 +49,29 @@ public class DDeckZoom extends DComponent {
         _backgroundColor = backgroundColor;
     }
     
-    public void loadDeck(Deck deck, GameManager gameManager) {
-        _cards = new ArrayList<>();
+    public boolean isInBounds(Point position) {
+        return _bounds.contains(position);
+    }
+    
+    public int getDeckPosition(Point position) {
+        if (!isInBounds(position)) {
+            return -1;
+        }
+        int deckPosition = (position.x - _bounds.x) / _margin;
         
-        int margin = 10;
-        Point cardPosition = new Point(margin + _bounds.x, _bounds.y + 
+        if ((deckPosition >= 0) && (deckPosition < _cards.size())) {
+            return deckPosition;
+        } else {
+            return -1;
+        }
+    }
+    
+    public void loadDeck(Deck deck, GameManager gameManager) {
+        _selectedDCard = null;
+        _deck = deck;
+        _cards = new ArrayList<>();
+
+        Point cardPosition = new Point(_margin + _bounds.x, _bounds.y + 
                 (_bounds.height - cardDimensions.height) / 2);
         
         for (Card card : deck.getCards()) {
@@ -56,8 +80,12 @@ public class DDeckZoom extends DComponent {
             dCard.setPosition(cardPosition);
             dCard.setDimensions(cardDimensions);
             
-            cardPosition.x += margin;
+            cardPosition.x += _margin;
         }
+    }
+    
+    public void setAction(DDeckZoomAction action) {
+        _action = action;
     }
     
     @Override
@@ -78,6 +106,7 @@ public class DDeckZoom extends DComponent {
             if (_cards.get(i).isInBounds(e.getPoint())) {
                 _cards.remove(i);
                 _selectedDCard = _cards.get(i);
+                _action.setSelectedCard(_selectedDCard);
                 _frameState.addFirstComponent(_selectedDCard);
                 break;
             }
@@ -88,13 +117,16 @@ public class DDeckZoom extends DComponent {
     public void mouseDragged(MouseEvent e) {
         if (_selectedDCard != null) {
             _selectedDCard.setPosition(new Point(e.getX() + cardDimensions.width
-                    / 2, e.getY() + cardDimensions.height));
+                    / 2, e.getY() + cardDimensions.height / 2));
         }
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        
+        _action.setMouseEvent(e);
+        _action.run();
+        _action.setSelectedCard(null);
+        _frameState.removeComponent(_selectedDCard);
     }
     
 }

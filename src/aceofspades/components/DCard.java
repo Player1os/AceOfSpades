@@ -24,6 +24,10 @@ public class DCard extends DComponent{
         bumpUp = false;
     }
     
+    public Card getCard() {
+        return _card;
+    }
+    
     public void setPosition(Point position) {
         _bounds.x = position.x;
         _bounds.y = position.y;
