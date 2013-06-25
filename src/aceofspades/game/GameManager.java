@@ -140,6 +140,14 @@ public class GameManager {
         return _players.get(_activePlayerID);
     }
     
+    public ArrayList<Player> getPlayers() {
+        return _players;
+    }            
+    
+    public int getPlayerCount() {
+        return _players.size();
+    }    
+    
     public void startGame() throws ScriptException, NoSuchMethodException {
         _engine.invokeFunction("gameInit", this);
     }

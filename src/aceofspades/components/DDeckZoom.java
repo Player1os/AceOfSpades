@@ -87,7 +87,6 @@ public class DDeckZoom extends DComponent {
     @Override
     public void mouseDragged(MouseEvent e) {
         if (_selectedDCard != null) {
-            
             _selectedDCard.setPosition(new Point(e.getX() + cardDimensions.width
                     / 2, e.getY() + cardDimensions.height));
         }
