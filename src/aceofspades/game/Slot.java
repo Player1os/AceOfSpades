@@ -1,16 +1,22 @@
 package aceofspades.game;
 
-public class PlayerSlot {
+public class Slot {
     public final static int typeClosed = -1;
     public final static int typeOpen = 0;
     public final static int typeOccupied = 1;
 
+    private int _slotID;    
     private int _type;
     private Player _player;
     
-    public PlayerSlot() {
+    public Slot(int slotID) {
+        _slotID = slotID;
         _type = typeOpen;
         _player = null;
+    }
+    
+    public int getSlotID() {
+        return _slotID;
     }
     
     public int getType() {

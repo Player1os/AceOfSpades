@@ -16,17 +16,15 @@ public class DGameInfo extends DComponent {
     private DLabel _labelAuthor;
     private DLabel _labelMinMaxPlayer;
     private Font _headerFont;
-    private Color _headerFontColor;
     private Font _contentFont;
-    private Color _contentFontColor;
     private Color _backgroundColor;
 
     public DGameInfo() {
         _labelName = new DLabel("No Game");
+        _labelName.setAlignment(DLabel.centerAlign);
         _imgIcon = new DImage(null);
         _labelAuthor = new DLabel("");
         _labelMinMaxPlayer = new DLabel("");
-        _labelName.setAlignment(DLabel.centerAlign);        
     }
     
     public void updateGameData(GameData gameData) {
@@ -56,12 +54,13 @@ public class DGameInfo extends DComponent {
     
     public void setHeaderFont(Font font, Color color) {
         _headerFont = font;
-        _headerFontColor = color;
+        _labelName.setFont(font, color);       
     }
     
     public void setContentFont(Font font, Color color) {
         _contentFont = font;
-        _contentFontColor = color;
+        _labelAuthor.setFont(font, color);
+        _labelMinMaxPlayer.setFont(font, color);
     }
     
     public void setBackgroundColor(Color color) {
@@ -78,27 +77,22 @@ public class DGameInfo extends DComponent {
         g.setColor(Color.black);
         g.drawRect(_position.x, _position.y, _width, height);
         
-        g.setFont(_headerFont);
-        g.setColor(_headerFontColor);
         Point position = new Point(_position.x + _width / 2, _position.y + 
-                g.getFontMetrics().getAscent());
+                g.getFontMetrics(_headerFont).getAscent());
         _labelName.setPosition(position);
         _labelName.draw(g);
         
         position.x = _position.x + 50;
-        position.y += g.getFontMetrics().getDescent() + 25;
+        position.y += g.getFontMetrics(_headerFont).getDescent() + 25;
         _imgIcon.setPosition(position);
         _imgIcon.draw(g);
-        
-        g.setFont(_contentFont);
-        g.setColor(_contentFontColor);
         
         position.x -= 20;
         position.y += _width - 50;
         _labelAuthor.setPosition(position);
         _labelAuthor.draw(g);
         
-        position.y += g.getFontMetrics().getHeight() + 8;
+        position.y += g.getFontMetrics(_contentFont).getHeight() + 8;
         _labelMinMaxPlayer.setPosition(position);
         _labelMinMaxPlayer.draw(g);
     }
