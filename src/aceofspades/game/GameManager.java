@@ -134,7 +134,7 @@ public class GameManager {
             _engine.invokeFunction("afterMove", this);
         }
         
-        return canRemove && canAdd;
+        return (canRemove >= 0) && (canAdd >= 0);
     }
     
     public boolean canEndTurn() throws ScriptException, NoSuchMethodException {
