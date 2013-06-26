@@ -1,6 +1,5 @@
 package aceofspades.framestates;
 
-import aceofspades.EditorFrame;
 import aceofspades.GameException;
 import aceofspades.Main;
 import aceofspades.MainFrame;
@@ -13,6 +12,10 @@ import java.awt.Font;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
+import java.net.UnknownHostException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 public class FSMainMenu extends FrameState {
@@ -163,12 +166,16 @@ public class FSMainMenu extends FrameState {
         public void run() {
             try {
                 Main.loadGameDataList();
+                Main.connectOnline();
                 _frame.setFrameState(new FSCreateOnline(_frame, _paneWidth, _paneHeight));
             } catch (GameException ex) {
                 JOptionPane.showMessageDialog(_frame, ex.getMessage(), 
                         "Fatal error", JOptionPane.ERROR_MESSAGE);
                 WindowEvent wev = new WindowEvent(_frame, WindowEvent.WINDOW_CLOSING);
                 Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(wev);
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(_frame, ex.getMessage(), 
+                        "Connection error", JOptionPane.ERROR_MESSAGE);
             }
         }
     }

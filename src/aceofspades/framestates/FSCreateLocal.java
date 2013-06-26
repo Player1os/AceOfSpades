@@ -113,6 +113,7 @@ public class FSCreateLocal extends FrameState {
          * Player Name Edit
          */
         _editPlayerName = new JTextField();
+        _editPlayerName.setText(Main.getProperty("defaultPlayerName"));
         _editPlayerName.setBounds(editPlayerBounds);
         _editPlayerName.getDocument().addDocumentListener(new PlayerNameAction());
         

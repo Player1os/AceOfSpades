@@ -1,6 +1,5 @@
 package aceofspades.game;
 
-import aceofspades.framestates.FrameState;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.script.ScriptException;

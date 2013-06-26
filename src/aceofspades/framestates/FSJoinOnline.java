@@ -18,6 +18,7 @@ public class FSJoinOnline extends FrameState {
     private JList listSessions;
     private DButton buttonBack;
     private DButton buttonNext;
+    private DButton _buttonRefresh;
     
     public FSJoinOnline(MainFrame frame, int paneWidth, int paneHeight) {
         super(frame, paneWidth, paneHeight);
@@ -36,6 +37,8 @@ public class FSJoinOnline extends FrameState {
         Color buttonHoverColor = new Color(150, 50, 50);
         Dimension buttonDimension = new Dimension(300, 60);
         Point buttonPosition = new Point(150, paneHeight - buttonDimension.height - 35);
+        Point refreshButtonPosition = new Point(paneWidth - (30 + gameInfoWidth), 
+                (400 + paneHeight - (buttonDimension.height + 30)) / 2);
         
         /**
          * Select Session Title
@@ -94,7 +97,19 @@ public class FSJoinOnline extends FrameState {
             
         });
         
+        /**
+         * Refresh Button
+         */        
+        _buttonRefresh = new DButton("Refresh");
+        _buttonRefresh.setPosition(refreshButtonPosition);
+        _buttonRefresh.setDimensions(buttonDimension);
+        _buttonRefresh.setFont(buttonFont, buttonFontColor);
+        _buttonRefresh.setBackground(buttonColor);
+        _buttonRefresh.setHoverBackground(buttonHoverColor);
+        _buttonRefresh.setAction(new RefreshAction());
+        
         frame.getContentPane().add(listSessions);
+        addComponent(_buttonRefresh);
         addComponent(buttonBack);
         addComponent(buttonNext);
     }
@@ -103,6 +118,16 @@ public class FSJoinOnline extends FrameState {
     public void unload() {
         super.unload();
         _frame.getContentPane().remove(listSessions);
+    }
+    
+    private class RefreshAction extends DAction {
+        
+        @Override
+        public void run() {
+            _onlineOut.println("getSessions");
+            
+        }
+        
     }
 
 }

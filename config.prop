@@ -1,6 +1,7 @@
-#Wed Jun 26 15:43:22 CEST 2013
-mainFrameWidth=1024
-mainFrameHeight=768
+#Wed Jun 26 22:53:03 CEST 2013
+mainFrameWidth=1600
+mainFrameHeight=1200
 defaultPlayerName=Player1
 gameEditorHeight=800
 gameEditorWidth=1000
+defaultServer=localhost

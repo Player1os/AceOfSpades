@@ -16,6 +16,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Point;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.script.ScriptException;
 import javax.swing.JOptionPane;
 
@@ -154,7 +156,7 @@ public class FSLobby extends FrameState {
                 GameManager gameManager = _sessionManager.createGameManager();
                 Main.setGameManager(gameManager);
                 _frame.setFrameState(new FSGame(_frame, _paneWidth, _paneHeight));
-            } catch (IOException | ScriptException ex) {
+            } catch (IOException | NoSuchMethodException | ScriptException ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage(),
                     "Game error", JOptionPane.ERROR_MESSAGE);
                 _frame.setFrameState(new FSMainMenu(_frame, _paneWidth, _paneHeight));

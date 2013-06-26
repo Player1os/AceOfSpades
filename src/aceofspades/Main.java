@@ -4,10 +4,15 @@ import aceofspades.game.GameData;
 import aceofspades.game.GameManager;
 import aceofspades.game.SessionManager;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.TreeMap;
@@ -23,14 +28,18 @@ public class Main {
     private static SessionManager _sessionManager = null;
     private static GameManager _gameManager = null;    
     
-    private static MainFrame frame = null;
+    private static MainFrame _frame = null;
+    
+    private static Socket _socket = null;
+    private static PrintWriter _onlineOut = null;
+    private static BufferedReader _onlineIn = null;
 
     public static void main(String[] args) {
         try {
             loadProperties();            
             loadImageResources();
             
-            frame = MainFrame.getInstance();
+            _frame = MainFrame.getInstance();
         } catch (GameException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), 
                     "Fatal error", JOptionPane.ERROR_MESSAGE);
@@ -128,4 +137,28 @@ public class Main {
         return _gameManager;
     }
     
+    public static void connectOnline() throws UnknownHostException, IOException {
+        _socket = new Socket(getProperty("defaultServer"), 13337);
+        _onlineOut = new PrintWriter(_socket.getOutputStream(), true);
+        _onlineIn = new BufferedReader(new InputStreamReader(_socket.getInputStream()));
+    }
+    
+    public static PrintWriter getOnlineOutStream() {
+        return _onlineOut;
+    }
+    
+    public static BufferedReader getOnlineInStream() {
+        return _onlineIn;
+    }
+    
+    public static void disconnectOnline() throws IOException {
+        _onlineOut.close();
+	_onlineIn.close();
+	_socket.close();
+        
+        _onlineIn = null;
+        _onlineOut = null;
+        _socket = null;
+    }
+        
 }
