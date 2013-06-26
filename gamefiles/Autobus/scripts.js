@@ -1,10 +1,13 @@
+var pocetMid = 1;
+var pocetV = 0;
+
 function gameInit(gameManager) {
     vyrobKopu(gameManager);
     var kopa = gameManager.getDeck(0);
     var tmp;
     for (var i = 0; i < gameManager.getPlayerCount(); i++) {
         tmp = gameManager.createDeck("hand");
-        tmp.setDDeckPosition(100, gameManager.getHeight() - 100);
+        tmp.setDDeckPosition(20, gameManager.getHeight() - 100);
         tmp.addOwner(i);
         for (var j = 0; j < 5; j++) {
             var card = kopa.getCard(kopa.getCardCount()-1);
@@ -12,7 +15,7 @@ function gameInit(gameManager) {
             gameManager.uncheckedMoveCard(card, tmp, 0);
         }
         tmp = gameManager.createDeck("autobus");
-        tmp.setDDeckPosition(100, 200);
+        tmp.setDDeckPosition(150, gameManager.getHeight() - 100);
         tmp.addOwner(i);
         for (var j = 0; j < 10; j++) {
             var card = kopa.getCard(kopa.getCardCount()-1);
@@ -20,29 +23,29 @@ function gameInit(gameManager) {
             gameManager.uncheckedMoveCard(card, tmp, 0);
         }
         tmp = gameManager.createDeck("stack");
-        tmp.setDDeckPosition(400, 100);
+        tmp.setDDeckPosition(320, gameManager.getHeight() - 100);
         tmp.addOwner(i);
         tmp = gameManager.createDeck("stack");
-        tmp.setDDeckPosition(400, 200);
+        tmp.setDDeckPosition(420, gameManager.getHeight() - 100);
         tmp.addOwner(i);
         tmp = gameManager.createDeck("stack");
-        tmp.setDDeckPosition(400, 300);
+        tmp.setDDeckPosition(520, gameManager.getHeight() - 100);
         tmp.addOwner(i);
         tmp = gameManager.createDeck("stack");
-        tmp.setDDeckPosition(400, 400);
+        tmp.setDDeckPosition(620, gameManager.getHeight() - 100);
         tmp.addOwner(i);
         tmp = gameManager.createDeck("stack");
-        tmp.setDDeckPosition(400, 500);
+        tmp.setDDeckPosition(720, gameManager.getHeight() - 100);
         tmp.addOwner(i);
     }
     tmp = gameManager.createDeck("empty");
-    tmp.setDDeckPosition(300, 300);
+    tmp.setDDeckPosition(120, 10);
     tmp.setOwnedByAll();
 }
 
 function vyrobKopu(gameManager) {
     var d = gameManager.createDeck("pile");
-    d.setDDeckPosition(100, 300);
+    d.setDDeckPosition(20, 80);
     d.setOwnedByAll();
     d.addCard(0, gameManager.createCard("A", "hearts"));
     d.addCard(0, gameManager.createCard("2", "hearts"));
@@ -143,7 +146,12 @@ function canAdd(gameManager, card, deck, pos) {
         if (card.getValue().equals("A")) {
             deck.setType("middle");
             var d = gameManager.createDeck("empty");
-            d.setDDeckPosition(300, 400);
+            d.setDDeckPosition(120 + (100*pocetMid), 10 + (100 * pocetV));
+            pocetMid++;
+            if (pocetMid > 9) {
+                pocetMid = 0;
+                pocetV++;
+            }
             d.setOwnedByAll();
             return gameManager.getInt(0);
         } else {
