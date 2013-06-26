@@ -25,5 +25,5 @@ function onTurn (gameManager) {
         var tmp = ruka.get(0).getCard(0);
         gameManager.moveCard(tmp, autobus.get(0), 0);
     }
-    fdsafsadfsdfs
+    /* Debugging VCS */
 }
