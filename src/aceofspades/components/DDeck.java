@@ -57,12 +57,15 @@ public class DDeck extends DComponent {
             g.fillRect(_bounds.x, _bounds.y, _bounds.width, _bounds.height);
         }
         
-        int padding = 10;
-        Rectangle smallBounds = new Rectangle(_bounds.x - padding, _bounds.y - 
-                padding, _bounds.width - padding, _bounds.height - padding);
+        int padding = 3;
+        Rectangle smallBounds = new Rectangle(_bounds.x + padding, _bounds.y + 
+                padding, _bounds.width - 2 * padding, _bounds.height - 2 * padding);
         
         g.drawImage(_img, smallBounds.x, smallBounds.y, smallBounds.width, 
                 smallBounds.height, null);
+        
+        g.setColor(Color.black);
+        g.drawString(_deck.toString(), _bounds.x, _bounds.y + _bounds.height + 10);
     }
 
     @Override
@@ -70,11 +73,6 @@ public class DDeck extends DComponent {
         if (_action != null) {
             if (_bounds.contains(e.getPoint())) {
                 _action.setMouseEvent(e);
-                if (e == null) {
-                    System.out.println("jj");
-                } else {
-                    System.out.println("ll");
-                }
                 _action.run();
             }
         }

@@ -4,6 +4,7 @@ function gameInit(gameManager) {
     var tmp;
     for (var i = 0; i < gameManager.getPlayerCount(); i++) {
         tmp = gameManager.createDeck("hand");
+        tmp.setDDeckPosition(100, 100);
         tmp.addOwner(i);
         for (var j = 0; j < 5; j++) {
             var card = kopa.getCard(kopa.getCardCount()-1);
@@ -11,6 +12,7 @@ function gameInit(gameManager) {
             gameManager.uncheckedMoveCard(card, tmp, 0);
         }
         tmp = gameManager.createDeck("autobus");
+        tmp.setDDeckPosition(100, 200);
         tmp.addOwner(i);
         for (var j = 0; j < 10; j++) {
             var card = kopa.getCard(kopa.getCardCount()-1);
@@ -18,22 +20,29 @@ function gameInit(gameManager) {
             gameManager.uncheckedMoveCard(card, tmp, 0);
         }
         tmp = gameManager.createDeck("stack");
+        tmp.setDDeckPosition(400, 100);
         tmp.addOwner(i);
         tmp = gameManager.createDeck("stack");
+        tmp.setDDeckPosition(400, 200);
         tmp.addOwner(i);
         tmp = gameManager.createDeck("stack");
+        tmp.setDDeckPosition(400, 300);
         tmp.addOwner(i);
         tmp = gameManager.createDeck("stack");
+        tmp.setDDeckPosition(400, 400);
         tmp.addOwner(i);
         tmp = gameManager.createDeck("stack");
+        tmp.setDDeckPosition(400, 500);
         tmp.addOwner(i);
     }
     tmp = gameManager.createDeck("empty");
+    tmp.setDDeckPosition(300, 300);
     tmp.setOwnedByAll();
 }
 
 function vyrobKopu(gameManager) {
     var d = gameManager.createDeck("pile");
+    d.setDDeckPosition(100, 300);
     d.setOwnedByAll();
     d.addCard(0, gameManager.createCard("A", "hearts"));
     d.addCard(0, gameManager.createCard("2", "hearts"));
@@ -110,52 +119,52 @@ function turnStart(gameManager) {
 function canAdd(gameManager, card, deck, pos) {
     var hrac = gameManager.getActivePlayer();
     var t = deck.getType();
-        switch (t) {
-            case "middle":
-                if (deck.getCard(deck.getCardCount()-1).getNumValue(false) < card.getNumValue(false)) {
-                        return deck.getCardCount();
-                }
-                break;
-            case "autobus":
-                card.unsetVisible(hrac.getPlayerID());
-                return 0;
-                break;
-            case "stack":
-                if (deck.length() > 0) {
-                    if (deck.getCard(0).getNumValue(false) == card.getNumValue(false)) {
-                        return deck.getCardCount();
-                    } else {
-                        return -1;
-                    }
-                } else {
-                    return 0;
-                }
-                break;
-            case "empty":
-                var d = gameManager.createDeck("empty");
-                d.setOwnedByAll();
-                return 0;
-                break;
+    print("A: " +  t);
+    if (t.equals("middle")) {
+        if (deck.getCard(deck.getCardCount()-1).getNumValue(false) < card.getNumValue(false)) {
+                return deck.getCardCount();
         }
-    return -1;
+    } else if (t.equals("autobus")) {
+        card.unsetVisible(hrac.getPlayerID());
+        return gameManager.getInt(0);
+    } else if (t.equals("stack")) {
+        if (deck.getCardCount() > 0) {
+            if (deck.getCard(0).getNumValue(false) == card.getNumValue(false)) {
+                return deck.getCardCount();
+            } else {
+                return gameManager.getInt(-1);
+            }
+        } else {
+            return gameManager.getInt(0);
+        }
+    } else if (t.equals("empty")) {
+        if (card.getValue().equals("A")) {
+            deck.setType("middle");
+            var d = gameManager.createDeck("empty");
+            d.setDDeckPosition(300, 400);
+            d.setOwnedByAll();
+            return gameManager.getInt(0);
+        } else {
+            return gameManager.getInt(-1);
+        }
+    }
+        
+    return gameManager.getInt(-1);
 }
 
 function canRemove(gameManager, card, deck, pos) {
     var t = deck.getType();
-        switch (t) {
-            case "autobus":
-                if (pos == deck.getCardCount()-1) {
-                    return pos;
-                }
-                break;
-            case "stack":
-                return pos;
-                break;
-            case "hand":
-                return pos;
-                break;
+    print("R: " +  t);
+    if (t.equals("autobus")) {
+        if (pos == deck.getCardCount()-1) {
+            return pos;
         }
-   return -1;
+    } else if (t.equals("stack")) {
+        return pos;
+    } else if (t.equals("hand")) {
+        return pos;
+    }
+   return gameManager.getInt(-1);
 }
 
 function afterMove(gameManager) {
@@ -163,23 +172,23 @@ function afterMove(gameManager) {
     var stredove = gameManager.getDecks("middle", null);
     var i = 0;
     while (i < stredove.size()) {
-        if (stredove[i].getCardCount() > 0) {
-            var tmp = stredove[i].getCard(stredove[i].getCardCount()-1).getNumValue(false);
-            if (nasielMatch(tmp, gameManager, stredove[i])) {
+        if (stredove.get(i).getCardCount() > 0) {
+            var tmp = stredove.get(i).getCard(stredove.get(i).getCardCount()-1).getNumValue(false);
+            if (nasielMatch(tmp, gameManager, stredove.get(i))) {
                 i = -1;
             }
         }
         i++;
     }
     for (var i = 0; i < stredove.size(); i++) {
-        if (stredove[i].getCardCount() == 13) stredove[i].setType("done");
+        if (stredove.get(i).getCardCount() == 13) stredove.get(i).setType("done");
     }
 }
 
 function checkAutobus(gameManager) {
     var hrac = gameManager.getActivePlayer();
     var autobus = gameManager.getDeck(2 + (hrac.getPlayerID() * 7));
-    if (autobus.length() > 0) if (!autobus.getCard(autobus.length()-1).isVisible(hrac.getPlayerID())) autobus.getCard(autobus.length()-1).setVisible(hrac.getPlayerID());
+    if (autobus.getCardCount() > 0) if (!autobus.getCard(autobus.getCardCount()-1).isVisible(hrac.getPlayerID())) autobus.getCard(autobus.getCardCount()-1).setVisible(hrac.getPlayerID());
 }
 
 function nasielMatch(tmp, gameManager, deck) {
@@ -193,9 +202,11 @@ function nasielMatch(tmp, gameManager, deck) {
         return true;
     }
     for (var i = 0; i < skladove.size(); i++) {
-        if (skladove[i].getCard(skladove[i].getCardCount()-1).getNumValue(false) == tmp+1) {
-            gameManager.uncheckedMoveCard(skladove[i].getCard(skladove[i].getCardCount()-1), deck, deck.getCardCount());
-            return true;
+        if (skladove.get(i).getCardCount() > 0) {
+            if (skladove.get(i).getCard(skladove.get(i).getCardCount()-1).getNumValue(false) == tmp+1) {
+                gameManager.uncheckedMoveCard(skladove.get(i).getCard(skladove.get(i).getCardCount()-1), deck, deck.getCardCount());
+                return true;
+            }
         }
     }
     return false;
@@ -212,7 +223,7 @@ function winCondition(gameManager) {
     var hrac = gameManager.getActivePlayer();
     var decky = gameManager.getDecks(null, hrac.getPlayerID());
     for (var i = 0; i < decky.size(); i++) {
-        if (decky[i].getCardCount() != 0) {
+        if (decky.get(i).getCardCount() != 0) {
             return false;
         }
     }

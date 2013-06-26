@@ -61,28 +61,36 @@ public abstract class FrameState extends MouseAdapter {
     
     @Override
     public void mouseMoved(MouseEvent e) {
-        for (DComponent component : _DComponents) {
+        ArrayList<DComponent> dComponents = new ArrayList<>(_DComponents);
+        
+        for (DComponent component : dComponents) {
             component.mouseMoved(e);
         }
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-        for (DComponent component : _DComponents) {
+        ArrayList<DComponent> dComponents = new ArrayList<>(_DComponents);
+        
+        for (DComponent component : dComponents) {
             component.mousePressed(e);
         }
     }
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        for (DComponent component : _DComponents) {
+        ArrayList<DComponent> dComponents = new ArrayList<>(_DComponents);
+        
+        for (DComponent component : dComponents) {
             component.mouseDragged(e);
         }
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        for (DComponent component : _DComponents) {
+        ArrayList<DComponent> dComponents = new ArrayList<>(_DComponents);
+        
+        for (DComponent component : dComponents) {
             component.mouseReleased(e);
         }
     }

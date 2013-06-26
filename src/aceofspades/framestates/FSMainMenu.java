@@ -161,7 +161,15 @@ public class FSMainMenu extends FrameState {
         
         @Override
         public void run() {
-
+            try {
+                Main.loadGameDataList();
+                _frame.setFrameState(new FSCreateOnline(_frame, _paneWidth, _paneHeight));
+            } catch (GameException ex) {
+                JOptionPane.showMessageDialog(_frame, ex.getMessage(), 
+                        "Fatal error", JOptionPane.ERROR_MESSAGE);
+                WindowEvent wev = new WindowEvent(_frame, WindowEvent.WINDOW_CLOSING);
+                Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(wev);
+            }
         }
     }
     

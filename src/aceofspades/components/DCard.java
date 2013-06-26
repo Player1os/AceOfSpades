@@ -4,6 +4,7 @@ import aceofspades.Main;
 import aceofspades.game.Card;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -17,6 +18,7 @@ public class DCard extends DComponent{
     private BufferedImage _backImg;
     private int _playerID;
     private boolean bumpUp;
+    private Font _font;
 
     public DCard(Card card) {
         _card = card;
