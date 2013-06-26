@@ -19,6 +19,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 import java.util.ArrayList;
 import javax.script.ScriptException;
 import javax.swing.JOptionPane;
@@ -64,7 +65,15 @@ public class FSGame extends FrameState {
          _rightSelect = -1;
         _leftSelect = -1;
         _dDecks = new ArrayList<>();
+        
         _gameManager.setFrameState(this);
+        try {
+            _gameManager.startGame();
+        } catch (ScriptException | NoSuchMethodException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(),
+                    "Game error", JOptionPane.ERROR_MESSAGE);
+            _frame.setFrameState(new FSMainMenu(_frame, _paneWidth, _paneHeight));
+        }
         
         ArrayList<DDeck> dDecks =
                 _gameManager.getDDecks(_gameManager.getActivePlayer());

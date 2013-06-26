@@ -4,7 +4,7 @@ function gameInit(gameManager) {
     var tmp;
     for (var i = 0; i < gameManager.getPlayerCount(); i++) {
         tmp = gameManager.createDeck("hand");
-        tmp.setDDeckPosition(100, 100);
+        tmp.setDDeckPosition(100, gameManager.getHeight() - 100);
         tmp.addOwner(i);
         for (var j = 0; j < 5; j++) {
             var card = kopa.getCard(kopa.getCardCount()-1);
@@ -121,8 +121,10 @@ function canAdd(gameManager, card, deck, pos) {
     var t = deck.getType();
     print("A: " +  t);
     if (t.equals("middle")) {
-        if (deck.getCard(deck.getCardCount()-1).getNumValue(false) < card.getNumValue(false)) {
-                return deck.getCardCount();
+        if (deck.getCardCount() > 0) {
+            if (deck.getCard(deck.getCardCount()-1).getNumValue(false) == card.getNumValue(false) - 1) {
+                    return deck.getCardCount();
+            }
         }
     } else if (t.equals("autobus")) {
         card.unsetVisible(hrac.getPlayerID());
@@ -196,10 +198,12 @@ function nasielMatch(tmp, gameManager, deck) {
     var autobus = gameManager.getDeck(2 + (hrac.getPlayerID() * 7));
     var skladove = gameManager.getDecks("stack", hrac.getPlayerID());
 
-    if (autobus.getCard(autobus.getCardCount()-1).getNumValue(false) == tmp+1) {
-        gameManager.uncheckedMoveCard(autobus.getCard(autobus.getCardCount()-1), deck, deck.getCardCount());
-        checkAutobus(gameManager);
-        return true;
+    if (autobus.getCardCount() > 0) {
+        if (autobus.getCard(autobus.getCardCount()-1).getNumValue(false) == tmp+1) {
+            gameManager.uncheckedMoveCard(autobus.getCard(autobus.getCardCount()-1), deck, deck.getCardCount());
+            checkAutobus(gameManager);
+            return true;
+        }
     }
     for (var i = 0; i < skladove.size(); i++) {
         if (skladove.get(i).getCardCount() > 0) {

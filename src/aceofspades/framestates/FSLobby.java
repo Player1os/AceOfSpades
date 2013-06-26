@@ -152,10 +152,9 @@ public class FSLobby extends FrameState {
         public void run() {
             try {
                 GameManager gameManager = _sessionManager.createGameManager();
-                gameManager.startGame();
                 Main.setGameManager(gameManager);
                 _frame.setFrameState(new FSGame(_frame, _paneWidth, _paneHeight));
-            } catch (IOException | ScriptException | NoSuchMethodException ex) {
+            } catch (IOException | ScriptException ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage(),
                     "Game error", JOptionPane.ERROR_MESSAGE);
                 _frame.setFrameState(new FSMainMenu(_frame, _paneWidth, _paneHeight));

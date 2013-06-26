@@ -195,7 +195,7 @@ public class GameManager {
     
     public boolean moveCard(Card card, Deck destDeck, int deckPos) throws ScriptException, NoSuchMethodException {
         int canRemove = (Integer)_engine.invokeFunction("canRemove", 
-                this, card, card.getDeck(), deckPos);
+                this, card, card.getDeck(), card.getDeckPosition());
         System.out.println(canRemove);
         int canAdd = (Integer)_engine.invokeFunction("canAdd", 
                 this, card, destDeck, deckPos);

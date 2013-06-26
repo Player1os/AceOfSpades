@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class DDeckZoom extends DComponent {
     
     private static Dimension cardDimensions = new Dimension(50, 80);
-    private static int _margin = 10;
+    private static int _margin = 20;
     
     private Deck _deck;
     private FrameState _frameState;

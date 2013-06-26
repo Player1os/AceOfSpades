@@ -198,12 +198,13 @@ public class SessionManager {
         
         ArrayList<Player> players = new ArrayList<>();
         
-        for (int i = 0; i < _playerSlots.size(); i++) {
-            Slot s = _playerSlots.get(i);
+        int i = 0;
+        for (Slot s : _playerSlots) {
             if (s.isOccupied()) {
                 Player p = s.getPlayer();
                 p.setPlayerID(i);
                 players.add(p);
+                i++;
             }
         }        
         
