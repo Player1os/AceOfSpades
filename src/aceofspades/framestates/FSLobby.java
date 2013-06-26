@@ -146,16 +146,16 @@ public class FSLobby extends FrameState {
         }
 
     }
-
     
     private class StartAction extends DAction {
         @Override
         public void run() {
             try {
-                GameManager gameManager = _sessionManager.createGameManager();
+                FrameState fs = new FSGame(_frame, _paneWidth, _paneHeight);                
+                GameManager gameManager = _sessionManager.createGameManager(fs);
                 gameManager.startGame();
                 Main.setGameManager(gameManager);
-                _frame.setFrameState(new FSGame(_frame, _paneWidth, _paneHeight));
+                _frame.setFrameState(fs);
             } catch (IOException | ScriptException | NoSuchMethodException ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage(),
                     "Game error", JOptionPane.ERROR_MESSAGE);

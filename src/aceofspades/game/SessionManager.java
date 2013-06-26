@@ -1,5 +1,6 @@
 package aceofspades.game;
 
+import aceofspades.framestates.FrameState;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.script.ScriptException;
@@ -190,7 +191,7 @@ public class SessionManager {
         return player;
     }
     
-    public GameManager createGameManager() throws IOException, ScriptException {
+    public GameManager createGameManager(FrameState frameState) throws IOException, ScriptException {
         if (_players.size() < _gameData.getMinPlayerCount()) {
             return null;
         }
@@ -206,7 +207,7 @@ public class SessionManager {
             }
         }        
         
-        return new GameManager(_gameData, players);
+        return new GameManager(_gameData, players, frameState);
     }
 
 }

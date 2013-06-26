@@ -58,6 +58,14 @@ public abstract class FrameState extends MouseAdapter {
     }
     
     
+    public int getHeight() {
+        return _paneHeight;
+    }
+    
+    public int getWidth() {
+        return _paneWidth;
+    }
+    
     
     @Override
     public void mouseMoved(MouseEvent e) {

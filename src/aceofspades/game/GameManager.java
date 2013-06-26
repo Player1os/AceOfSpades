@@ -1,7 +1,9 @@
 package aceofspades.game;
 
 import aceofspades.Main;
+import aceofspades.MainFrame;
 import aceofspades.components.DDeck;
+import aceofspades.framestates.FrameState;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -23,10 +25,12 @@ public class GameManager {
     private TreeMap<String, Integer> _vars;
     private ArrayList<TreeMap<String, Integer>> _playerVars;
     
+    private FrameState _frameState;
     private int _activePlayerID;
     
-    public GameManager(GameData gameData, ArrayList<Player> players) 
-            throws IOException, ScriptException {
+    public GameManager(GameData gameData, ArrayList<Player> players, 
+            FrameState frameState) throws IOException, ScriptException {
+        _frameState = frameState;
         _gameData = gameData;
         _engine = gameData.getEngine();
         _players = players;
@@ -143,6 +147,14 @@ public class GameManager {
     
     public int getInt(double d) {
         return new Double(d).intValue();
+    }
+    
+    public int getWidth() {
+        return _frameState.getWidth();
+    }
+    
+    public int getHeight() {
+        return _frameState.getHeight() - 100;
     }
     
     /**
