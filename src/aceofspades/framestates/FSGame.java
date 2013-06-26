@@ -64,6 +64,8 @@ public class FSGame extends FrameState {
          _rightSelect = -1;
         _leftSelect = -1;
         _dDecks = new ArrayList<>();
+        _gameManager.setFrameState(this);
+        
         ArrayList<DDeck> dDecks =
                 _gameManager.getDDecks(_gameManager.getActivePlayer());
         

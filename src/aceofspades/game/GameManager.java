@@ -1,7 +1,6 @@
 package aceofspades.game;
 
 import aceofspades.Main;
-import aceofspades.MainFrame;
 import aceofspades.components.DDeck;
 import aceofspades.framestates.FrameState;
 import java.awt.Dimension;
@@ -28,9 +27,8 @@ public class GameManager {
     private FrameState _frameState;
     private int _activePlayerID;
     
-    public GameManager(GameData gameData, ArrayList<Player> players, 
-            FrameState frameState) throws IOException, ScriptException {
-        _frameState = frameState;
+    public GameManager(GameData gameData, ArrayList<Player> players) 
+            throws IOException, ScriptException {
         _gameData = gameData;
         _engine = gameData.getEngine();
         _players = players;
@@ -49,6 +47,10 @@ public class GameManager {
     /**
      * JavaScript functions
      */
+    
+    public void setFrameState(FrameState frameState) {
+        _frameState = frameState;
+    }
     
     public Card getCard(int cardID) {
         return _cards.get(cardID);
