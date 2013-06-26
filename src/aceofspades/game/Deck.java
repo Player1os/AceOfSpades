@@ -3,6 +3,8 @@ package aceofspades.game;
 import aceofspades.components.DDeck;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Random;
 
 public class Deck {
 
@@ -55,7 +57,7 @@ public class Deck {
     public void setOwnedByAll() {
         for (int i = 0; i < _ownership.size(); i++) {
             _ownership.set(i, true);
-        }    
+        }
     }
     
     public Card getCard(int deckPosition) {
@@ -98,14 +100,11 @@ public class Deck {
     }
 
     public void shuffle() {
-        int n = _cards.size();
-        for (int j = 0; j < n; j++) {
-            for (int i = 0; i < n; i++) {
-                int change = (i + new Double(Math.random()).intValue()) % n;
-                Card helper = _cards.get(i);
-                _cards.set(i, _cards.get(change));
-                _cards.set(change, helper);
-            }
+        long seed = System.nanoTime();
+        Collections.shuffle(_cards, new Random(seed));
+        
+        for (int i = 0; i < _cards.size(); i++) {
+            this._cards.get(i).addToDeck(this, i);
         }
     }
 

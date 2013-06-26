@@ -1,5 +1,7 @@
 package aceofspades.game;
 
+import javax.script.ScriptException;
+
 public class AIPlayer extends Player {
     private AIStrategy _strategy;
     
@@ -16,5 +18,9 @@ public class AIPlayer extends Player {
         } else {
             return "Online AI Player";
         }
+    }
+    
+    public void playTurn(GameManager gameManager) throws ScriptException, NoSuchMethodException {
+        _strategy.playTurn(gameManager);
     }
 }

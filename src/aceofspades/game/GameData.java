@@ -5,6 +5,7 @@ import aceofspades.Main;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -110,7 +111,7 @@ public class GameData {
                 for (File aiFile : fileList) {
                     try {
                         _AIStrategies.add(new AIStrategy(aiFile));
-                    } catch (NullPointerException | NumberFormatException ex) {
+                    } catch (GameException | NullPointerException | ScriptException | FileNotFoundException ex) {
                         JOptionPane.showMessageDialog(null, "Warning the object '" +
                             aiFile.getName() + "' located within the '" + 
                             folder.getName() + "' Game Data folder is not a "

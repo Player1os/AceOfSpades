@@ -68,6 +68,18 @@ public class Card {
         _visibility.set(playerID, false);
     }
     
+    public void setVisibleByAll() {
+        for (int i = 0; i < _visibility.size(); i++) {
+            _visibility.set(i, true);
+        }
+    }
+    
+    public void unsetVisibleByAll() {
+        for (int i = 0; i < _visibility.size(); i++) {
+            _visibility.set(i, false);
+        }
+    }
+    
     public Deck getDeck() {
         return _deck;
     }

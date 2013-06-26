@@ -31,6 +31,10 @@ public class DCard extends DComponent{
         return _card;
     }
     
+    public void setFont(Font font) {
+        _font = font;
+    }
+    
     public void setPosition(Point position) {
         _bounds.x = position.x;
         _bounds.y = position.y;
@@ -61,6 +65,7 @@ public class DCard extends DComponent{
             String suite = _card.getSuit();
             String value = _card.getValue();
             
+            g.setFont(_font);
             switch (suite) {
                 case "hearts":
                     g.setColor(Color.RED);
@@ -83,7 +88,6 @@ public class DCard extends DComponent{
                     g.drawString(value, bounds.x + 4, bounds.y + 40);
                     break;
             }
-            
         } else {
             g.drawImage(_backImg, _bounds.x, _bounds.y, _bounds.width, _bounds.height, null);
         }

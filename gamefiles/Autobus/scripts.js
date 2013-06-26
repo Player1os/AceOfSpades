@@ -10,7 +10,7 @@ function gameInit(gameManager) {
         tmp.setDDeckPosition(20, gameManager.getHeight() - 100);
         tmp.addOwner(i);
         for (var j = 0; j < 5; j++) {
-            var card = kopa.getCard(kopa.getCardCount()-1);
+            var card = kopa.getCard(kopa.getCardCount() - 1);
             card.setVisible(i);
             gameManager.uncheckedMoveCard(card, tmp, 0);
         }
@@ -103,8 +103,6 @@ function vyrobKopu(gameManager) {
     d.addCard(0, gameManager.createCard("Q", "clubs"));
     d.addCard(0, gameManager.createCard("K", "clubs"));
     d.shuffle();
-    d.shuffle();
-    d.shuffle();
 }
 
 function turnStart(gameManager) {
@@ -112,9 +110,16 @@ function turnStart(gameManager) {
     var ruka = gameManager.getDeck(1 + (hrac.getPlayerID() * 7));
     var kopa = gameManager.getDeck(0);
     gameManager.setPlayerVar(hrac.getPlayerID(), "handsize", ruka.getCardCount());
-    gameManager.uncheckedMoveCard(kopa.getCard(kopa.getCardCount() - 1));
+    if (kopa.getCardCount() > 0) {
+        var card = kopa.getCard(kopa.getCardCount() - 1);
+        gameManager.uncheckedMoveCard(card, ruka, 0);
+        card.setVisible(hrac.getPlayerID());
+    }        
     if (kopa.getCardCount() < 1) {
         gameManager.mergeDecks(gameManager.getDecks("done", null), kopa);
+        for (var i = 0; i < kopa.getCardCount(); i++) {
+            kopa.getCard(i).unsetVisbleByAll();
+        }
         kopa.shuffle();
     }
 }
@@ -122,7 +127,6 @@ function turnStart(gameManager) {
 function canAdd(gameManager, card, deck, pos) {
     var hrac = gameManager.getActivePlayer();
     var t = deck.getType();
-    print("A: " +  t);
     if (t.equals("middle")) {
         if (deck.getCardCount() > 0) {
             if (deck.getCard(deck.getCardCount()-1).getNumValue(false) == card.getNumValue(false) - 1) {
@@ -164,7 +168,6 @@ function canAdd(gameManager, card, deck, pos) {
 
 function canRemove(gameManager, card, deck, pos) {
     var t = deck.getType();
-    print("R: " +  t);
     if (t.equals("autobus")) {
         if (pos == deck.getCardCount()-1) {
             return pos;
@@ -181,6 +184,11 @@ function afterMove(gameManager) {
     checkAutobus(gameManager);
     var stredove = gameManager.getDecks("middle", null);
     var i = 0;
+    for (var i = 0; i < stredove.size(); i++) {
+        for (var j = 0; j < stredove.get(i).getCardCount(); j++) {
+            stredove.get(i).getCard(j).setVisibleByAll();
+        }
+    }
     while (i < stredove.size()) {
         if (stredove.get(i).getCardCount() > 0) {
             var tmp = stredove.get(i).getCard(stredove.get(i).getCardCount()-1).getNumValue(false);
@@ -226,9 +234,9 @@ function nasielMatch(tmp, gameManager, deck) {
 
 function canEndTurn(gameManager) {
     var hrac = gameManager.getActivePlayer();
-    var ruka = gameManager.getDeck(2 + (hrac.getPlayerID() * 7));
-    if (gameManager.getPlayerVar(hrac.getPlayerID(), "handsize") < ruka.getCardCount()) return false;
-    return true;
+    var rukaQ = gameManager.getDecks("hand", hrac.getPlayerID());
+    var ruka = rukaQ.get(0);
+    return !(gameManager.getPlayerVar(hrac.getPlayerID(), "handsize") < ruka.getCardCount());
 }
 
 function winCondition(gameManager) {

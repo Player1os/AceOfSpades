@@ -3,6 +3,7 @@ package aceofspades.components;
 import aceofspades.game.Deck;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -17,11 +18,16 @@ public class DDeck extends DComponent {
     private BufferedImage _img;
     private Color _highlightColor;
     private DMouseAction _action;
+    private Font _font;
 
     public DDeck(Deck deck) {
         _deck = deck;
         _name = deck.toString();
         _bounds = new Rectangle();
+    }
+    
+    public void setFont(Font font) {
+        _font = font;
     }
     
     public void setPosition(Point position) {
@@ -64,8 +70,11 @@ public class DDeck extends DComponent {
         g.drawImage(_img, smallBounds.x, smallBounds.y, smallBounds.width, 
                 smallBounds.height, null);
         
+        g.setFont(_font);
         g.setColor(Color.black);
-        g.drawString(_deck.toString(), _bounds.x, _bounds.y + _bounds.height + 10);
+        g.drawString(_deck.toString(), _bounds.x + (_bounds.width - 
+                g.getFontMetrics().stringWidth(_deck.toString()))/ 2, _bounds.y 
+                + _bounds.height + 15);
     }
 
     @Override

@@ -33,7 +33,7 @@ public class GameManager {
         _engine = gameData.getEngine();
         _players = players;
         _decks = new TreeMap<>();
-        _cards= new ArrayList<>();
+        _cards = new ArrayList<>();
         
         _cardIDCounter = 0;
         _deckIDCounter = 0;
@@ -42,6 +42,9 @@ public class GameManager {
         
         _vars = new TreeMap<>();
         _playerVars = new ArrayList<>();
+        for (int i = 0; i < _players.size(); i++) {
+            _playerVars.add(new TreeMap<String, Integer>());
+        }
     }
     
     /**
@@ -196,10 +199,8 @@ public class GameManager {
     public boolean moveCard(Card card, Deck destDeck, int deckPos) throws ScriptException, NoSuchMethodException {
         int canRemove = (Integer)_engine.invokeFunction("canRemove", 
                 this, card, card.getDeck(), card.getDeckPosition());
-        System.out.println(canRemove);
         int canAdd = (Integer)_engine.invokeFunction("canAdd", 
                 this, card, destDeck, deckPos);
-        System.out.println(canAdd);
         
         if ((canRemove >= 0) && (canAdd >= 0)) {
             uncheckedMoveCard(card, destDeck, canAdd);            
@@ -217,6 +218,14 @@ public class GameManager {
     
     public boolean canEndTurn() throws ScriptException, NoSuchMethodException {
         return (Boolean)_engine.invokeFunction("canEndTurn", this);
+    }
+    
+    public void startTurn() throws ScriptException, NoSuchMethodException {
+        _engine.invokeFunction("turnStart", this);
+    }
+    
+    public void endTurn() {
+        _activePlayerID = (_activePlayerID + 1) % _players.size();
     }
         
 }

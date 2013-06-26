@@ -1,11 +1,11 @@
 package aceofspades.components;
 
-import aceofspades.framestates.FrameState;
 import aceofspades.game.Card;
 import aceofspades.game.Deck;
 import aceofspades.game.GameManager;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -17,19 +17,27 @@ public class DDeckZoom extends DComponent {
     private static Dimension cardDimensions = new Dimension(50, 80);
     private static int _margin = 20;
     
+    private GameManager _gameManager;
     private Deck _deck;
-    private FrameState _frameState;
     private Rectangle _bounds;
     private Color _backgroundColor;
     private ArrayList<DCard> _cards;
     private DCard _selectedDCard;
     private DComponentDrawer _dCompDraw;
     private DDeckZoomAction _action;
+    private Font _font;
 
-    public DDeckZoom(FrameState frameState) {
-        _frameState = frameState;
+    public DDeckZoom() {
         _bounds = new Rectangle();
         _cards = null;
+    }
+    
+    public void setFont(Font font) {
+        _font = font;
+    }
+    
+    public void setGameManager(GameManager gameManager) {
+        _gameManager = gameManager;
     }
     
     public void setDCompDraw(DComponentDrawer dCompDraw) {
@@ -73,22 +81,28 @@ public class DDeckZoom extends DComponent {
         }
     }
     
-    public void loadDeck(Deck deck, GameManager gameManager) {
+    public void loadDeck(Deck deck) {
         _selectedDCard = null;
-        _deck = deck;
-        _cards = new ArrayList<>();
+        _deck = deck;            
 
-        Point cardPosition = new Point(_margin + _bounds.x, _bounds.y + 
-                (_bounds.height - cardDimensions.height) / 2);
-        
-        for (Card card : deck.getCards()) {
-            DCard dCard = card.getDCard();
-            dCard.setPlayerID(gameManager.getActivePlayer().getPlayerID());
-            dCard.setPosition(cardPosition);
-            dCard.setDimensions(cardDimensions);
-            _cards.add(dCard);
-            
-            cardPosition.x += _margin;
+        if (deck != null) {
+            _cards = new ArrayList<>();
+
+            Point cardPosition = new Point(_margin + _bounds.x, _bounds.y + 
+                    (_bounds.height - cardDimensions.height) / 2);
+
+            for (Card card : deck.getCards()) {
+                DCard dCard = card.getDCard();
+                dCard.setPlayerID(_gameManager.getActivePlayer().getPlayerID());
+                dCard.setPosition(cardPosition);
+                dCard.setDimensions(cardDimensions);
+                dCard.setFont(_font);
+                _cards.add(dCard);
+
+                cardPosition.x += _margin;
+            }
+        } else {
+            _cards = null;
         }
     }
     
