@@ -169,7 +169,7 @@ function vyrobKopu(gameManager) {
     d.addCard(0, gameManager.createCard("Q", "clubs"));
     d.addCard(0, gameManager.createCard("K", "clubs"));
     
-    //d.shuffle();
+    d.shuffle();
 }
 
 function turnStart(gameManager) {
