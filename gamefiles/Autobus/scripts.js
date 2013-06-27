@@ -169,7 +169,7 @@ function vyrobKopu(gameManager) {
     d.addCard(0, gameManager.createCard("Q", "clubs"));
     d.addCard(0, gameManager.createCard("K", "clubs"));
     
-    d.shuffle();
+    //d.shuffle();
 }
 
 function turnStart(gameManager) {
@@ -189,30 +189,36 @@ function turnStart(gameManager) {
         }
         kopa.shuffle();
     }
+    var stredove = gameManager.getDecks("middle", null);
+    var i = 0;
+    while (i < stredove.size()) {
+        if (stredove.get(i).getCardCount() > 0) {
+            if (nasielMatch(gameManager, stredove.get(i))) {
+                i = -1;
+            }
+        }
+        i++;
+    }
 }
 
 function canAdd(gameManager, card, deck, pos) {
     var hrac = gameManager.getActivePlayer();
     var t = deck.getType();
     if (t.equals("middle")) {
+        var hodnota;
         if (card.getSuit() == "joker") {
-          if (card.getDeck().getType().equals("stack")) {
-            if ((deck.getCard(deck.getCardCount()-1).getNumValue(false) == card.getDeck().getCard(0).getNumValue(false) - 1)
-                    || (card.getDeck().getCard(0).getNumValue(false) == 0)) {
-                return deck.getCardCount();
+            if (card.getDeck().getType().equals("stack")) {
+                hodnota = card.getDeck().getCard(0).getNumValue(false);
             } else {
-                return gameManager.getInt(-1);
+                hodnota = card.getNumValue(false);
             }
-          } else {
-            return deck.getCardCount();  
-          }
         } else {
-            if (deck.getCardCount() > 0) {
-                if ((deck.getCard(deck.getCardCount()-1).getNumValue(false) == card.getNumValue(false) - 1) || (deck.getCard(deck.getCardCount()-1).getNumValue(false) == 0)) {
-                        return deck.getCardCount();
-                }
-            }
+            hodnota = card.getNumValue(false);
         }
+        if (hodnota == deck.getCardCount() + 1 || hodnota == 0) {
+            return deck.getCardCount();
+        }
+        
     } else if (t.equals("autobus")) {
         card.unsetVisible(hrac.getPlayerID());
         return gameManager.getInt(0);
@@ -282,16 +288,15 @@ function canRemove(gameManager, card, deck, pos) {
 function afterMove(gameManager) {
     checkAutobus(gameManager);
     var stredove = gameManager.getDecks("middle", null);
-    var i = 0;
     for (var i = 0; i < stredove.size(); i++) {
         for (var j = 0; j < stredove.get(i).getCardCount(); j++) {
             stredove.get(i).getCard(j).setVisibleByAll();
         }
     }
+    var i = 0;
     while (i < stredove.size()) {
         if (stredove.get(i).getCardCount() > 0) {
-            var tmp = stredove.get(i).getCard(stredove.get(i).getCardCount()-1).getNumValue(false);
-            if (nasielMatch(tmp, gameManager, stredove.get(i))) {
+            if (nasielMatch(gameManager, stredove.get(i))) {
                 i = -1;
             }
         }
@@ -308,22 +313,26 @@ function checkAutobus(gameManager) {
     if (autobus.getCardCount() > 0) if (!autobus.getCard(autobus.getCardCount()-1).isVisible(hrac.getPlayerID())) autobus.getCard(autobus.getCardCount()-1).setVisible(hrac.getPlayerID());
 }
 
-function nasielMatch(tmp, gameManager, deck) {
+function nasielMatch(gameManager, deck) {
     var hrac = gameManager.getActivePlayer();
     var autobus = gameManager.getDeck(2 + (hrac.getPlayerID() * 7));
     var skladove = gameManager.getDecks("stack", hrac.getPlayerID());
 
     if (autobus.getCardCount() > 0) {
-        if (autobus.getCard(autobus.getCardCount()-1).getNumValue(false) == tmp+1) {
-            gameManager.uncheckedMoveCard(autobus.getCard(autobus.getCardCount()-1), deck, deck.getCardCount());
+        if (autobus.getCard(autobus.getCardCount()-1).getNumValue(false) == deck.getCardCount()+1) {
+            var card = autobus.getCard(autobus.getCardCount()-1);
+            gameManager.uncheckedMoveCard(card, deck, deck.getCardCount());
+            card.setVisibleByAll();
             checkAutobus(gameManager);
             return true;
         }
     }
     for (var i = 0; i < skladove.size(); i++) {
         if (skladove.get(i).getCardCount() > 0) {
-            if (skladove.get(i).getCard(skladove.get(i).getCardCount()-1).getNumValue(false) == tmp+1) {
-                gameManager.uncheckedMoveCard(skladove.get(i).getCard(skladove.get(i).getCardCount()-1), deck, deck.getCardCount());
+            if (skladove.get(i).getCard(skladove.get(i).getCardCount()-1).getNumValue(false) == deck.getCardCount()+1) {
+                var card = skladove.get(i).getCard(skladove.get(i).getCardCount()-1);
+                gameManager.uncheckedMoveCard(card, deck, deck.getCardCount());
+                card.setVisibleByAll();
                 return true;
             }
         }
