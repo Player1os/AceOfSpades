@@ -14,7 +14,7 @@ public class AIPlayer extends Player {
     @Override
     public String getType() {
         if (this.isLocal()) {
-            return "Local AI Player";
+            return "AI Player";
         } else {
             return "Online AI Player";
         }

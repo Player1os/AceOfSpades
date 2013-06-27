@@ -124,35 +124,41 @@ public class DDeckZoom extends DComponent {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        if ((!isInBounds(e.getPoint())) || (_cards == null)) {
-            return;
-        }
-        for (int i = _cards.size() - 1; i >= 0; i--) {
-            if (_cards.get(i).isInBounds(e.getPoint())) {
-                _selectedDCard = _cards.get(i);
-                _cards.remove(i);
-                _action.setSelectedCard(_selectedDCard);
-                _dCompDraw.setComponent(_selectedDCard);
+        if (_action != null) {
+            if ((!isInBounds(e.getPoint())) || (_cards == null)) {
                 return;
+            }
+            for (int i = _cards.size() - 1; i >= 0; i--) {
+                if (_cards.get(i).isInBounds(e.getPoint())) {
+                    _selectedDCard = _cards.get(i);
+                    _cards.remove(i);
+                    _action.setSelectedCard(_selectedDCard);
+                    _dCompDraw.setComponent(_selectedDCard);
+                    return;
+                }
             }
         }
     }
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        if (_selectedDCard != null) {
-            _selectedDCard.setPosition(new Point(e.getX() - cardDimensions.width
-                    / 2, e.getY() - cardDimensions.height / 2));
+        if (_action != null) {
+            if (_selectedDCard != null) {
+                _selectedDCard.setPosition(new Point(e.getX() - cardDimensions.width
+                        / 2, e.getY() - cardDimensions.height / 2));
+            }
         }
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        if (_selectedDCard != null) {
-            _action.setMouseEvent(e);
-            _action.run();
-            _action.setSelectedCard(null);
-            _dCompDraw.setComponent(null);
+        if (_action != null) {
+            if (_selectedDCard != null) {
+                _action.setMouseEvent(e);
+                _action.run();
+                _action.setSelectedCard(null);
+                _dCompDraw.setComponent(null);
+            }
         }
     }
     

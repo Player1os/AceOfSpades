@@ -38,6 +38,16 @@ public class SessionManager {
         return _clientID;
     }
     
+    public Player getCreator() {
+        for (Player player : _players) {
+            if (player.isCreator()) {
+                return player;
+            }
+        }
+        
+        return null;
+    }
+    
     public boolean isMasterClient() {
         return _clientID == MasterID;
     }

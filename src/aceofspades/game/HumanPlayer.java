@@ -13,7 +13,7 @@ public class HumanPlayer extends Player{
             return "Session Host";
         } else if (this.isLocal()) {
             if (this.isMaster()) {
-                return "Local Master Human Player";
+                return "Master Human Player";
             } else {
                 return "Human Player";
             }

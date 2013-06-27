@@ -9,6 +9,7 @@ import aceofspades.components.DMouseAction;
 import aceofspades.components.DDeck;
 import aceofspades.components.DDeckZoom;
 import aceofspades.components.DDeckZoomAction;
+import aceofspades.components.DLabel;
 import aceofspades.game.AIPlayer;
 import aceofspades.game.Card;
 import aceofspades.game.Deck;
@@ -30,8 +31,11 @@ public class FSGame extends FrameState {
     private DDeckZoom _rightDeckZoom;
     private DDeckZoom _leftDeckZoom;    
     
+    private DLabel _playerLabel;
+    
     private GameManager _gameManager;
     private SessionManager _sessionManager;
+    
     private DButton _endTurnButton;
     private DButton _quitButton;
     private DComponentDrawer _dCompDraw;
@@ -89,6 +93,11 @@ public class FSGame extends FrameState {
         
         _dCompDraw = new DComponentDrawer();
         
+        _playerLabel = new DLabel(_gameManager.getActivePlayer().getName() + "'s Turn");
+        _playerLabel.setFont(new Font("SansSerif", Font.BOLD, 50), Color.ORANGE);
+        _playerLabel.setAlignment(DLabel.centerAlign);
+        _playerLabel.setPosition(new Point(paneWidth / 2, 50));
+        
         _rightDeckZoom = new DDeckZoom();
         _rightDeckZoom.setPosition(rightDeckZoomPosition);
         _rightDeckZoom.setDimensions(deckZoomDimension);
@@ -124,6 +133,7 @@ public class FSGame extends FrameState {
         _quitButton.setFont(buttonFont, buttonFontColor);
         _quitButton.setAction(new QuitAction());
         
+        addComponent(_playerLabel);
         addComponent(_leftDeckZoom);
         addComponent(_rightDeckZoom);
         addComponent(_endTurnButton);
@@ -169,6 +179,23 @@ public class FSGame extends FrameState {
         @Override
         public void run() {
             try {
+                if (_gameManager.isWinCondition()) {
+                    DLabel label = new DLabel(_gameManager.getActivePlayer().getName()  +  " is Victorious");
+                    label.setAlignment(DLabel.centerAlign);
+                    label.setFont(new Font("Sansserif", Font.BOLD, 80), Color.blue);
+                    label.setPosition(new Point(_paneWidth / 2, _paneHeight / 2));
+                    addComponent(label);
+                    
+                    for (DDeck dDeck :_dDecks) {
+                        dDeck.setAction(null);
+                    }
+                    _rightDeckZoom.setAction(null);
+                    _leftDeckZoom.setAction(null);
+                    _endTurnButton.setAction(null);
+                    _endTurnButton.setEnabled(false);
+                    return;
+                }
+                
                 _gameManager.endTurn();
                 _gameManager.startTurn();
                 Player player = _gameManager.getActivePlayer();
@@ -185,6 +212,7 @@ public class FSGame extends FrameState {
                     dDeck.setHighlightColor(null);
                 }
                 
+                _playerLabel.setText(_gameManager.getActivePlayer().getName() + "'s Turn");
                 _leftDeckZoom.loadDeck(null);
                 _rightDeckZoom.loadDeck(null);
                 

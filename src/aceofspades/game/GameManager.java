@@ -227,5 +227,9 @@ public class GameManager {
     public void endTurn() {
         _activePlayerID = (_activePlayerID + 1) % _players.size();
     }
+    
+    public boolean isWinCondition() throws ScriptException, NoSuchMethodException {
+        return (Boolean)_engine.invokeFunction("winCondition", this);
+    }
         
 }

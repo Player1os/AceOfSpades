@@ -39,7 +39,7 @@ public class DSessionInfo extends DComponent {
             GameData gameData = sessionManager.getGameData();
             _labelName.setText(gameData.getName());
             _imgIcon.setImage(gameData.getIcon());
-            _labelCreator.setText("Creator : " + sessionManager.getPlayers().get(0).getName());
+            _labelCreator.setText("Creator : " + sessionManager.getCreator().getName());
             _labelPlayerText.setText("Player count :");
             _labelPlayerCount.setText(Integer.toString(sessionManager.getPlayers().size()));
             if (sessionManager.getPlayers().size() < gameData.getMinPlayerCount()) {
