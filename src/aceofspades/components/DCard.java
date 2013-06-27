@@ -87,6 +87,18 @@ public class DCard extends DComponent{
                     g.drawString("♣", bounds.x + 4, bounds.y + 20);
                     g.drawString(value, bounds.x + 4, bounds.y + 40);
                     break;
+                case "joker":
+                    g.setColor(Color.BLACK);
+                    g.drawString("J", bounds.x + 4, bounds.y + 20);
+                    g.setColor(Color.red);
+                    g.drawString("O", bounds.x + 4, bounds.y + 34);
+                    g.setColor(Color.BLACK);
+                    g.drawString("K", bounds.x + 4, bounds.y + 48);
+                    g.setColor(Color.red);
+                    g.drawString("E", bounds.x + 4, bounds.y + 62);
+                    g.setColor(Color.BLACK);
+                    g.drawString("R", bounds.x + 4, bounds.y + 76);
+                    break;
             }
         } else {
             g.drawImage(_backImg, _bounds.x, _bounds.y, _bounds.width, _bounds.height, null);
