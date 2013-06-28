@@ -10,11 +10,14 @@ import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
 public class AIStrategy {
+    
+    private int _AIID;
     private String _name;
     private Invocable _engine;
     
-    public AIStrategy(File file) throws GameException, NullPointerException, 
+    public AIStrategy(File file, int AIID) throws GameException, NullPointerException, 
             ScriptException, FileNotFoundException {
+        _AIID = AIID;
         if (file == null) {
            throw new NullPointerException();
         }
@@ -29,6 +32,10 @@ public class AIStrategy {
 
         engine.eval(new FileReader(file));
         _engine = (Invocable)engine;
+    }
+    
+    public int getAIID() {
+        return _AIID;
     }
     
     @Override

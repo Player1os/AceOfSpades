@@ -13,15 +13,15 @@ public class HumanPlayer extends Player{
             return "Session Host";
         } else if (this.isLocal()) {
             if (this.isMaster()) {
-                return "Master Human Player";
+                return "Master Human";
             } else {
-                return "Human Player";
+                return "Human";
             }
         } else {
             if (this.isMaster()) {
-                return "Online Master Human Player";
+                return "Online Master Human";
             } else {
-                return "Online Human Player";
+                return "Online Human";
             }
         }
     }

@@ -108,9 +108,11 @@ public class GameData {
         if (aifolder.exists()) {
             File[] fileList = aifolder.listFiles();
             if (fileList != null) {
+                int i = 0;
                 for (File aiFile : fileList) {
                     try {
-                        _AIStrategies.add(new AIStrategy(aiFile));
+                        _AIStrategies.add(new AIStrategy(aiFile, i));
+                        i++;
                     } catch (GameException | NullPointerException | ScriptException | FileNotFoundException ex) {
                         JOptionPane.showMessageDialog(null, "Warning the object '" +
                             aiFile.getName() + "' located within the '" + 
@@ -152,6 +154,16 @@ public class GameData {
     
     public ArrayList<AIStrategy> getAIStrategies() {
         return _AIStrategies;
+    }
+    
+    public AIStrategy getAIStrategy(int AIID) {
+        for (AIStrategy AIStrategy : _AIStrategies) {
+            if (AIStrategy.getAIID() == AIID) {
+                return AIStrategy;
+            }
+        }
+        
+        return null;
     }
     
     public BufferedImage getIcon() {

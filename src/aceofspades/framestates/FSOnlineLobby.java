@@ -12,6 +12,7 @@ import aceofspades.game.AIPlayer;
 import aceofspades.game.AIStrategy;
 import aceofspades.game.GameManager;
 import aceofspades.game.HumanPlayer;
+import aceofspades.game.Player;
 import aceofspades.game.SessionManager;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -20,7 +21,6 @@ import java.awt.Point;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import javax.script.ScriptException;
 import javax.swing.JOptionPane;
 
@@ -168,6 +168,7 @@ public class FSOnlineLobby extends FrameState {
             try {
                 Main.setSessionManager(null);
                 _onlineOut.println("leave");
+                _onlineOut.println(_sessionManager.getClientID());
                 Main.disconnectOnline();
             } catch (IOException ex) {}
             _frame.setFrameState(new FSMainMenu(_frame, _paneWidth, _paneHeight));
@@ -179,9 +180,10 @@ public class FSOnlineLobby extends FrameState {
         @Override
         public synchronized void run() {
             try {
+                _onlineOut.println("start");
                 GameManager gameManager = _sessionManager.createGameManager();
                 Main.setGameManager(gameManager);
-                _frame.setFrameState(new FSGame(_frame, _paneWidth, _paneHeight));
+                _frame.setFrameState(new FSOnlineGame(_frame, _paneWidth, _paneHeight));
             } catch (IOException | NoSuchMethodException | ScriptException ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage(),
                     "Game error", JOptionPane.ERROR_MESSAGE);
@@ -199,17 +201,27 @@ public class FSOnlineLobby extends FrameState {
         @Override
         public void run() {
             AIStrategy selection = _playerSlot.getSelectedAIStrategy();
-            if (selection == null) {
-                _sessionManager.addPlayer(_playerSlot.getPlayerSlot().getSlotID(),
-                        _sessionManager.createHumanPlayer(_playerSlot.getName()));
-            } else {
-                _sessionManager.addPlayer(_playerSlot.getPlayerSlot().getSlotID(), 
-                        _sessionManager.createAIPlayer(_playerSlot.getName(), selection));
-            }
-            _sessionInfo.updateSessionManager(_sessionManager);
             
-            _buttonStart.setEnabled(!(_sessionManager.getPlayers().size() < 
-                    _sessionManager.getGameData().getMinPlayerCount()));
+            _onlineOut.println("addPlayer");
+            _onlineOut.println(_playerSlot.getPlayerSlot().getSlotID());
+            
+            Player player;
+            if (selection == null) {
+                player = _sessionManager.createHumanPlayer(_playerSlot.getName());
+                
+                _onlineOut.println(player.getLocalID());
+                _onlineOut.println(player.getClientID());
+                _onlineOut.println(player.getName());
+                _onlineOut.println("Human");
+                
+            } else {
+                player = _sessionManager.createAIPlayer(_playerSlot.getName(), selection);
+                
+                _onlineOut.println(player.getLocalID());
+                _onlineOut.println(player.getClientID());
+                _onlineOut.println(player.getName());
+                _onlineOut.println(selection.getAIID());
+            }
         }
         
         @Override
@@ -229,11 +241,9 @@ public class FSOnlineLobby extends FrameState {
         
         @Override
         public void run() {
-            _sessionManager.removePlayer(_playerSlot.getPlayerSlot().getSlotID());
-            _sessionInfo.updateSessionManager(_sessionManager);
+            _onlineOut.println("removePlayer");
+            _onlineOut.println(_playerSlot.getPlayerSlot().getSlotID());
             
-            _buttonStart.setEnabled(!(_sessionManager.getPlayers().size() < 
-                    _sessionManager.getGameData().getMinPlayerCount()));
         }
         
         @Override
@@ -252,7 +262,8 @@ public class FSOnlineLobby extends FrameState {
 
         @Override
         public void run() {
-            _sessionManager.moveUp(_playerSlot.getPlayerSlot().getSlotID());
+            _onlineOut.println("moveUp");
+            _onlineOut.println(_playerSlot.getPlayerSlot().getSlotID());
         }
         
         @Override
@@ -271,7 +282,8 @@ public class FSOnlineLobby extends FrameState {
 
         @Override
         public void run() {
-            _sessionManager.moveDown(_playerSlot.getPlayerSlot().getSlotID());
+            _onlineOut.println("moveDown");
+            _onlineOut.println(_playerSlot.getPlayerSlot().getSlotID());
         }
         
         @Override
@@ -290,8 +302,8 @@ public class FSOnlineLobby extends FrameState {
 
         @Override
         public void run() {
-            _sessionManager.closeSlot(_playerSlot.getPlayerSlot().getSlotID());
-            _sessionInfo.updateSessionManager(_sessionManager);
+            _onlineOut.println("closeSlot");
+            _onlineOut.println(_playerSlot.getPlayerSlot().getSlotID());
         }
         
         @Override
@@ -310,8 +322,8 @@ public class FSOnlineLobby extends FrameState {
 
         @Override
         public void run() {
-            _sessionManager.openSlot(_playerSlot.getPlayerSlot().getSlotID());
-            _sessionInfo.updateSessionManager(_sessionManager);
+            _onlineOut.println("openSlot");
+            _onlineOut.println(_playerSlot.getPlayerSlot().getSlotID());
         }
         
         @Override
@@ -347,43 +359,60 @@ public class FSOnlineLobby extends FrameState {
                                 String name = _onlineIn.readLine();
                                 String type = _onlineIn.readLine();
 
-                                if (type.equals("AI")) {
-                                    _sessionManager.addPlayer(slotID, new AIPlayer(_sessionManager, clientID, localID, name, null));
-                                } else {
+                                if (type.equals("Human")) {
                                     _sessionManager.addPlayer(slotID, new HumanPlayer(_sessionManager, clientID, localID, name));
+                                } else {
+                                    AIStrategy strategy = _sessionManager.getGameData().getAIStrategy(Integer.parseInt(type));
+                                    _sessionManager.addPlayer(slotID, new AIPlayer(_sessionManager, clientID, localID, name, strategy));
                                 }
+                                
+                                _sessionInfo.updateSessionManager(_sessionManager);
+            
+                                _buttonStart.setEnabled(!(_sessionManager.getPlayers().size() < 
+                                        _sessionManager.getGameData().getMinPlayerCount()));
                             } catch (NumberFormatException ex) {}
+                            _playerSlotManager.update();
                             break;
                         case "removePlayer":
                             try {
                                 int slotID = Integer.parseInt(_onlineIn.readLine());                
-                                _sessionManager.removePlayer(slotID);                            
+                                _sessionManager.removePlayer(slotID);
+                                _sessionInfo.updateSessionManager(_sessionManager);
+            
+                                _buttonStart.setEnabled(!(_sessionManager.getPlayers().size() < 
+                                        _sessionManager.getGameData().getMinPlayerCount()));
                             } catch (NumberFormatException ex) {}
-
+                            _playerSlotManager.update();
                             break;
                         case "moveUp":
                             try {
                                 int slotID = Integer.parseInt(_onlineIn.readLine());                
                                 _sessionManager.moveUp(slotID);
                             } catch (NumberFormatException ex) {}
+                            _playerSlotManager.update();
                             break;
                         case "moveDown":
                             try {
                                 int slotID = Integer.parseInt(_onlineIn.readLine());                
                                 _sessionManager.moveDown(slotID);
                             } catch (NumberFormatException ex) {}
+                            _playerSlotManager.update();
                             break;
                         case "openSlot":
                             try {
                                 int slotID = Integer.parseInt(_onlineIn.readLine());                
                                 _sessionManager.openSlot(slotID);
+                                _sessionInfo.updateSessionManager(_sessionManager);
                             } catch (NumberFormatException ex) {}
+                            _playerSlotManager.update();
                             break;
                         case "closeSlot":
                             try {
                                 int slotID = Integer.parseInt(_onlineIn.readLine());                
                                 _sessionManager.closeSlot(slotID);
+                                _sessionInfo.updateSessionManager(_sessionManager);
                             } catch (NumberFormatException ex) {}
+                            _playerSlotManager.update();
                             break;
                         case "leave":
                             _leaveAction.run();

@@ -257,6 +257,7 @@ public class FSJoinOnline extends FrameState {
                     int clientID = Integer.parseInt(_onlineIn.readLine());
                     
                     SessionManager session = new SessionManager(sessionInfo.getGameData(), sessionInfo.getSessionID(), clientID);
+                    session.createHumanPlayer(null);
                     Main.setSessionManager(session);
                     
                     int n = session.getGameData().getMaxPlayerCount();
@@ -275,10 +276,12 @@ public class FSJoinOnline extends FrameState {
                                 String name = _onlineIn.readLine();
                                 String type = _onlineIn.readLine();
                                         
-                                if (type.equals("AI")) {
-                                    session.addPlayer(slotID, new AIPlayer(session, playerClientID, localID, name, null));
-                                } else {
+                                if (type.equals("Human")) {
                                     session.addPlayer(slotID, new HumanPlayer(session, playerClientID, localID, name));
+                                } else {
+                                    int AIID = Integer.parseInt(_onlineIn.readLine());
+                                    
+                                    session.addPlayer(slotID, new AIPlayer(session, playerClientID, localID, name, session.getGameData().getAIStrategies().get(AIID)));
                                 }
                                 break;}
                             case "openSlot":                                

@@ -6,6 +6,7 @@ import aceofspades.framestates.FrameState;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.TreeMap;
 import javax.script.Invocable;
@@ -13,6 +14,9 @@ import javax.script.ScriptException;
 
 public class GameManager {
 
+    private PrintWriter _onlineOut;
+    private SessionManager _sessionManager;
+    
     private int _cardIDCounter;
     private int _deckIDCounter;
     private GameData _gameData;
@@ -196,6 +200,14 @@ public class GameManager {
         _engine.invokeFunction("gameInit", this);
     }
     
+    public void setSessionManager(SessionManager sessionManager) {
+        _sessionManager = sessionManager;
+    }
+    
+    public void setOnlineout(PrintWriter onlineOut) {
+        _onlineOut = onlineOut;
+    }
+    
     public boolean moveCard(Card card, Deck destDeck, int deckPos) throws ScriptException, NoSuchMethodException {
         int canRemove = (Integer)_engine.invokeFunction("canRemove", 
                 this, card, card.getDeck(), card.getDeckPosition());
@@ -213,7 +225,15 @@ public class GameManager {
     public void uncheckedMoveCard(Card card, Deck destDeck, int deckPos) {
         card.getDeck().removeCard(card.getDeckPosition());
         destDeck.addCard(deckPos, card);
-        card.addToDeck(destDeck, deckPos);        
+        card.addToDeck(destDeck, deckPos);
+        
+        if (_onlineOut != null) {
+            _onlineOut.println("moveCard");
+            _onlineOut.println(_sessionManager.getClientID());
+            _onlineOut.println(card.getCardID());
+            _onlineOut.println(destDeck.getDeckID());
+            _onlineOut.println(deckPos);
+        }
     }
     
     public boolean canEndTurn() throws ScriptException, NoSuchMethodException {

@@ -31,6 +31,10 @@ public abstract class Player {
         return _clientID;
     }
     
+    public int getLocalID() {
+        return _localID;
+    }
+    
     public String getName() {
         return _name;
     }
