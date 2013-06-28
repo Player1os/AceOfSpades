@@ -39,7 +39,7 @@ function gameInit(gameManager) {
         tmp.addOwner(i);
     }
     tmp = gameManager.createDeck("empty");
-    tmp.setDDeckPosition(120, 10);
+    tmp.setDDeckPosition(120, 80);
     tmp.setOwnedByAll();
 }
 
@@ -254,7 +254,7 @@ function canAdd(gameManager, card, deck, pos) {
             if (card.getValue().equals("A") || card.getValue().equals("0")) {
                 deck.setType("middle");
                 var d = gameManager.createDeck("empty");
-                d.setDDeckPosition(120 + (100*pocetMid), 10 + (100 * pocetV));
+                d.setDDeckPosition(120 + (100*pocetMid), 80 + (100 * pocetV));
                 pocetMid++;
                 if (pocetMid > 9) {
                     pocetMid = 0;
