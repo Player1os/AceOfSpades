@@ -121,6 +121,16 @@ public class Main {
         return _gameDataList;
     }
     
+    public static GameData getGameData(int gameID) {
+        for (GameData gameData : _gameDataList) {
+            if (gameData.getGameID() == gameID) {
+                return gameData;
+            }
+        }
+        
+        return null;
+    }
+    
     public static void setSessionManager(SessionManager sessionManager) {
         _sessionManager = sessionManager;
     }

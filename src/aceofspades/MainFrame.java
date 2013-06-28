@@ -77,6 +77,7 @@ public final class MainFrame extends JFrame {
     
     public void setResolution(Dimension d) {
         _drawPane = new DrawPane();
+        _drawPane.setLayout(null);
         setContentPane(_drawPane);
         setResizable(false);
         pack();

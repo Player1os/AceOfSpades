@@ -21,6 +21,8 @@ public class AIPlayer extends Player {
     }
     
     public void playTurn(GameManager gameManager) throws ScriptException, NoSuchMethodException {
-        _strategy.playTurn(gameManager);
+        if (_strategy != null) {
+            _strategy.playTurn(gameManager);
+        }
     }
 }

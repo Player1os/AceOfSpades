@@ -18,10 +18,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -166,7 +165,7 @@ public class FSCreateOnline extends FrameState {
         /**
          * Create Game Button
          */
-        _buttonCreate = new DButton("Create Game");
+        _buttonCreate = new DButton("Create Session");
         _buttonCreate.setEnabled(false);
         _buttonCreate.setPosition(createButtonPosition);
         _buttonCreate.setDimensions(buttonDimension);
@@ -265,6 +264,7 @@ public class FSCreateOnline extends FrameState {
         @Override
         public void run() {
             try {
+                _onlineOut.println("leave");
                 Main.disconnectOnline();
             } catch (IOException ex) {}
             
@@ -281,7 +281,12 @@ public class FSCreateOnline extends FrameState {
                 return;
             }
             
-            _onlineOut.println("createGame");
+            GameData gameData = (GameData)sel;
+            
+            _onlineOut.println("createSession");
+            _onlineOut.println(_editSessionName.getText());
+            _onlineOut.println(_editPlayerName.getText());
+            _onlineOut.println(gameData.getGameID());
             try {
                 if (_onlineIn.readLine().equals("OK")) {
                     int sessionID = Integer.parseInt(_onlineIn.readLine());
@@ -290,12 +295,15 @@ public class FSCreateOnline extends FrameState {
                     session.addPlayer(0, session.createHumanPlayer(_editPlayerName.getText()));            
                     Main.setSessionManager(session);            
 
-                    _frame.setFrameState(new FSLobby(_frame, _paneWidth, _paneHeight));
+                    FSOnlineLobby fs = new FSOnlineLobby(_frame, _paneWidth, _paneHeight);
+                    fs.startListener();
+                    _frame.setFrameState(fs);
                 } else {
-                    throw new GameException("");
+                    throw new GameException("Cannot create game");
                 }
-            } catch (GameIOException ex) {
-                Logger.getLogger(FSCreateOnline.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (GameException | IOException ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage(),
+                        "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
     }

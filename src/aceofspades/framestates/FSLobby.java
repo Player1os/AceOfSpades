@@ -16,8 +16,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Point;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.script.ScriptException;
 import javax.swing.JOptionPane;
 

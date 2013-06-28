@@ -75,7 +75,7 @@ public class FSCreateLocal extends FrameState {
         ArrayList<GameData> gameDataList = Main.getGameDataList();
         for (GameData gameData : gameDataList) {
             listModel.addElement(gameData);
-        }        
+        }
         
         /**
          * Create Local Game Title

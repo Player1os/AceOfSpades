@@ -88,7 +88,7 @@ public class SessionManager {
         return null;
     }
     
-    public boolean addPlayer(int slotID, Player player) {
+    public synchronized boolean addPlayer(int slotID, Player player) {
         if ((slotID < 0) || (slotID >= _playerSlots.size())) {
             return false;
         }
@@ -101,7 +101,7 @@ public class SessionManager {
         return true;
     }
     
-    public boolean removePlayer(int slotID) {
+    public synchronized boolean removePlayer(int slotID) {
         if ((slotID < 0) || (slotID >= _playerSlots.size())) {
             return false;
         }
@@ -116,7 +116,7 @@ public class SessionManager {
         return true;
     }
     
-    public boolean moveUp(int slotID) {
+    public synchronized boolean moveUp(int slotID) {
         if ((slotID < 0) || (slotID >= _playerSlots.size())) {
             return false;
         }
@@ -139,7 +139,7 @@ public class SessionManager {
         return true;
     }
     
-    public boolean moveDown(int slotID) {
+    public synchronized boolean moveDown(int slotID) {
         if ((slotID < 0) || (slotID >= _playerSlots.size())) {
             return false;
         }
@@ -162,7 +162,7 @@ public class SessionManager {
         return true;
     }
     
-    public boolean openSlot(int slotID) {
+    public synchronized boolean openSlot(int slotID) {
         if ((slotID < 0) || (slotID >= _playerSlots.size())) {
             return false;
         }
@@ -175,7 +175,7 @@ public class SessionManager {
         return true;
     }
     
-    public boolean closeSlot(int slotID) {
+    public synchronized boolean closeSlot(int slotID) {
         if ((slotID < 0) || (slotID >= _playerSlots.size())) {
             return false;
         }
@@ -200,7 +200,7 @@ public class SessionManager {
         return player;
     }
     
-    public GameManager createGameManager() throws IOException, ScriptException {
+    public synchronized GameManager createGameManager() throws IOException, ScriptException {
         if (_players.size() < _gameData.getMinPlayerCount()) {
             return null;
         }

@@ -46,7 +46,7 @@ public class DSlotManager extends DComponent {
         }
     }
     
-    public void setMoveUpAction(DSlotsAction a) {
+     public void setMoveUpAction(DSlotsAction a) {
         for (DSlot dSlot : _playerSlots) {
             a.setDSlot(dSlot);
             dSlot.setMoveUpAction(a.clone());

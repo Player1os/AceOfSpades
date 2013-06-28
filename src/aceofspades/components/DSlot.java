@@ -205,11 +205,11 @@ public class DSlot extends DComponent {
     
     public void setWidth(int width) {
         _slotWidth = width;
-        int diffWidth = width - 7 * _margin - _largeButtonDimension.width - 
+        _typeWidth = 150;
+        int diffWidth = width - 150 - 7 * _margin - _largeButtonDimension.width - 
                 2 * _smallButtonDimension.width;
-        _nameWidth = 2 * diffWidth / 7;
-        _typeWidth = 2 * diffWidth / 7;
-        _locationWidth = 3 * diffWidth / 7;
+        _nameWidth = 3 * diffWidth / 7;        
+        _locationWidth = 4 * diffWidth / 7;
         _closeLabelWidth = width - 3 * _margin - _largeButtonDimension.width;
         
         setPosition(_position);
