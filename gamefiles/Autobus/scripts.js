@@ -185,7 +185,7 @@ function turnStart(gameManager) {
     if (kopa.getCardCount() < 1) {
         gameManager.mergeDecks(gameManager.getDecks("done", null), kopa);
         for (var i = 0; i < kopa.getCardCount(); i++) {
-            kopa.getCard(i).unsetVisbleByAll();
+            kopa.getCard(i).unsetVisibleByAll();
         }
         kopa.shuffle();
     }
